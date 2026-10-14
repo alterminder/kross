@@ -151,6 +151,13 @@ server {
         proxy_read_timeout 300s;
     }
 
+    # Long, non-streaming model work: brief conversion, the guided builder and its
+    # painter, trainer twists. The app bounds these at 300 s; a CDN in front may stop sooner.
+    location ~ ^/api/(scenarios/(convert|builder|builder/picture)|sessions/[^/]+/twists)$ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_read_timeout 300s;
+    }
+
     # Auth routes keep their queries out of the error log: nginx's error log
     # always writes the raw request line (query strings included) at any
     # severity, so every severity on these routes is discarded to /dev/null.
