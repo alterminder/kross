@@ -68,6 +68,7 @@ Guest caps sit on top of the general ones. Daily windows are UTC days.
 | `NLAB_GUEST_LIMIT_SIGNUPS_PER_IP_PER_DAY` | `20` | *Positive-only* (≥ 1) |
 | `NLAB_GUEST_SESSION_HOURS` | `24` | Guest session lifetime; > 0 and ≤ 24 (purge assumes at most one day) |
 | `NLAB_COACH_QUESTIONS_PER_SESSION` | `10` | `0` = uncapped |
+| `NLAB_LIMIT_USER_PICTURES_PER_DAY` | `5` | `0` = uncapped. Builder paintings per user (signed-in only); over the cap the builder carries on without a picture |
 | `NLAB_SESSION_RETENTION_DAYS` | `0` | `0` keeps play sessions forever (development); production requires > 0 matching the privacy notice (365 matches the privacy notice template) |
 | `NLAB_LIMIT_USER_WRITES_PER_DAY` / `NLAB_LIMIT_ORG_WRITES_PER_DAY` / `NLAB_LIMIT_TOTAL_WRITES_PER_DAY` | `500` / `5000` / `20000` | *Positive-only* (≥ 1) |
 | `NLAB_LIMIT_USER_STORAGE_BYTES` / `NLAB_LIMIT_ORG_STORAGE_BYTES` / `NLAB_LIMIT_TOTAL_STORAGE_BYTES` | `1e9` / `5e9` / `2e10` | *Positive-only* (≥ 1); cumulative allowances, not physical disk |

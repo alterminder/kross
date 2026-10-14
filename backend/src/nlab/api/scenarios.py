@@ -49,7 +49,7 @@ from nlab.db.scenarios import (
     visible_slugs,
     visible_to,
 )
-from nlab.db.usage import check_limits
+from nlab.db.usage import admit, check_limits
 from nlab.engine import validate
 from nlab.engine.validate import scenario_schema
 from nlab.llm import ConversionFailed, convert_upload, phases_of
@@ -231,6 +231,14 @@ async def builder_picture(body: PictureIn, viewer: ViewerDep, request: Request, 
             raise HTTPException(422, "The previous image is not a PNG, JPEG or WebP image")
         previous_mime = mime
     await check_limits(db, limits_of(settings_of(request)), viewer.context)
+    cap = settings_of(request).limit_user_pictures_per_day
+    if cap:  # one atomic admission per picture, before any paid call: off-topic painting stays cheap
+        try:
+            await admit(db, scope="picture", key=str(viewer.context.user_id), cap=cap, message="Picture limit reached")
+        except LimitReached:
+            await db.rollback()
+            return PictureOut(image=None)  # decoration: the builder carries on without a picture
+        await db.commit()
     scene, records = await scene_step(provider, config, body.text)
     for record in records:
         record_call(db, record, user_id=viewer.context.user_id, org_id=viewer.context.org_id)

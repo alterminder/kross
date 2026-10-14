@@ -48,6 +48,7 @@ class Settings(BaseSettings):
     guest_limit_signups_per_day: int = Field(200, ge=0)
     guest_limit_signups_per_ip_per_day: int = Field(20, ge=1)
     coach_questions_per_session: int = Field(10, ge=0)  # 0 switches the cap off
+    limit_user_pictures_per_day: int = Field(5, ge=0)  # builder paintings per user per UTC day; 0 switches it off
     max_concurrent_model_calls: int = Field(16, ge=1)
     max_concurrent_paid_per_user: int = Field(4, ge=1)
     background_max_concurrent: int = Field(8, ge=1)
