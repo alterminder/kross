@@ -1,0 +1,83 @@
+# Production: Postgres and the app behind your host Nginx (example: deploy/nginx.conf.example).
+# Setup, roles, upgrades: see docs/deployment.md. Migrations and the seed are explicit
+# commands (the 'migrate' service), never run on start.
+#
+# Resource limits assume a 4 GB / 2 vCPU VPS (documented sizing in docs/deployment.md).
+services:
+  db:
+    image: kross-db:local   # postgres:16-alpine with gosu replaced by su-exec
+    build: ./deploy/db
+    environment:
+      POSTGRES_USER: nlab                # bootstrap/owner login; never used by the web app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: nlab
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD:?set POSTGRES_APP_PASSWORD in .env}
+    volumes:
+      - db:/var/lib/postgresql/data
+      # Fresh volumes only: creates the runtime login with DML-only grants.
+      # Existing volumes are untouched; run deploy/db/provision-roles.sh there.
+      - ./deploy/db/init/01-roles.sh:/docker-entrypoint-initdb.d/01-roles.sh:ro
+      - ./deploy/db/roles.sql:/usr/local/share/nlab/roles.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nlab"]
+      interval: 2s
+      retries: 15
+    mem_limit: 1g
+    cpus: 1.0
+    pids_limit: 256
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /run/postgresql
+    cap_drop: [ALL]
+    # The entrypoint chowns PGDATA and drops to the postgres user via gosu.
+    cap_add: [CHOWN, SETGID, SETUID, FOWNER, DAC_OVERRIDE]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  app:
+    image: kross-app:local   # shared with 'migrate': one image, no drift
+    build: .
+    env_file: .env.app           # runtime settings; never the admin .env
+    environment:
+      NLAB_PRODUCTION: "true"            # forced: Settings production gates cannot be bypassed
+      NLAB_DB_HOST: db
+      NLAB_DB_USER: nlab_app             # runtime login: no DDL, no superuser
+      NLAB_DB_PASSWORD: ${POSTGRES_APP_PASSWORD:?set POSTGRES_APP_PASSWORD in .env}
+      NLAB_DB_NAME: nlab
+    ports:
+      - "127.0.0.1:${NLAB_HTTP_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    mem_limit: 1g
+    cpus: 1.5
+    pids_limit: 256
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  # Explicit production migrations with the owner login, never the runtime one:
+  #   docker compose run --rm migrate
+  # The owner password enters this one-shot container only, explicitly; the
+  # app container never sees it.
+  migrate:
+    image: kross-app:local   # built by the 'app' service (docker compose build app)
+    profiles: ["tools"]
+    env_file: .env.app
+    environment:
+      NLAB_DB_HOST: db
+      NLAB_DB_USER: nlab
+      NLAB_DB_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      NLAB_DB_NAME: nlab
+    command: alembic upgrade head
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+volumes:
+  db:

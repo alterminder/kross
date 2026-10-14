@@ -1,0 +1,132 @@
+schema: negotiation-scenario/v2
+id: hfe_measles_campaign_levels
+title: "HfE Measles Campaign Across Three Levels"
+difficulty: advanced
+estimated_minutes: 20
+skills_tested:
+  - "Dialogue Typology"
+  - "Three Levels Management"
+  - "Technical Reframing"
+  - "Public Health Access"
+sources: { bank: "CCHN Worked Case: HfE Measles Across Levels", cchn_tools: [2, 4, 9, 13, 14] }
+
+negotiation:
+  nature: relational
+  type: factual
+  start_level: political
+
+island_of_agreements:
+  agreed_facts:
+    - "A deadly measles outbreak has infected over 1,200 children across frontline districts"
+    - "Vaccine stocks are refrigerated at the central national depot under ministry control"
+    - "De-facto regional authorities control the health clinics in the northern epidemic epicenter"
+  contested_facts:
+    - "Whether accepting central ministry vaccine batches implies political submission to the capital"
+    - "Whose health logos and administrative stamping will appear on child vaccination cards"
+  convergent_norms:
+    - "Children must not die from preventable contagious viral diseases"
+    - "Medical cold chain integrity must be maintained across all transit checkpoints"
+  divergent_norms:
+    - "Whether health interventions require sovereign political recognition of de-facto authorities"
+
+trainee_brief:
+  situation: >
+    Measles is spreading rapidly through northern rural districts, with child mortality rising daily.
+    The central government has released 50,000 vaccine doses, but Dr. Farhan, director of the de-facto health authority in the north,
+    refuses to let the vaccines cross the frontline unless the campaign is conducted under his authority's official sovereign banner.
+  objective: "Secure frontline crossing and cold-chain distribution for the measles campaign by navigating between Technical, Legal, and Political levels."
+  mandate:
+    can_decide:
+      - "Establish neutral operational coordination centers staffed by local health professionals"
+      - "Use neutral WHO/UNICEF/HfE disease control badges on vaccination cards and cool boxes"
+      - "Provide cold-chain solar refrigerators and fuel to local community clinics"
+    must_refer:
+      - "Signing bilateral agreements that grant formal de jure diplomatic recognition to de-facto institutions"
+      - "Excluding minority enclaves from the vaccination coverage area"
+  red_lines:
+    - { text: "No political conditionality that excludes vulnerable children based on ethnicity or territory", source: ethical }
+    - { text: "Vaccine cold chain monitoring protocols must be verified by neutral clinical technicians", source: professional }
+
+counterparts:
+  - id: dr_farhan
+    role: "Director of Health Services, De-Facto Regional Administration"
+    persona: >
+      Physician turned public health administrator, caught between professional medical ethics and intense pressure from political hardliners in his faction.
+    cultural_profile: "Medical professional fighting for institutional dignity and regional self-determination."
+    authority:
+      decides: ["Authorizing health clinic access and deployment of local nursing staff"]
+      must_consult: ["The supreme political council of the northern region"]
+    opening: >
+      We are fully aware of the measles outbreak, Director. But we will not permit the capital regime to use humanitarian aid as a Trojan horse to reassert sovereignty over our liberated territory. Either this campaign is an official partnership with our Ministry of Health, or keep your vaccines in the south.
+    iceberg:
+      position:
+        stated: "No vaccines cross unless the central government formally signs a bilateral protocol with our Health Ministry."
+      tactical_reasoning:
+        type: alternative_norm
+        text: "He must prove to political hardliners that the health authority is defending self-governance."
+      motives_values:
+        values: ["Medical duty to patients", "Political dignity and self-determination"]
+        emotions: ["Torn between clinical conscience and political vulnerability", "Pride"]
+        deep_needs: ["A technical modality that protects child lives while shielding him from accusations of treason"]
+    hidden_interests:
+      - id: doctor_conscience
+        layer: motive_value
+        text: "As a doctor, he is privately devastated by infant deaths and wants the vaccines desperately."
+        reveal_when: { any: [{ move: reframes_core_issue }, { trust_gte: 45 }] }
+      - id: technical_umbrella
+        layer: tactical_reasoning
+        text: "He will accept a 'Joint Technical Epi-Taskforce' using neutral disease control branding without central ministry logos."
+        reveal_when: { trust_gte: 55 }
+    challenges:
+      - "Why should our children be guinea pigs for vaccines approved by our enemies?"
+      - "If our ministry logo is not on the card, we are treated like rebels, not a government."
+      - "Your organization negotiates with the capital, but treats us as an afterthought."
+    state_initial: { trust: 30, rigidity: 80, hostility: 45 }
+
+issues:
+  - id: campaign_branding
+    label: "Campaign branding and institutional logos"
+    tier: 1
+    own: { ideal: "Purely neutral humanitarian disease control branding (HfE/WHO)", bottom_line: "Neutral technical health branding without political slogans" }
+    counterpart: { ideal: "De-facto regional ministry crest on all materials", bottom_line: "Joint technical taskforce branding citing local clinic staff", red_line: "Central regime ministry slogans stamped on northern child cards" }
+  - id: cold_chain_transit
+    label: "Vaccine cold-chain transit verification"
+    tier: 1
+    own: { ideal: "Uninterrupted refrigerated transport verified by technical monitors", bottom_line: "Joint temperature logging at frontline handover point" }
+    counterpart: { ideal: "Total custody transfer at checkpoint with no outside observers", bottom_line: "Neutral technical handover with joint temperature sensor checks", red_line: "Armed central security escorts entering northern clinics" }
+
+triggers:
+  - when: { move: reframes_core_issue }
+    say: "You speak as a fellow physician. Measles does not care about frontlines or checkpoints. A child gasping for breath knows no politics."
+    dials: { rigidity: -25, trust: +20, hostility: -15 }
+  - when: { move: clarifies_operational_detail }
+    say: "If the temperature data loggers accompany each batch to the district clinic, our clinical team can vouch for the vaccine viability."
+    dials: { rigidity: -20, trust: +15 }
+  - when: { move: overclaims_norm }
+    say: "Do not lecture me on national law. Our people shed blood to govern our own institutions."
+    dials: { hostility: +20, rigidity: +15 }
+
+injections:
+  - id: outbreak_casualty_spike
+    label: "Measles mortality report"
+    instruction: "Clinic nurse calls Dr. Farhan with news that three more infants died overnight in the northern district."
+  - id: political_hardliner_visit
+    label: "Political commissar inspection"
+    instruction: "Dr. Farhan notes that regional security inspectors are monitoring the clinic gate."
+
+outcomes:
+  - id: campaign_approved
+    label: "Cross-frontline measles campaign authorized under technical umbrella"
+    result: success
+    when: { trust_gte: 60, rigidity_lte: 45, hostility_lte: 40 }
+  - id: epidemic_paralysis
+    label: "Vaccination blocked; outbreak expands without access"
+    result: fail
+    when: { hostility_gte: 85 }
+
+rubric:
+  dimensions: [level_management, context_analysis, relationship_management, clarity]
+  indicators:
+    - "Reframes political legitimacy standoff into a technical joint health emergency taskforce"
+    - "Ensures cold-chain integrity and impartial child coverage across frontlines"
+    - "Avoids validating political slogans while respecting local health administrative roles"

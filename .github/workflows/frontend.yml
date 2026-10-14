@@ -1,0 +1,67 @@
+name: frontend
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+        working-directory: frontend
+      - name: The API types match the backend
+        run: |
+          cd backend && uv run python -m nlab.api.openapi > ../frontend/openapi.json
+          cd ../frontend && npm run gen && git diff --exit-code openapi.json src/api/schema.d.ts
+      - run: npm run typecheck
+        working-directory: frontend
+      - run: npm test
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
+  e2e:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: nlab
+          POSTGRES_PASSWORD: nlab
+          POSTGRES_DB: nlab
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U nlab"
+          --health-interval 2s
+          --health-retries 15
+    env:
+      NLAB_DEV_DATABASE_SERVER: postgresql+asyncpg://nlab:nlab@localhost:5432
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: uv sync --locked
+        working-directory: backend
+      - run: npm ci && npx playwright install --with-deps chromium
+        working-directory: frontend
+      - run: npm run e2e
+        working-directory: frontend
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: frontend/test-results

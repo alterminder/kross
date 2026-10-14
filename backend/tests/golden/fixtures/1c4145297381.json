@@ -1,0 +1,459 @@
+{
+ "session_id": "1c4145297381",
+ "scenario_id": "detention_police_station",
+ "recording_reproduced_by_old_engine": true,
+ "scenario": {
+  "schema": "negotiation-scenario/v2",
+  "id": "detention_police_station",
+  "title": "Detained before nightfall",
+  "difficulty": "intermediate",
+  "estimated_minutes": 20,
+  "skills_tested": [
+   "Quality of information (strong facts vs rumours)",
+   "Island of agreements",
+   "Building trust and legitimacy",
+   "Face-saving solutions",
+   "Concrete, verifiable terms",
+   "Protecting sources"
+  ],
+  "sources": {
+   "cchn_tools": [
+    1,
+    2,
+    3,
+    7,
+    9,
+    17
+   ]
+  },
+  "review": {
+   "status": "draft",
+   "needs_icrc_confirmation": [
+    "trainee_brief.mandate",
+    "trainee_brief.red_lines",
+    "counterparts[police_captain].cultural_profile",
+    "counterparts[police_captain].iceberg",
+    "issues",
+    "state_initial"
+   ]
+  },
+  "negotiation": {
+   "nature": "relational",
+   "type": "factual",
+   "start_level": "technical"
+  },
+  "island_of_agreements": {
+   "agreed_facts": [
+    "A day labourer was arrested this morning at the main crossroads",
+    "Tensions between communities in the district are high"
+   ],
+   "contested_facts": [
+    "Whether the police hold him at all",
+    "Whether he stole a bag of seeds"
+   ],
+   "convergent_norms": [
+    "Nobody wants violence in the district tonight",
+    "Order must be kept and cases handled properly"
+   ],
+   "divergent_norms": [
+    "Whether an outside organization has any role in a police matter"
+   ]
+  },
+  "trainee_brief": {
+   "situation": "A police station in a tense rural district. It is 16:00. This morning a day labourer from a minority community was arrested by armed men at the main crossroads. Local tensions between communities are high and there are fears of retribution against him if he is still held after dark. You are meeting Captain Idris Mansour, head of the district police station. What you know (information quality, CCHN Tool 1, out of 12): he was arrested this morning at the main crossroads by armed men (8/12: direct witnesses, not corroborated); he was moved this afternoon to a remote rural police post (11/12: confirmed by family, community members and ICRC staff); a rumour says he stole a bag of seeds from a landowner (4/12: hearsay, no source); the police say he was never detained (4/12: single, contradictory source). Protect the family and the two community members who told you about the transfer.\n",
+   "objective": "Obtain the release of the detained day labourer before nightfall. At minimum (bottom line): he is brought back to this station tonight, registered, his family informed, and the ICRC can visit him tomorrow morning.\n",
+   "mandate": {
+    "can_decide": [
+     "Propose that he is brought back to this station tonight and registered",
+     "Ask that his family is informed",
+     "Agree the time and conditions of an ICRC visit"
+    ],
+    "must_refer": [
+     "Any commitment about his legal case or the theft accusation",
+     "Any public or written statement about the police"
+    ]
+   },
+   "red_lines": [
+    {
+     "text": "Never identify the family or community members who reported the transfer",
+     "source": "ethical"
+    },
+    {
+     "text": "No payment, fees or goods in exchange for his release",
+     "source": "institutional"
+    },
+    {
+     "text": "No promise the ICRC cannot deliver (paying for the seeds, guaranteeing his innocence, acting as his lawyer)",
+     "source": "institutional"
+    }
+   ]
+  },
+  "counterparts": [
+   {
+    "id": "police_captain",
+    "role": "Captain Idris Mansour, head of the district police station for six years",
+    "persona": "Proud, procedural, tired. Dislikes foreigners telling him how to do his job. Short, formal sentences; uses \"we\" for the police.\n",
+    "cultural_profile": "DRAFT, written by the POC team, not by an ICRC trainer. Respect: being greeted formally, addressed as \"Captain\", offered time to explain. Offence: being accused in front of his men, being told what the law says, being rushed. Values: order in the district, loyalty to his men, his reputation with the governor.\n",
+    "authority": {
+     "decides": [
+      "Where the detainee is held tonight",
+      "Registration at this station",
+      "Visits to his station"
+     ],
+     "must_consult": [
+      "The governor, on any release in a politically sensitive case"
+     ]
+    },
+    "opening": "There is no one here. This is a police matter, not yours.",
+    "iceberg": {
+     "position": {
+      "stated": "There is no one here. This is a police matter, not yours."
+     },
+     "tactical_reasoning": {
+      "type": "professional",
+      "text": "The man is suspected of theft. He was moved to the rural post to avoid a crowd gathering at the station."
+     },
+     "motives_values": {
+      "values": [
+       "Order in the district",
+       "Loyalty to his men"
+      ],
+      "emotions": [
+       "Fear of unrest",
+       "Fear of blame if the man is harmed tonight"
+      ],
+      "deep_needs": [
+       "Control",
+       "Reputation with the governor"
+      ]
+     }
+    },
+    "hidden_interests": [
+     {
+      "id": "crowd_avoidance",
+      "layer": "tactical_reasoning",
+      "text": "He moved the man to the rural post to avoid a crowd gathering at the station.",
+      "reveal_when": {
+       "trust_gte": 40
+      }
+     },
+     {
+      "id": "landowner_pressure",
+      "layer": "motive_value",
+      "text": "An influential landowner is pressuring him to \"make an example\". He fears unrest if he releases the man, but also fears blame if the man is harmed tonight. He has no written order for the transfer.\n",
+      "reveal_when": {
+       "trust_gte": 60
+      }
+     }
+    ],
+    "challenges": [
+     "Who told you he was arrested?",
+     "Why should a police matter concern your organization?",
+     "Are you saying my men broke the law?",
+     "What do you know about the theft?",
+     "What guarantees do you give me that there will be no trouble?"
+    ],
+    "constraints_from_constituency": [
+     "The landowner expects the 'thief' to be punished",
+     "The governor expects order in the district"
+    ],
+    "state_initial": {
+     "trust": 15,
+     "rigidity": 65,
+     "hostility": 45
+    }
+   }
+  ],
+  "issues": [
+   {
+    "id": "place_of_detention",
+    "label": "Where he is held tonight",
+    "tier": 1,
+    "own": {
+     "ideal": "Brought back to this station tonight and registered",
+     "bottom_line": "Brought back to this station tonight and registered"
+    },
+    "counterpart": {
+     "ideal": "He stays at the rural post, off the books",
+     "bottom_line": "Brought back tomorrow and registered",
+     "hidden": true
+    }
+   },
+   {
+    "id": "family_information",
+    "label": "Informing his family",
+    "tier": 1,
+    "own": {
+     "ideal": "Family informed tonight"
+    },
+    "counterpart": {
+     "ideal": "No information until the case is clear",
+     "bottom_line": "The family is told he is in police custody",
+     "hidden": true
+    }
+   },
+   {
+    "id": "icrc_visit",
+    "label": "ICRC visit",
+    "tier": 2,
+    "own": {
+     "ideal": "Visit tonight",
+     "bottom_line": "Visit tomorrow morning"
+    },
+    "counterpart": {
+     "ideal": "No visit",
+     "bottom_line": "A visit tomorrow in the presence of an officer",
+     "hidden": true
+    }
+   },
+   {
+    "id": "release",
+    "label": "Release",
+    "tier": 3,
+    "own": {
+     "ideal": "Released before nightfall",
+     "bottom_line": "Registered at this station, family informed, visit tomorrow"
+    },
+    "counterpart": {
+     "ideal": "Held until the landowner is satisfied",
+     "bottom_line": "Registered and held here pending the case",
+     "red_line": "Released tonight without any procedure",
+     "hidden": true
+    }
+   }
+  ],
+  "triggers": [
+   {
+    "when": {
+     "move": "argues_principles_only"
+    },
+    "say": "Do not lecture me about the law in my own station."
+   },
+   {
+    "when": {
+     "move": "overclaims_norm"
+    },
+    "say": "You have no right to anything here. This is a police matter."
+   },
+   {
+    "when": {
+     "hostility_gte": 70
+    },
+    "say": "I have given you enough of my time. If you continue like this, this meeting is over."
+   },
+   {
+    "when": {
+     "trust_gte": 60
+    },
+    "effect": "Talks openly about his dilemma and is looking for a way out that lets him look in control."
+   }
+  ],
+  "injections": [
+   {
+    "id": "landowner_calls",
+    "label": "The landowner phones the Captain",
+    "instruction": "You just received a call from the landowner demanding the thief be punished. You are more defensive.",
+    "dials": {
+     "hostility": 15
+    }
+   },
+   {
+    "id": "crowd_gathers",
+    "label": "A crowd gathers outside the station",
+    "instruction": "Men from the majority community are gathering outside. You are worried and distracted.",
+    "dials": {
+     "hostility": 20
+    }
+   },
+   {
+    "id": "fee_hint",
+    "label": "The Captain hints at a 'fee'",
+    "instruction": "Hint that 'paperwork fees' could make things faster. See how the delegate reacts."
+   },
+   {
+    "id": "sunset_warning",
+    "label": "One hour until dark",
+    "instruction": "Mention it is getting late and the rural post is far away.",
+    "auto": {
+     "at_turn": 10
+    }
+   }
+  ],
+  "outcomes": [
+   {
+    "id": "release",
+    "label": "Released before nightfall (full goal)",
+    "result": "success",
+    "when": {
+     "goal_requested": true,
+     "trust_gte": 65,
+     "rigidity_lte": 50,
+     "hostility_lte": 55
+    }
+   },
+   {
+    "id": "bottom_line",
+    "label": "Transferred back, registered, visit tomorrow (bottom line)",
+    "result": "partial",
+    "when": {
+     "goal_requested": true,
+     "trust_gte": 50,
+     "rigidity_lte": 65,
+     "hostility_lte": 65
+    }
+   },
+   {
+    "id": "meeting_ended",
+    "label": "He ends the meeting",
+    "result": "fail",
+    "when": {
+     "hostility_gte": 95
+    }
+   },
+   {
+    "id": "refused",
+    "label": "Night falls — refused, relationship still open",
+    "result": "fail",
+    "when": {
+     "turn_gte": 20
+    }
+   }
+  ],
+  "implementation_checklist": [
+   {
+    "id": "transfer_back_tonight",
+    "criterion": 1
+   },
+   {
+    "id": "registration",
+    "criterion": 1
+   },
+   {
+    "id": "family_informed",
+    "criterion": 2
+   },
+   {
+    "id": "visit_time_and_conditions",
+    "criterion": 3
+   },
+   {
+    "id": "who_escorts_the_transfer",
+    "criterion": 5
+   }
+  ],
+  "rubric": {
+   "dimensions": [
+    "information_quality",
+    "facts_vs_assumptions",
+    "trust_building",
+    "legitimacy",
+    "interests",
+    "red_lines",
+    "transaction_design",
+    "implementation"
+   ],
+   "indicators": [
+    "Relies on well-sourced facts (the arrest, the transfer) rather than the theft rumour",
+    "Starts from facts or values both sides accept (the arrest, nobody wants violence tonight)",
+    "Greets him formally and acknowledges his authority",
+    "Explains the ICRC's neutral role without judging guilt or innocence",
+    "Offers a face-saving solution (presented as proper police procedure)",
+    "Proposes concrete, checkable terms (who, what, when)",
+    "Never identifies the sources of the transfer information"
+   ]
+  }
+ },
+ "actions": [
+  {
+   "op": "step",
+   "text": "hi",
+   "classification": {
+    "moves": [],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "piss off",
+   "classification": {
+    "moves": [
+     {
+      "id": "insults_counterpart",
+      "quote": "piss off"
+     }
+    ],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  }
+ ],
+ "expected": [
+  {
+   "turn": 1,
+   "dials": {
+    "trust": 15,
+    "rigidity": 65,
+    "hostility": 45,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [],
+   "covered_details": [],
+   "moves": [],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [],
+   "offered": null,
+   "reached": [],
+   "outcome": null
+  },
+  {
+   "turn": 2,
+   "dials": {
+    "trust": 15,
+    "rigidity": 65,
+    "hostility": 45,
+    "consistency": 0
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [],
+   "covered_details": [],
+   "moves": [
+    {
+     "turn": 2,
+     "id": "insults_counterpart",
+     "quote": "piss off"
+    }
+   ],
+   "flags": [
+    {
+     "turn": 2,
+     "id": "insult",
+     "quote": "piss off",
+     "text": ""
+    }
+   ],
+   "proposals": [],
+   "injections": [],
+   "cues": [],
+   "offered": null,
+   "reached": [],
+   "outcome": {
+    "id": "insult",
+    "label": "The counterpart was insulted; the meeting is over",
+    "result": "fail",
+    "turn": 2
+   }
+  }
+ ]
+}

@@ -1,0 +1,2088 @@
+{
+ "session_id": "de2daf54fd5b",
+ "scenario_id": "detention_police_station",
+ "recording_reproduced_by_old_engine": true,
+ "scenario": {
+  "schema": "negotiation-scenario/v2",
+  "id": "detention_police_station",
+  "title": "Detained before nightfall",
+  "difficulty": "intermediate",
+  "estimated_minutes": 20,
+  "skills_tested": [
+   "Quality of information (strong facts vs rumours)",
+   "Island of agreements",
+   "Building trust and legitimacy",
+   "Face-saving solutions",
+   "Concrete, verifiable terms",
+   "Protecting sources"
+  ],
+  "sources": {
+   "cchn_tools": [
+    1,
+    2,
+    3,
+    7,
+    9,
+    17
+   ]
+  },
+  "review": {
+   "status": "draft",
+   "needs_icrc_confirmation": [
+    "trainee_brief.mandate",
+    "trainee_brief.red_lines",
+    "counterparts[police_captain].cultural_profile",
+    "counterparts[police_captain].iceberg",
+    "issues",
+    "state_initial"
+   ]
+  },
+  "negotiation": {
+   "nature": "relational",
+   "type": "factual",
+   "start_level": "technical"
+  },
+  "island_of_agreements": {
+   "agreed_facts": [
+    "A day labourer was arrested this morning at the main crossroads",
+    "Tensions between communities in the district are high"
+   ],
+   "contested_facts": [
+    "Whether the police hold him at all",
+    "Whether he stole a bag of seeds"
+   ],
+   "convergent_norms": [
+    "Nobody wants violence in the district tonight",
+    "Order must be kept and cases handled properly"
+   ],
+   "divergent_norms": [
+    "Whether an outside organization has any role in a police matter"
+   ]
+  },
+  "trainee_brief": {
+   "situation": "A police station in a tense rural district. It is 16:00. This morning a day labourer from a minority community was arrested by armed men at the main crossroads. Local tensions between communities are high and there are fears of retribution against him if he is still held after dark. You are meeting Captain Idris Mansour, head of the district police station. What you know (information quality, CCHN Tool 1, out of 12): he was arrested this morning at the main crossroads by armed men (8/12: direct witnesses, not corroborated); he was moved this afternoon to a remote rural police post (11/12: confirmed by family, community members and ICRC staff); a rumour says he stole a bag of seeds from a landowner (4/12: hearsay, no source); the police say he was never detained (4/12: single, contradictory source). Protect the family and the two community members who told you about the transfer.\n",
+   "objective": "Obtain the release of the detained day labourer before nightfall. At minimum (bottom line): he is brought back to this station tonight, registered, his family informed, and the ICRC can visit him tomorrow morning.\n",
+   "mandate": {
+    "can_decide": [
+     "Propose that he is brought back to this station tonight and registered",
+     "Ask that his family is informed",
+     "Agree the time and conditions of an ICRC visit"
+    ],
+    "must_refer": [
+     "Any commitment about his legal case or the theft accusation",
+     "Any public or written statement about the police"
+    ]
+   },
+   "red_lines": [
+    {
+     "text": "Never identify the family or community members who reported the transfer",
+     "source": "ethical"
+    },
+    {
+     "text": "No payment, fees or goods in exchange for his release",
+     "source": "institutional"
+    },
+    {
+     "text": "No promise the ICRC cannot deliver (paying for the seeds, guaranteeing his innocence, acting as his lawyer)",
+     "source": "institutional"
+    }
+   ]
+  },
+  "counterparts": [
+   {
+    "id": "police_captain",
+    "role": "Captain Idris Mansour, head of the district police station for six years",
+    "persona": "Proud, procedural, tired. Dislikes foreigners telling him how to do his job. Short, formal sentences; uses \"we\" for the police.\n",
+    "cultural_profile": "DRAFT, written by the POC team, not by an ICRC trainer. Respect: being greeted formally, addressed as \"Captain\", offered time to explain. Offence: being accused in front of his men, being told what the law says, being rushed. Values: order in the district, loyalty to his men, his reputation with the governor.\n",
+    "authority": {
+     "decides": [
+      "Where the detainee is held tonight",
+      "Registration at this station",
+      "Visits to his station"
+     ],
+     "must_consult": [
+      "The governor, on any release in a politically sensitive case"
+     ]
+    },
+    "opening": "There is no one here. This is a police matter, not yours.",
+    "iceberg": {
+     "position": {
+      "stated": "There is no one here. This is a police matter, not yours."
+     },
+     "tactical_reasoning": {
+      "type": "professional",
+      "text": "The man is suspected of theft. He was moved to the rural post to avoid a crowd gathering at the station."
+     },
+     "motives_values": {
+      "values": [
+       "Order in the district",
+       "Loyalty to his men"
+      ],
+      "emotions": [
+       "Fear of unrest",
+       "Fear of blame if the man is harmed tonight"
+      ],
+      "deep_needs": [
+       "Control",
+       "Reputation with the governor"
+      ]
+     }
+    },
+    "hidden_interests": [
+     {
+      "id": "crowd_avoidance",
+      "layer": "tactical_reasoning",
+      "text": "He moved the man to the rural post to avoid a crowd gathering at the station.",
+      "reveal_when": {
+       "trust_gte": 40
+      }
+     },
+     {
+      "id": "landowner_pressure",
+      "layer": "motive_value",
+      "text": "An influential landowner is pressuring him to \"make an example\". He fears unrest if he releases the man, but also fears blame if the man is harmed tonight. He has no written order for the transfer.\n",
+      "reveal_when": {
+       "trust_gte": 60
+      }
+     }
+    ],
+    "challenges": [
+     "Who told you he was arrested?",
+     "Why should a police matter concern your organization?",
+     "Are you saying my men broke the law?",
+     "What do you know about the theft?",
+     "What guarantees do you give me that there will be no trouble?"
+    ],
+    "constraints_from_constituency": [
+     "The landowner expects the 'thief' to be punished",
+     "The governor expects order in the district"
+    ],
+    "state_initial": {
+     "trust": 15,
+     "rigidity": 65,
+     "hostility": 45
+    }
+   }
+  ],
+  "issues": [
+   {
+    "id": "place_of_detention",
+    "label": "Where he is held tonight",
+    "tier": 1,
+    "own": {
+     "ideal": "Brought back to this station tonight and registered",
+     "bottom_line": "Brought back to this station tonight and registered"
+    },
+    "counterpart": {
+     "ideal": "He stays at the rural post, off the books",
+     "bottom_line": "Brought back tomorrow and registered",
+     "hidden": true
+    }
+   },
+   {
+    "id": "family_information",
+    "label": "Informing his family",
+    "tier": 1,
+    "own": {
+     "ideal": "Family informed tonight"
+    },
+    "counterpart": {
+     "ideal": "No information until the case is clear",
+     "bottom_line": "The family is told he is in police custody",
+     "hidden": true
+    }
+   },
+   {
+    "id": "icrc_visit",
+    "label": "ICRC visit",
+    "tier": 2,
+    "own": {
+     "ideal": "Visit tonight",
+     "bottom_line": "Visit tomorrow morning"
+    },
+    "counterpart": {
+     "ideal": "No visit",
+     "bottom_line": "A visit tomorrow in the presence of an officer",
+     "hidden": true
+    }
+   },
+   {
+    "id": "release",
+    "label": "Release",
+    "tier": 3,
+    "own": {
+     "ideal": "Released before nightfall",
+     "bottom_line": "Registered at this station, family informed, visit tomorrow"
+    },
+    "counterpart": {
+     "ideal": "Held until the landowner is satisfied",
+     "bottom_line": "Registered and held here pending the case",
+     "red_line": "Released tonight without any procedure",
+     "hidden": true
+    }
+   }
+  ],
+  "triggers": [
+   {
+    "when": {
+     "move": "argues_principles_only"
+    },
+    "say": "Do not lecture me about the law in my own station."
+   },
+   {
+    "when": {
+     "move": "overclaims_norm"
+    },
+    "say": "You have no right to anything here. This is a police matter."
+   },
+   {
+    "when": {
+     "hostility_gte": 70
+    },
+    "say": "I have given you enough of my time. If you continue like this, this meeting is over."
+   },
+   {
+    "when": {
+     "trust_gte": 60
+    },
+    "effect": "Talks openly about his dilemma and is looking for a way out that lets him look in control."
+   }
+  ],
+  "injections": [
+   {
+    "id": "landowner_calls",
+    "label": "The landowner phones the Captain",
+    "instruction": "You just received a call from the landowner demanding the thief be punished. You are more defensive.",
+    "dials": {
+     "hostility": 15
+    }
+   },
+   {
+    "id": "crowd_gathers",
+    "label": "A crowd gathers outside the station",
+    "instruction": "Men from the majority community are gathering outside. You are worried and distracted.",
+    "dials": {
+     "hostility": 20
+    }
+   },
+   {
+    "id": "fee_hint",
+    "label": "The Captain hints at a 'fee'",
+    "instruction": "Hint that 'paperwork fees' could make things faster. See how the delegate reacts."
+   },
+   {
+    "id": "sunset_warning",
+    "label": "One hour until dark",
+    "instruction": "Mention it is getting late and the rural post is far away.",
+    "auto": {
+     "at_turn": 10
+    }
+   }
+  ],
+  "outcomes": [
+   {
+    "id": "release",
+    "label": "Released before nightfall (full goal)",
+    "result": "success",
+    "when": {
+     "goal_requested": true,
+     "trust_gte": 65,
+     "rigidity_lte": 50,
+     "hostility_lte": 55
+    }
+   },
+   {
+    "id": "bottom_line",
+    "label": "Transferred back, registered, visit tomorrow (bottom line)",
+    "result": "partial",
+    "when": {
+     "goal_requested": true,
+     "trust_gte": 50,
+     "rigidity_lte": 65,
+     "hostility_lte": 65
+    }
+   },
+   {
+    "id": "meeting_ended",
+    "label": "He ends the meeting",
+    "result": "fail",
+    "when": {
+     "hostility_gte": 95
+    }
+   },
+   {
+    "id": "refused",
+    "label": "Night falls — refused, relationship still open",
+    "result": "fail",
+    "when": {
+     "turn_gte": 20
+    }
+   }
+  ],
+  "implementation_checklist": [
+   {
+    "id": "transfer_back_tonight",
+    "criterion": 1
+   },
+   {
+    "id": "registration",
+    "criterion": 1
+   },
+   {
+    "id": "family_informed",
+    "criterion": 2
+   },
+   {
+    "id": "visit_time_and_conditions",
+    "criterion": 3
+   },
+   {
+    "id": "who_escorts_the_transfer",
+    "criterion": 5
+   }
+  ],
+  "rubric": {
+   "dimensions": [
+    "information_quality",
+    "facts_vs_assumptions",
+    "trust_building",
+    "legitimacy",
+    "interests",
+    "red_lines",
+    "transaction_design",
+    "implementation"
+   ],
+   "indicators": [
+    "Relies on well-sourced facts (the arrest, the transfer) rather than the theft rumour",
+    "Starts from facts or values both sides accept (the arrest, nobody wants violence tonight)",
+    "Greets him formally and acknowledges his authority",
+    "Explains the ICRC's neutral role without judging guilt or innocence",
+    "Offers a face-saving solution (presented as proper police procedure)",
+    "Proposes concrete, checkable terms (who, what, when)",
+    "Never identifies the sources of the transfer information"
+   ]
+  },
+  "avatar": {
+   "look": {
+    "skin": "#b07a4f",
+    "hair": "#2b2b2b",
+    "outfit": "#2f3e4e",
+    "hat": "cap",
+    "moustache": true
+   },
+   "voice": {
+    "name": "Captain Idris Mansour",
+    "id": "KhkLSmhXgYfYY5LspPg5"
+   },
+   "mood": {
+    "warmth": "trust",
+    "anger": "hostility",
+    "attention": "-rigidity",
+    "confusion": "-consistency"
+   }
+  }
+ },
+ "actions": [
+  {
+   "op": "step",
+   "text": "Good afternoon, Captain Mansour. Thank you for receiving me. I know you are the authority in this district, and I can see you are under a lot of pressure today.",
+   "classification": {
+    "moves": [
+     {
+      "id": "shows_respect_curiosity",
+      "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+     }
+    ],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely. And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads.",
+   "classification": {
+    "moves": [
+     {
+      "id": "unpacks_principle",
+      "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+     },
+     {
+      "id": "proposes_shared_objective",
+      "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+     }
+    ],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "May I ask what worries you most in this situation? What pressures are you facing from your side?",
+   "classification": {
+    "moves": [
+     {
+      "id": "asks_good_question",
+      "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+     },
+     {
+      "id": "identifies_interest",
+      "quote": "What pressures are you facing from your side?"
+     },
+     {
+      "id": "evades_direct_question",
+      "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+     }
+    ],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "I understand time is short. Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am. Can we agree on that?",
+   "classification": {
+    "moves": [
+     {
+      "id": "reframes_core_issue",
+      "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+     },
+     {
+      "id": "shows_respect_curiosity",
+      "quote": "reflects well on your station"
+     },
+     {
+      "id": "identifies_interest",
+      "quote": "reflects well on your station"
+     },
+     {
+      "id": "clarifies_operational_detail",
+      "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+     }
+    ],
+    "asked_for_goal": true,
+    "red_lines": [],
+    "proposals": [
+     {
+      "issue": "place_of_detention",
+      "side": "own",
+      "line": "Brought back to this station tonight and registered",
+      "quote": "the man is brought back here tonight, registered in your books"
+     },
+     {
+      "issue": "family_information",
+      "side": "own",
+      "line": "Family informed tonight",
+      "quote": "his family is informed"
+     },
+     {
+      "issue": "icrc_visit",
+      "side": "own",
+      "line": "Visit tomorrow morning",
+      "quote": "an ICRC delegate visits him tomorrow at 9 am"
+     },
+     {
+      "issue": "release",
+      "side": "own",
+      "line": "Registered at this station, family informed, visit tomorrow",
+      "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+     }
+    ],
+    "operational_details": [
+     {
+      "id": "transfer_back_tonight",
+      "quote": "the man is brought back here tonight"
+     },
+     {
+      "id": "registration",
+      "quote": "registered in your books"
+     },
+     {
+      "id": "family_informed",
+      "quote": "his family is informed"
+     },
+     {
+      "id": "visit_time_and_conditions",
+      "quote": "an ICRC delegate visits him tomorrow at 9 am"
+     }
+    ],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "So, to confirm, Captain: he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9. Do we have an agreement?",
+   "classification": {
+    "moves": [
+     {
+      "id": "clarifies_operational_detail",
+      "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+     }
+    ],
+    "asked_for_goal": true,
+    "red_lines": [],
+    "proposals": [
+     {
+      "issue": "place_of_detention",
+      "side": "own",
+      "line": "Brought back to this station tonight and registered",
+      "quote": "he is transferred back tonight, registered"
+     },
+     {
+      "issue": "icrc_visit",
+      "side": "own",
+      "line": "Visit tomorrow morning",
+      "quote": "we visit tomorrow morning at 9"
+     }
+    ],
+    "operational_details": [
+     {
+      "id": "transfer_back_tonight",
+      "quote": "transferred back tonight"
+     },
+     {
+      "id": "registration",
+      "quote": "registered"
+     },
+     {
+      "id": "family_informed",
+      "quote": "his family is told"
+     },
+     {
+      "id": "visit_time_and_conditions",
+      "quote": "we visit tomorrow morning at 9"
+     }
+    ],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "grant",
+   "quote": "Yes. He comes back tonight, he is entered in the register, the family is told, and your delegate comes tomorrow at nine. That is the agreement."
+  },
+  {
+   "op": "step",
+   "text": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people",
+   "classification": {
+    "moves": [
+     {
+      "id": "proposes_shared_objective",
+      "quote": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people"
+     }
+    ],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "Im hearing you and agree, is this maybe too early for you at 9 in the morning, so you can have a good sleep?",
+   "classification": {
+    "moves": [
+     {
+      "id": "acknowledges_emotion",
+      "quote": "Im hearing you"
+     },
+     {
+      "id": "clarifies_operational_detail",
+      "quote": "is this maybe too early for you at 9 in the morning"
+     }
+    ],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [
+     {
+      "id": "visit_time_and_conditions",
+      "quote": "is this maybe too early for you at 9 in the morning"
+     }
+    ],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "That's a great information you provided thank you very much!",
+   "classification": {
+    "moves": [],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "We stay in total agreement with you",
+   "classification": {
+    "moves": [],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "Yes, that's our common goal to stay this between us",
+   "classification": {
+    "moves": [],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "Hows your family doing hope they are all healthy and safe",
+   "classification": {
+    "moves": [
+     {
+      "id": "shows_respect_curiosity",
+      "quote": "Hows your family doing hope they are all healthy and safe"
+     }
+    ],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "step",
+   "text": "Yes i accept that, thank you!",
+   "classification": {
+    "moves": [],
+    "asked_for_goal": true,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "grant",
+   "quote": "Then it is set. He is released before nightfall, escorted by my men, and back in the register at nine. You have my word, and I don't give it often."
+  }
+ ],
+ "expected": [
+  {
+   "turn": 1,
+   "dials": {
+    "trust": 20,
+    "rigidity": 65,
+    "hostility": 40,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [],
+   "covered_details": [],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [],
+   "offered": null,
+   "reached": [],
+   "outcome": null
+  },
+  {
+   "turn": 2,
+   "dials": {
+    "trust": 29,
+    "rigidity": 51,
+    "hostility": 40,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [],
+   "covered_details": [],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [],
+   "offered": null,
+   "reached": [],
+   "outcome": null
+  },
+  {
+   "turn": 3,
+   "dials": {
+    "trust": 39,
+    "rigidity": 33,
+    "hostility": 40,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [],
+   "covered_details": [],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [
+    {
+     "kind": "hint",
+     "text": "If you can find another way to address that concern, perhaps we can discuss it.",
+     "label": ""
+    },
+    {
+     "kind": "hint",
+     "text": "You did not answer my question. Answer it, or tell me why you cannot.",
+     "label": ""
+    }
+   ],
+   "offered": null,
+   "reached": [],
+   "outcome": null
+  },
+  {
+   "turn": 4,
+   "dials": {
+    "trust": 51,
+    "rigidity": 14,
+    "hostility": 27,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": true,
+   "revealed": [
+    "crowd_avoidance"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [
+    {
+     "kind": "hint",
+     "text": "If you can find another way to address that concern, perhaps we can discuss it.",
+     "label": ""
+    },
+    {
+     "kind": "offer",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    }
+   ],
+   "offered": {
+    "id": "bottom_line",
+    "turn": 4
+   },
+   "reached": [],
+   "outcome": null
+  },
+  {
+   "turn": 5,
+   "dials": {
+    "trust": 53,
+    "rigidity": 14,
+    "hostility": 27,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": true,
+   "revealed": [
+    "crowd_avoidance"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [
+    {
+     "kind": "agree_now",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    }
+   ],
+   "offered": {
+    "id": "bottom_line",
+    "turn": 4
+   },
+   "reached": [],
+   "outcome": null
+  },
+  {
+   "turn": 5,
+   "dials": {
+    "trust": 53,
+    "rigidity": 14,
+    "hostility": 27,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": true,
+   "revealed": [
+    "crowd_avoidance"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [
+    {
+     "kind": "agree_now",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    }
+   ],
+   "offered": null,
+   "reached": [
+    {
+     "id": "bottom_line",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)",
+     "turn": 5
+    }
+   ],
+   "outcome": null
+  },
+  {
+   "turn": 6,
+   "dials": {
+    "trust": 58,
+    "rigidity": 4,
+    "hostility": 27,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [
+    "crowd_avoidance"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    },
+    {
+     "turn": 6,
+     "id": "proposes_shared_objective",
+     "quote": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [
+    {
+     "kind": "reached",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    }
+   ],
+   "offered": null,
+   "reached": [
+    {
+     "id": "bottom_line",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)",
+     "turn": 5
+    }
+   ],
+   "outcome": null
+  },
+  {
+   "turn": 7,
+   "dials": {
+    "trust": 63,
+    "rigidity": 4,
+    "hostility": 19,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [
+    "crowd_avoidance",
+    "landowner_pressure"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    },
+    {
+     "turn": 6,
+     "id": "proposes_shared_objective",
+     "quote": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people"
+    },
+    {
+     "turn": 7,
+     "id": "acknowledges_emotion",
+     "quote": "Im hearing you"
+    },
+    {
+     "turn": 7,
+     "id": "clarifies_operational_detail",
+     "quote": "is this maybe too early for you at 9 in the morning"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [
+    {
+     "kind": "hint",
+     "text": "Talks openly about his dilemma and is looking for a way out that lets him look in control.",
+     "label": ""
+    },
+    {
+     "kind": "reached",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    }
+   ],
+   "offered": null,
+   "reached": [
+    {
+     "id": "bottom_line",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)",
+     "turn": 5
+    }
+   ],
+   "outcome": null
+  },
+  {
+   "turn": 8,
+   "dials": {
+    "trust": 63,
+    "rigidity": 4,
+    "hostility": 19,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [
+    "crowd_avoidance",
+    "landowner_pressure"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    },
+    {
+     "turn": 6,
+     "id": "proposes_shared_objective",
+     "quote": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people"
+    },
+    {
+     "turn": 7,
+     "id": "acknowledges_emotion",
+     "quote": "Im hearing you"
+    },
+    {
+     "turn": 7,
+     "id": "clarifies_operational_detail",
+     "quote": "is this maybe too early for you at 9 in the morning"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [
+    {
+     "kind": "hint",
+     "text": "Talks openly about his dilemma and is looking for a way out that lets him look in control.",
+     "label": ""
+    },
+    {
+     "kind": "reached",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    }
+   ],
+   "offered": null,
+   "reached": [
+    {
+     "id": "bottom_line",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)",
+     "turn": 5
+    }
+   ],
+   "outcome": null
+  },
+  {
+   "turn": 9,
+   "dials": {
+    "trust": 63,
+    "rigidity": 4,
+    "hostility": 19,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [
+    "crowd_avoidance",
+    "landowner_pressure"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    },
+    {
+     "turn": 6,
+     "id": "proposes_shared_objective",
+     "quote": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people"
+    },
+    {
+     "turn": 7,
+     "id": "acknowledges_emotion",
+     "quote": "Im hearing you"
+    },
+    {
+     "turn": 7,
+     "id": "clarifies_operational_detail",
+     "quote": "is this maybe too early for you at 9 in the morning"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [
+    {
+     "kind": "hint",
+     "text": "Talks openly about his dilemma and is looking for a way out that lets him look in control.",
+     "label": ""
+    },
+    {
+     "kind": "reached",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    }
+   ],
+   "offered": null,
+   "reached": [
+    {
+     "id": "bottom_line",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)",
+     "turn": 5
+    }
+   ],
+   "outcome": null
+  },
+  {
+   "turn": 10,
+   "dials": {
+    "trust": 63,
+    "rigidity": 4,
+    "hostility": 19,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [
+    "crowd_avoidance",
+    "landowner_pressure"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    },
+    {
+     "turn": 6,
+     "id": "proposes_shared_objective",
+     "quote": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people"
+    },
+    {
+     "turn": 7,
+     "id": "acknowledges_emotion",
+     "quote": "Im hearing you"
+    },
+    {
+     "turn": 7,
+     "id": "clarifies_operational_detail",
+     "quote": "is this maybe too early for you at 9 in the morning"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [
+    {
+     "id": "sunset_warning",
+     "label": "One hour until dark",
+     "instruction": "Mention it is getting late and the rural post is far away.",
+     "source": "auto",
+     "turn": 10
+    }
+   ],
+   "cues": [
+    {
+     "kind": "hint",
+     "text": "Talks openly about his dilemma and is looking for a way out that lets him look in control.",
+     "label": ""
+    },
+    {
+     "kind": "reached",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    }
+   ],
+   "offered": null,
+   "reached": [
+    {
+     "id": "bottom_line",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)",
+     "turn": 5
+    }
+   ],
+   "outcome": null
+  },
+  {
+   "turn": 11,
+   "dials": {
+    "trust": 68,
+    "rigidity": 4,
+    "hostility": 14,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [
+    "crowd_avoidance",
+    "landowner_pressure"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    },
+    {
+     "turn": 6,
+     "id": "proposes_shared_objective",
+     "quote": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people"
+    },
+    {
+     "turn": 7,
+     "id": "acknowledges_emotion",
+     "quote": "Im hearing you"
+    },
+    {
+     "turn": 7,
+     "id": "clarifies_operational_detail",
+     "quote": "is this maybe too early for you at 9 in the morning"
+    },
+    {
+     "turn": 11,
+     "id": "shows_respect_curiosity",
+     "quote": "Hows your family doing hope they are all healthy and safe"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [
+    {
+     "id": "sunset_warning",
+     "label": "One hour until dark",
+     "instruction": "Mention it is getting late and the rural post is far away.",
+     "source": "auto",
+     "turn": 10
+    }
+   ],
+   "cues": [
+    {
+     "kind": "hint",
+     "text": "Talks openly about his dilemma and is looking for a way out that lets him look in control.",
+     "label": ""
+    },
+    {
+     "kind": "reached",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    },
+    {
+     "kind": "offer",
+     "text": "",
+     "label": "Released before nightfall (full goal)"
+    }
+   ],
+   "offered": {
+    "id": "release",
+    "turn": 11
+   },
+   "reached": [
+    {
+     "id": "bottom_line",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)",
+     "turn": 5
+    }
+   ],
+   "outcome": null
+  },
+  {
+   "turn": 12,
+   "dials": {
+    "trust": 68,
+    "rigidity": 4,
+    "hostility": 14,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": true,
+   "revealed": [
+    "crowd_avoidance",
+    "landowner_pressure"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    },
+    {
+     "turn": 6,
+     "id": "proposes_shared_objective",
+     "quote": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people"
+    },
+    {
+     "turn": 7,
+     "id": "acknowledges_emotion",
+     "quote": "Im hearing you"
+    },
+    {
+     "turn": 7,
+     "id": "clarifies_operational_detail",
+     "quote": "is this maybe too early for you at 9 in the morning"
+    },
+    {
+     "turn": 11,
+     "id": "shows_respect_curiosity",
+     "quote": "Hows your family doing hope they are all healthy and safe"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [
+    {
+     "id": "sunset_warning",
+     "label": "One hour until dark",
+     "instruction": "Mention it is getting late and the rural post is far away.",
+     "source": "auto",
+     "turn": 10
+    }
+   ],
+   "cues": [
+    {
+     "kind": "hint",
+     "text": "Talks openly about his dilemma and is looking for a way out that lets him look in control.",
+     "label": ""
+    },
+    {
+     "kind": "reached",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    },
+    {
+     "kind": "agree_now",
+     "text": "",
+     "label": "Released before nightfall (full goal)"
+    }
+   ],
+   "offered": {
+    "id": "release",
+    "turn": 11
+   },
+   "reached": [
+    {
+     "id": "bottom_line",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)",
+     "turn": 5
+    }
+   ],
+   "outcome": null
+  },
+  {
+   "turn": 12,
+   "dials": {
+    "trust": 68,
+    "rigidity": 4,
+    "hostility": 14,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": true,
+   "revealed": [
+    "crowd_avoidance",
+    "landowner_pressure"
+   ],
+   "covered_details": [
+    "transfer_back_tonight",
+    "registration",
+    "family_informed",
+    "visit_time_and_conditions"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "shows_respect_curiosity",
+     "quote": "I know you are the authority in this district, and I can see you are under a lot of pressure today."
+    },
+    {
+     "turn": 2,
+     "id": "unpacks_principle",
+     "quote": "The ICRC is neutral: we do not judge anyone's guilt or innocence. We simply want every detained person to be known and treated humanely."
+    },
+    {
+     "turn": 2,
+     "id": "proposes_shared_objective",
+     "quote": "And I think we both want the same thing tonight: calm in town, and no trouble at the crossroads."
+    },
+    {
+     "turn": 3,
+     "id": "asks_good_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "identifies_interest",
+     "quote": "What pressures are you facing from your side?"
+    },
+    {
+     "turn": 3,
+     "id": "evades_direct_question",
+     "quote": "May I ask what worries you most in this situation? What pressures are you facing from your side?"
+    },
+    {
+     "turn": 4,
+     "id": "reframes_core_issue",
+     "quote": "Here is a proposal that follows proper police procedure and reflects well on your station: the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am."
+    },
+    {
+     "turn": 4,
+     "id": "shows_respect_curiosity",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "identifies_interest",
+     "quote": "reflects well on your station"
+    },
+    {
+     "turn": 4,
+     "id": "clarifies_operational_detail",
+     "quote": "the man is brought back here tonight, registered in your books, his family is informed, and an ICRC delegate visits him tomorrow at 9 am"
+    },
+    {
+     "turn": 5,
+     "id": "clarifies_operational_detail",
+     "quote": "he is transferred back tonight, registered, his family is told, and we visit tomorrow morning at 9."
+    },
+    {
+     "turn": 6,
+     "id": "proposes_shared_objective",
+     "quote": "Im glad we have found a common ground, we are in the same boat together just trying to help and protect people"
+    },
+    {
+     "turn": 7,
+     "id": "acknowledges_emotion",
+     "quote": "Im hearing you"
+    },
+    {
+     "turn": 7,
+     "id": "clarifies_operational_detail",
+     "quote": "is this maybe too early for you at 9 in the morning"
+    },
+    {
+     "turn": 11,
+     "id": "shows_respect_curiosity",
+     "quote": "Hows your family doing hope they are all healthy and safe"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [
+    {
+     "id": "sunset_warning",
+     "label": "One hour until dark",
+     "instruction": "Mention it is getting late and the rural post is far away.",
+     "source": "auto",
+     "turn": 10
+    }
+   ],
+   "cues": [
+    {
+     "kind": "hint",
+     "text": "Talks openly about his dilemma and is looking for a way out that lets him look in control.",
+     "label": ""
+    },
+    {
+     "kind": "reached",
+     "text": "",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)"
+    },
+    {
+     "kind": "agree_now",
+     "text": "",
+     "label": "Released before nightfall (full goal)"
+    }
+   ],
+   "offered": null,
+   "reached": [
+    {
+     "id": "bottom_line",
+     "label": "Transferred back, registered, visit tomorrow (bottom line)",
+     "turn": 5
+    }
+   ],
+   "outcome": {
+    "id": "release",
+    "label": "Released before nightfall (full goal)",
+    "result": "success",
+    "turn": 12
+   }
+  }
+ ]
+}

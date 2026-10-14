@@ -1,0 +1,15 @@
+KROSS
+Copyright 2026 the KROSS contributors
+
+This product includes software developed by the KROSS contributors
+(https://github.com/alterminder/kross), licensed under the Apache License 2.0.
+
+Third-party content:
+
+- content/knowledge/cchn/: notes summarising the CCHN Field Manual on Frontline
+  Humanitarian Negotiation (© 2019 Centre of Competence on Humanitarian
+  Negotiation and Claude Bruderlein), the CCHN Negotiator Handbook and the CCHN
+  Facilitator Handbook, cited by tool and page. The manuals themselves are not
+  included.
+- content/scenario_bank.md: the ICRC scenario bank provided for the ICRC
+  challenge of the Swiss {ai} Weeks Geneva Hackathon (September 2026).

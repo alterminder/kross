@@ -1,0 +1,132 @@
+schema: negotiation-scenario/v2
+id: cacr_child_release_normative
+title: "CACR Child Release on Normative Pathway"
+difficulty: expert
+estimated_minutes: 20
+skills_tested:
+  - "Normative Pathway"
+  - "Child Protection in IHL"
+  - "Customary Law Reconciliation"
+  - "Demobilization Modalities"
+sources: { bank: "CCHN Worked Case: Child Soldiers Normative Pathway", cchn_tools: [3, 5, 9, 13, 15, 17] }
+
+negotiation:
+  nature: relational
+  type: normative
+  start_level: political
+
+island_of_agreements:
+  agreed_facts:
+    - "34 adolescents under the age of 18 are enrolled in the 4th Brigade auxiliary support units"
+    - "The armed group signed an initial declaration of commitment to customary child welfare"
+    - "Armed conflict in the region is ongoing, with intense recruitment pressures"
+  contested_facts:
+    - "Whether adolescents aged 15-17 serving as lookouts and cooks constitute child soldiers under customary rules"
+    - "Whether demobilized youths will be safe from retaliatory arrest by government forces"
+  convergent_norms:
+    - "Children are the future of the nation and their development must be protected"
+    - "A military commander is responsible for the discipline and honor of his brigade"
+  divergent_norms:
+    - "Whether international conventions criminalizing recruitment under 18 apply over traditional warrior coming-of-age rites"
+
+trainee_brief:
+  situation: >
+    General Makur commands the 4th Mountain Brigade of the Liberation Army.
+    Field monitors confirm that 34 underage boys and girls are serving as messengers, porters, and armed sentries at his forward base.
+    You are meeting General Makur to negotiate their formal separation, demobilization, and transfer to a community-based reintegration center.
+  objective: "Secure the unconditional demobilization and safe civilian transfer of all 34 underage recruits using a normative pathway."
+  mandate:
+    can_decide:
+      - "Establish interim vocational training and educational stipends for separated youths"
+      - "Incorporate traditional cleansing ceremonies and customary elders into the release protocol"
+      - "Provide transitional family reunification packages and tracing support"
+    must_refer:
+      - "Providing direct financial buyouts or cash payments to armed commanders per child"
+      - "Conceding exemptions allowing 16-17 year olds to remain in military roles"
+  red_lines:
+    - { text: "No cash payments, bounties, or material rewards for the release of children", source: legal }
+    - { text: "Zero tolerance for retaining children under 18 in military active or auxiliary service", source: institutional }
+
+counterparts:
+  - id: general_makur
+    role: "Brigade Commander, 4th Mountain Division"
+    persona: >
+      Proud veteran commander who views himself as a father figure protecting orphaned and displaced youths from enemy atrocities.
+    cultural_profile: "Traditional military leader whose code of honor is deeply rooted in ancestral clan protection duties."
+    authority:
+      decides: ["Authorizing the separation and discharge of recruits from his brigade"]
+      must_consult: ["The supreme military command and council of clan elders"]
+    opening: >
+      You call these youths 'child soldiers'. I call them survivors. Their villages were burned by government militias, their parents slaughtered. If I had not taken them into this camp, fed them, and taught them to defend themselves, they would be dead in a ditch. I will not hand them over to foreign clipboard-holders.
+    iceberg:
+      position:
+        stated: "These youths remain under my command until the war ends."
+      tactical_reasoning:
+        type: alternative_norm
+        text: "He believes releasing them without ironclad security guarantees exposes them to government revenge or enemy abduction."
+      motives_values:
+        values: ["Paternal protection", "Military honor", "Clan responsibility"]
+        emotions: ["Defensiveness", "Pride", "Fear for the children's survival"]
+        deep_needs: ["Assurance that releasing the youths upholds his honor as a protector, not a criminal"]
+    hidden_interests:
+      - id: protector_reputation
+        layer: motive_value
+        text: "He fears being branded a war criminal internationally; he desperately wants his legacy remembered as an honorable liberator."
+        reveal_when: { any: [{ move: translates_principle }, { trust_gte: 45 }] }
+      - id: community_reintegration
+        layer: tactical_reasoning
+        text: "He will consent if the youths transition through a community center blessed by tribal elders rather than foreign custody."
+        reveal_when: { trust_gte: 55 }
+    challenges:
+      - "Who will feed them if you take them away?"
+      - "The government forces will arrest them as rebel spies the moment they reach the highway."
+      - "In our culture, a 16-year-old is a man who defends his family."
+    state_initial: { trust: 25, rigidity: 85, hostility: 50 }
+
+issues:
+  - id: separation_protocol
+    label: "Demobilization and discharge of underage recruits"
+    tier: 1
+    own: { ideal: "Immediate unconditional separation of all 34 youths into civilian transit care", bottom_line: "Phased separation of all 34 within 14 days under elder supervision" }
+    counterpart: { ideal: "Total retention until end of conflict", bottom_line: "Formal discharge to a community vocational center verified by tribal elders", red_line: "Handing children to central government police forces" }
+  - id: security_guarantees
+    label: "Civilian protection from re-recruitment and arrest"
+    tier: 1
+    own: { ideal: "Neutral civilian tracking and legal protection notices", bottom_line: "Joint security monitoring and community-based placement" }
+    counterpart: { ideal: "Brigade retains armed oversight of the youth center", bottom_line: "Independent elder and humanitarian protection presence", red_line: "Unmonitored transit through government garrison towns" }
+
+triggers:
+  - when: { move: overclaims_norm }
+    say: "Do not wave Rome Statute articles in my face! My men died defending this mountain while your courts did nothing."
+    dials: { hostility: +20, rigidity: +15 }
+  - when: { move: translates_principle }
+    say: "You speak of the warrior code. An honorable commander protects the innocence of the young so there is a nation left to build after victory."
+    dials: { rigidity: -30, trust: +25, hostility: -15 }
+  - when: { move: negotiates_own_red_line }
+    say: "If you offer cash per recruit, you treat these children like commercial cattle. Leave my base."
+    dials: { trust: -35, hostility: +30 }
+
+injections:
+  - id: elder_delegation
+    label: "Clan elders arrive at camp"
+    instruction: "A delegation of community elders arrives to discuss the future of the clan's youth with General Makur."
+  - id: un_monitoring_inquiry
+    label: "UN special envoy inquiry"
+    instruction: "General Makur learns that the UN Special Representative on Children and Armed Conflict has noted his brigade."
+
+outcomes:
+  - id: child_release_secured
+    label: "All 34 children formally separated and transferred to community protection"
+    result: success
+    when: { trust_gte: 65, rigidity_lte: 45, hostility_lte: 40 }
+  - id: recruitment_persists
+    label: "Demobilization rejected; children remain in military combat units"
+    result: fail
+    when: { hostility_gte: 90 }
+
+rubric:
+  dimensions: [context_analysis, red_lines, relationship_management, clarity]
+  indicators:
+    - "Builds a normative pathway linking customary warrior honor to child protection"
+    - "Strictly upholds red line against financial buyouts or cash per child"
+    - "Secures safe community reintegration supervised by clan elders"

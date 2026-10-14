@@ -1,0 +1,6048 @@
+{
+  "components": {
+    "schemas": {
+      "AcceptIn": {
+        "properties": {
+          "acknowledged": {
+            "const": true,
+            "title": "Acknowledged",
+            "type": "boolean"
+          },
+          "token": {
+            "maxLength": 100,
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "acknowledged"
+        ],
+        "title": "AcceptIn",
+        "type": "object"
+      },
+      "AcceptOut": {
+        "properties": {
+          "org_id": {
+            "format": "uuid",
+            "title": "Org Id",
+            "type": "string"
+          },
+          "org_name": {
+            "title": "Org Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "org_id",
+          "org_name"
+        ],
+        "title": "AcceptOut",
+        "type": "object"
+      },
+      "ActiveOrgIn": {
+        "properties": {
+          "org_id": {
+            "format": "uuid",
+            "title": "Org Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "org_id"
+        ],
+        "title": "ActiveOrgIn",
+        "type": "object"
+      },
+      "AgreementCheckOut": {
+        "properties": {
+          "criteria": {
+            "items": {
+              "$ref": "#/components/schemas/AgreementCriterionOut"
+            },
+            "title": "Criteria",
+            "type": "array"
+          },
+          "doc_id": {
+            "default": "cchn-tool-07",
+            "title": "Doc Id",
+            "type": "string"
+          },
+          "is_deal": {
+            "title": "Is Deal",
+            "type": "boolean"
+          },
+          "overall_score": {
+            "default": 0,
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Overall Score",
+            "type": "integer"
+          },
+          "terms_sheet": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Terms Sheet",
+            "type": "array"
+          }
+        },
+        "required": [
+          "is_deal"
+        ],
+        "title": "AgreementCheckOut",
+        "type": "object"
+      },
+      "AgreementCriterionOut": {
+        "properties": {
+          "evidence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence"
+          },
+          "finding": {
+            "title": "Finding",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "score": {
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Score",
+            "type": "integer"
+          },
+          "status": {
+            "enum": [
+              "met",
+              "partial",
+              "unmet"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "score",
+          "status",
+          "finding"
+        ],
+        "title": "AgreementCriterionOut",
+        "type": "object"
+      },
+      "AllowanceOut": {
+        "description": "The caller's personal token allowance for the current UTC day. Personal only: an org's daily cap, the\ndeployment's daily budget and the guests' shared budget apply independently and can still refuse a call while\nthis allowance is unused. `limit_tokens` (and `remaining_percent`) is null when the personal limit is off =\nunlimited; a guest's cap is the smallest enabled of the general user and guest token caps.",
+        "properties": {
+          "limit_tokens": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Tokens"
+          },
+          "remaining_percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remaining Percent"
+          },
+          "resets_at": {
+            "format": "date-time",
+            "title": "Resets At",
+            "type": "string"
+          },
+          "used_tokens": {
+            "title": "Used Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "used_tokens",
+          "limit_tokens",
+          "remaining_percent",
+          "resets_at"
+        ],
+        "title": "AllowanceOut",
+        "type": "object"
+      },
+      "BuilderIn": {
+        "description": "One stateless builder step: the whole conversation, every time. Nothing is stored until the author saves.",
+        "properties": {
+          "answer": {
+            "anyOf": [
+              {
+                "maxLength": 5000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer"
+          },
+          "brief": {
+            "maxLength": 20000,
+            "title": "Brief",
+            "type": "string"
+          },
+          "improvise": {
+            "default": false,
+            "title": "Improvise",
+            "type": "boolean"
+          },
+          "question": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Question"
+          },
+          "turns": {
+            "items": {
+              "$ref": "#/components/schemas/BuilderTurn"
+            },
+            "maxItems": 4,
+            "title": "Turns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "brief"
+        ],
+        "title": "BuilderIn",
+        "type": "object"
+      },
+      "BuilderOut": {
+        "properties": {
+          "answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer"
+          },
+          "done": {
+            "title": "Done",
+            "type": "boolean"
+          },
+          "question": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Question"
+          }
+        },
+        "required": [
+          "answer",
+          "question",
+          "done"
+        ],
+        "title": "BuilderOut",
+        "type": "object"
+      },
+      "BuilderTurn": {
+        "properties": {
+          "answer": {
+            "maxLength": 5000,
+            "title": "Answer",
+            "type": "string"
+          },
+          "question": {
+            "maxLength": 2000,
+            "title": "Question",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question",
+          "answer"
+        ],
+        "title": "BuilderTurn",
+        "type": "object"
+      },
+      "CchnDebriefOut": {
+        "properties": {
+          "agreement_check": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AgreementCheckOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "competences": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CompetencesSectionOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deescalation_report": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DeescalationReportOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "iceberg_depth": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IcebergDepthOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "knowledge_links": {
+            "items": {
+              "$ref": "#/components/schemas/KnowledgeLinkOut"
+            },
+            "title": "Knowledge Links",
+            "type": "array"
+          },
+          "level_timeline": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LevelTimelineOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "prep_vs_reality": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PrepVsRealityOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reflection": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReflectionSectionOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "zones": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ZonesOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "CchnDebriefOut",
+        "type": "object"
+      },
+      "CoachCitationOut": {
+        "properties": {
+          "citation": {
+            "title": "Citation",
+            "type": "string"
+          },
+          "framework": {
+            "title": "Framework",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "framework",
+          "citation",
+          "summary"
+        ],
+        "title": "CoachCitationOut",
+        "type": "object"
+      },
+      "CoachMessageIn": {
+        "properties": {
+          "history": {
+            "items": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "maxItems": 60,
+            "title": "History",
+            "type": "array"
+          },
+          "question": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          }
+        },
+        "required": [
+          "question"
+        ],
+        "title": "CoachMessageIn",
+        "type": "object"
+      },
+      "CoachSuggestionsOut": {
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/CoachCitationOut"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "suggestions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Suggestions",
+            "type": "array"
+          }
+        },
+        "required": [
+          "suggestions",
+          "citations"
+        ],
+        "title": "CoachSuggestionsOut",
+        "type": "object"
+      },
+      "CommentIn": {
+        "properties": {
+          "text": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "turn": {
+            "minimum": 0.0,
+            "title": "Turn",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "turn",
+          "text"
+        ],
+        "title": "CommentIn",
+        "type": "object"
+      },
+      "CommentOut": {
+        "properties": {
+          "author": {
+            "title": "Author",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "turn": {
+            "title": "Turn",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "turn",
+          "text",
+          "author",
+          "created_at"
+        ],
+        "title": "CommentOut",
+        "type": "object"
+      },
+      "CompetenceDimensionOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quote"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          }
+        },
+        "required": [
+          "id",
+          "label"
+        ],
+        "title": "CompetenceDimensionOut",
+        "type": "object"
+      },
+      "CompetenceTierOut": {
+        "properties": {
+          "dimensions": {
+            "items": {
+              "$ref": "#/components/schemas/CompetenceDimensionOut"
+            },
+            "title": "Dimensions",
+            "type": "array"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "summary": {
+            "default": "",
+            "title": "Summary",
+            "type": "string"
+          },
+          "tier": {
+            "enum": [
+              "core",
+              "advanced",
+              "expert"
+            ],
+            "title": "Tier",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tier",
+          "label"
+        ],
+        "title": "CompetenceTierOut",
+        "type": "object"
+      },
+      "CompetencesSectionOut": {
+        "properties": {
+          "doc_id": {
+            "default": "cchn-competences",
+            "title": "Doc Id",
+            "type": "string"
+          },
+          "tiers": {
+            "items": {
+              "$ref": "#/components/schemas/CompetenceTierOut"
+            },
+            "title": "Tiers",
+            "type": "array"
+          }
+        },
+        "title": "CompetencesSectionOut",
+        "type": "object"
+      },
+      "ConfidentialTermOut": {
+        "properties": {
+          "between": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Between",
+            "type": "array"
+          },
+          "term": {
+            "title": "Term",
+            "type": "string"
+          }
+        },
+        "required": [
+          "term"
+        ],
+        "title": "ConfidentialTermOut",
+        "type": "object"
+      },
+      "ContentIn": {
+        "properties": {
+          "content": {
+            "additionalProperties": true,
+            "title": "Content",
+            "type": "object"
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "title": "ContentIn",
+        "type": "object"
+      },
+      "ConversionOut": {
+        "properties": {
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "scenario": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "scenario",
+          "errors",
+          "warnings"
+        ],
+        "title": "ConversionOut",
+        "type": "object"
+      },
+      "ConvertIn": {
+        "properties": {
+          "filename": {
+            "default": "",
+            "maxLength": 200,
+            "title": "Filename",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 200000,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "ConvertIn",
+        "type": "object"
+      },
+      "CounterpartOut": {
+        "properties": {
+          "cultural_profile": {
+            "default": "",
+            "title": "Cultural Profile",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "persona": {
+            "default": "",
+            "title": "Persona",
+            "type": "string"
+          },
+          "role": {
+            "default": "",
+            "title": "Role",
+            "type": "string"
+          },
+          "stated_position": {
+            "default": "",
+            "title": "Stated Position",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "CounterpartOut",
+        "type": "object"
+      },
+      "Cover": {
+        "description": "Theme of a scenario's card. The frontend maps each key to a background image.",
+        "enum": [
+          "field",
+          "camp",
+          "checkpoint",
+          "detention",
+          "border",
+          "school",
+          "hospital",
+          "convoy",
+          "office",
+          "custom"
+        ],
+        "title": "Cover",
+        "type": "string"
+      },
+      "DayUsageOut": {
+        "properties": {
+          "calls": {
+            "title": "Calls",
+            "type": "integer"
+          },
+          "cost_usd": {
+            "title": "Cost Usd",
+            "type": "number"
+          },
+          "day": {
+            "title": "Day",
+            "type": "string"
+          },
+          "tokens_in": {
+            "title": "Tokens In",
+            "type": "integer"
+          },
+          "tokens_out": {
+            "title": "Tokens Out",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "day",
+          "calls",
+          "tokens_in",
+          "tokens_out",
+          "cost_usd"
+        ],
+        "title": "DayUsageOut",
+        "type": "object"
+      },
+      "DebriefOut": {
+        "properties": {
+          "cchn_debrief": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CchnDebriefOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "counterpart_dials": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PartyDialsOut"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Counterpart Dials"
+          },
+          "debrief": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debrief"
+          },
+          "dial_causes": {
+            "items": {
+              "$ref": "#/components/schemas/DialCauseOut"
+            },
+            "title": "Dial Causes",
+            "type": "array"
+          },
+          "dials": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Dials",
+            "type": "object"
+          },
+          "dimensions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Dimensions",
+            "type": "object"
+          },
+          "flags": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Flags",
+            "type": "array"
+          },
+          "hidden_facts": {
+            "items": {
+              "$ref": "#/components/schemas/HiddenFactOut"
+            },
+            "title": "Hidden Facts",
+            "type": "array"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome"
+          },
+          "preparation": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation"
+          },
+          "reached": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Reached",
+            "type": "array"
+          },
+          "reflection": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reflection"
+          },
+          "score_scale": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score Scale"
+          },
+          "scores": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scores"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "outcome",
+          "reached",
+          "debrief",
+          "scores",
+          "flags",
+          "dials",
+          "hidden_facts",
+          "dimensions",
+          "dial_causes"
+        ],
+        "title": "DebriefOut",
+        "type": "object"
+      },
+      "DeescalationIncidentOut": {
+        "properties": {
+          "anti_patterns_observed": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Anti Patterns Observed",
+            "type": "array"
+          },
+          "hostility_after": {
+            "title": "Hostility After",
+            "type": "integer"
+          },
+          "hostility_level": {
+            "title": "Hostility Level",
+            "type": "integer"
+          },
+          "outcome": {
+            "enum": [
+              "de-escalated",
+              "escalated",
+              "neutral"
+            ],
+            "title": "Outcome",
+            "type": "string"
+          },
+          "steps_observed": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Steps Observed",
+            "type": "array"
+          },
+          "trainee_quote": {
+            "title": "Trainee Quote",
+            "type": "string"
+          },
+          "trainee_turn": {
+            "title": "Trainee Turn",
+            "type": "integer"
+          },
+          "trigger": {
+            "title": "Trigger",
+            "type": "string"
+          },
+          "turn": {
+            "title": "Turn",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "turn",
+          "hostility_level",
+          "trigger",
+          "trainee_turn",
+          "trainee_quote",
+          "hostility_after",
+          "outcome"
+        ],
+        "title": "DeescalationIncidentOut",
+        "type": "object"
+      },
+      "DeescalationReportOut": {
+        "properties": {
+          "doc_id": {
+            "default": "cchn-tool-08",
+            "title": "Doc Id",
+            "type": "string"
+          },
+          "incidents": {
+            "items": {
+              "$ref": "#/components/schemas/DeescalationIncidentOut"
+            },
+            "title": "Incidents",
+            "type": "array"
+          },
+          "summary": {
+            "default": "",
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "title": "DeescalationReportOut",
+        "type": "object"
+      },
+      "DialCauseOut": {
+        "description": "Why the dials moved on one turn, for the debrief: one row per cause, with the trainee's words when a move of\ntheirs was the cause.",
+        "properties": {
+          "changes": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Changes",
+            "type": "object"
+          },
+          "kind": {
+            "enum": [
+              "move",
+              "silence",
+              "twist",
+              "trainer"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "turn": {
+            "title": "Turn",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "turn",
+          "kind",
+          "label",
+          "quote",
+          "changes"
+        ],
+        "title": "DialCauseOut",
+        "type": "object"
+      },
+      "DialIn": {
+        "properties": {
+          "dial": {
+            "maxLength": 40,
+            "title": "Dial",
+            "type": "string"
+          },
+          "value": {
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "dial",
+          "value"
+        ],
+        "title": "DialIn",
+        "type": "object"
+      },
+      "GuestOptionsOut": {
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "title": "GuestOptionsOut",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HiddenFactOut": {
+        "description": "One thing the counterpart was holding back, and whether the trainee drew it out.",
+        "properties": {
+          "found": {
+            "title": "Found",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "unlock": {
+            "title": "Unlock",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "found",
+          "unlock"
+        ],
+        "title": "HiddenFactOut",
+        "type": "object"
+      },
+      "IcebergDepthOut": {
+        "properties": {
+          "doc_id": {
+            "default": "cchn-tool-09",
+            "title": "Doc Id",
+            "type": "string"
+          },
+          "layers": {
+            "items": {
+              "$ref": "#/components/schemas/IcebergLayerOut"
+            },
+            "title": "Layers",
+            "type": "array"
+          },
+          "max_layer_reached": {
+            "default": "none",
+            "enum": [
+              "none",
+              "position",
+              "reasoning",
+              "motives_values"
+            ],
+            "title": "Max Layer Reached",
+            "type": "string"
+          },
+          "summary": {
+            "default": "",
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "title": "IcebergDepthOut",
+        "type": "object"
+      },
+      "IcebergLayerOut": {
+        "properties": {
+          "accuracy_note": {
+            "default": "",
+            "title": "Accuracy Note",
+            "type": "string"
+          },
+          "counterpart_content": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Counterpart Content",
+            "type": "array"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "layer": {
+            "enum": [
+              "position",
+              "reasoning",
+              "motives_values"
+            ],
+            "title": "Layer",
+            "type": "string"
+          },
+          "prep_guess": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prep Guess"
+          },
+          "reached": {
+            "default": false,
+            "title": "Reached",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "layer",
+          "label"
+        ],
+        "title": "IcebergLayerOut",
+        "type": "object"
+      },
+      "InjectIn": {
+        "properties": {
+          "injection_id": {
+            "title": "Injection Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "injection_id"
+        ],
+        "title": "InjectIn",
+        "type": "object"
+      },
+      "InjectionOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label"
+        ],
+        "title": "InjectionOut",
+        "type": "object"
+      },
+      "InterlocutorIn": {
+        "properties": {
+          "interlocutor": {
+            "title": "Interlocutor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "interlocutor"
+        ],
+        "title": "InterlocutorIn",
+        "type": "object"
+      },
+      "InviteIn": {
+        "properties": {
+          "days": {
+            "default": 7,
+            "maximum": 30.0,
+            "minimum": 1.0,
+            "title": "Days",
+            "type": "integer"
+          },
+          "max_uses": {
+            "default": 10,
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Max Uses",
+            "type": "integer"
+          }
+        },
+        "title": "InviteIn",
+        "type": "object"
+      },
+      "InviteOut": {
+        "properties": {
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "max_uses": {
+            "title": "Max Uses",
+            "type": "integer"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "uses": {
+            "title": "Uses",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "expires_at",
+          "max_uses",
+          "uses"
+        ],
+        "title": "InviteOut",
+        "type": "object"
+      },
+      "InvitePreview": {
+        "properties": {
+          "already_member": {
+            "title": "Already Member",
+            "type": "boolean"
+          },
+          "notice": {
+            "title": "Notice",
+            "type": "string"
+          },
+          "org_name": {
+            "title": "Org Name",
+            "type": "string"
+          },
+          "problem": {
+            "anyOf": [
+              {
+                "enum": [
+                  "revoked",
+                  "expired",
+                  "used_up"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Problem"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        },
+        "required": [
+          "org_name",
+          "role",
+          "notice",
+          "problem",
+          "already_member"
+        ],
+        "title": "InvitePreview",
+        "type": "object"
+      },
+      "IssueOut": {
+        "properties": {
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "message"
+        ],
+        "title": "IssueOut",
+        "type": "object"
+      },
+      "KnowledgeDocOut": {
+        "properties": {
+          "body_markdown": {
+            "title": "Body Markdown",
+            "type": "string"
+          },
+          "citation": {
+            "title": "Citation",
+            "type": "string"
+          },
+          "framework": {
+            "title": "Framework",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "framework",
+          "citation",
+          "tags",
+          "summary",
+          "body_markdown"
+        ],
+        "title": "KnowledgeDocOut",
+        "type": "object"
+      },
+      "KnowledgeLinkOut": {
+        "properties": {
+          "citation": {
+            "title": "Citation",
+            "type": "string"
+          },
+          "framework": {
+            "title": "Framework",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Tags",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "framework",
+          "citation",
+          "summary"
+        ],
+        "title": "KnowledgeLinkOut",
+        "type": "object"
+      },
+      "LevelTimelineEntryOut": {
+        "properties": {
+          "direction": {
+            "anyOf": [
+              {
+                "enum": [
+                  "politicize",
+                  "depoliticize"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direction"
+          },
+          "level": {
+            "title": "Level",
+            "type": "string"
+          },
+          "matched": {
+            "default": true,
+            "title": "Matched",
+            "type": "boolean"
+          },
+          "note": {
+            "default": "",
+            "title": "Note",
+            "type": "string"
+          },
+          "shifted": {
+            "default": false,
+            "title": "Shifted",
+            "type": "boolean"
+          },
+          "speaker": {
+            "enum": [
+              "trainee",
+              "counterpart",
+              "system"
+            ],
+            "title": "Speaker",
+            "type": "string"
+          },
+          "turn": {
+            "title": "Turn",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "turn",
+          "level",
+          "speaker"
+        ],
+        "title": "LevelTimelineEntryOut",
+        "type": "object"
+      },
+      "LevelTimelineOut": {
+        "properties": {
+          "doc_id": {
+            "default": "cchn-tool-04",
+            "title": "Doc Id",
+            "type": "string"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/LevelTimelineEntryOut"
+            },
+            "title": "Entries",
+            "type": "array"
+          },
+          "final_level": {
+            "title": "Final Level",
+            "type": "string"
+          },
+          "start_level": {
+            "title": "Start Level",
+            "type": "string"
+          },
+          "summary": {
+            "default": "",
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start_level",
+          "final_level"
+        ],
+        "title": "LevelTimelineOut",
+        "type": "object"
+      },
+      "LineOut": {
+        "properties": {
+          "role": {
+            "enum": [
+              "trainee",
+              "character"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "speaker": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Speaker"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "turn": {
+            "title": "Turn",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "role",
+          "text",
+          "turn"
+        ],
+        "title": "LineOut",
+        "type": "object"
+      },
+      "MeOut": {
+        "properties": {
+          "active_org": {
+            "$ref": "#/components/schemas/OrgOut"
+          },
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_guest": {
+            "default": false,
+            "title": "Is Guest",
+            "type": "boolean"
+          },
+          "is_superadmin": {
+            "title": "Is Superadmin",
+            "type": "boolean"
+          },
+          "orgs": {
+            "items": {
+              "$ref": "#/components/schemas/OrgOut"
+            },
+            "title": "Orgs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "display_name",
+          "is_superadmin",
+          "active_org",
+          "orgs"
+        ],
+        "title": "MeOut",
+        "type": "object"
+      },
+      "MemberOut": {
+        "properties": {
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "user_id": {
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "display_name",
+          "email",
+          "role"
+        ],
+        "title": "MemberOut",
+        "type": "object"
+      },
+      "Mode": {
+        "enum": [
+          "solo",
+          "playtest"
+        ],
+        "title": "Mode",
+        "type": "string"
+      },
+      "ModelUsageOut": {
+        "properties": {
+          "calls": {
+            "title": "Calls",
+            "type": "integer"
+          },
+          "cost_usd": {
+            "title": "Cost Usd",
+            "type": "number"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "tokens_in": {
+            "title": "Tokens In",
+            "type": "integer"
+          },
+          "tokens_out": {
+            "title": "Tokens Out",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "model",
+          "calls",
+          "tokens_in",
+          "tokens_out",
+          "cost_usd"
+        ],
+        "title": "ModelUsageOut",
+        "type": "object"
+      },
+      "MoveOut": {
+        "properties": {
+          "changed": {
+            "title": "Changed",
+            "type": "boolean"
+          },
+          "default": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Default",
+            "type": "object"
+          },
+          "deltas": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Deltas",
+            "type": "object"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "ends_session": {
+            "title": "Ends Session",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "description",
+          "source",
+          "deltas",
+          "default",
+          "changed",
+          "ends_session"
+        ],
+        "title": "MoveOut",
+        "type": "object"
+      },
+      "MultipartyOut": {
+        "properties": {
+          "confidential_between": {
+            "items": {
+              "$ref": "#/components/schemas/ConfidentialTermOut"
+            },
+            "title": "Confidential Between",
+            "type": "array"
+          }
+        },
+        "title": "MultipartyOut",
+        "type": "object"
+      },
+      "NewOrgIn": {
+        "properties": {
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "NewOrgIn",
+        "type": "object"
+      },
+      "NewOrgOut": {
+        "properties": {
+          "admin_invite_url": {
+            "title": "Admin Invite Url",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "org_id": {
+            "format": "uuid",
+            "title": "Org Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "org_id",
+          "name",
+          "admin_invite_url"
+        ],
+        "title": "NewOrgOut",
+        "type": "object"
+      },
+      "OrgOut": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "personal": {
+            "title": "Personal",
+            "type": "boolean"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "role",
+          "personal"
+        ],
+        "title": "OrgOut",
+        "type": "object"
+      },
+      "OrgUsageOut": {
+        "properties": {
+          "calls": {
+            "title": "Calls",
+            "type": "integer"
+          },
+          "cost_usd": {
+            "title": "Cost Usd",
+            "type": "number"
+          },
+          "org_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Org Id"
+          },
+          "tokens": {
+            "title": "Tokens",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "org_id",
+          "calls",
+          "tokens",
+          "cost_usd"
+        ],
+        "title": "OrgUsageOut",
+        "type": "object"
+      },
+      "OutcomeOut": {
+        "description": "One outcome rule of the pinned version, for the watcher's goal panel.",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "result": {
+            "title": "Result",
+            "type": "string"
+          },
+          "when": {
+            "additionalProperties": true,
+            "title": "When",
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "result",
+          "when"
+        ],
+        "title": "OutcomeOut",
+        "type": "object"
+      },
+      "PartyDialsOut": {
+        "properties": {
+          "dials": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Dials",
+            "type": "object"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "role": {
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "dials"
+        ],
+        "title": "PartyDialsOut",
+        "type": "object"
+      },
+      "PhaseOut": {
+        "properties": {
+          "hint": {
+            "title": "Hint",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "hint"
+        ],
+        "title": "PhaseOut",
+        "type": "object"
+      },
+      "PictureIn": {
+        "description": "The painted picture of the scene so far. Decoration: it never blocks or fails the question step.",
+        "properties": {
+          "final": {
+            "default": false,
+            "title": "Final",
+            "type": "boolean"
+          },
+          "previous_image": {
+            "anyOf": [
+              {
+                "maxLength": 6000000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Image"
+          },
+          "text": {
+            "maxLength": 60000,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "PictureIn",
+        "type": "object"
+      },
+      "PictureOut": {
+        "properties": {
+          "image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image"
+          }
+        },
+        "required": [
+          "image"
+        ],
+        "title": "PictureOut",
+        "type": "object"
+      },
+      "PlayerOutcome": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "result": {
+            "title": "Result",
+            "type": "string"
+          }
+        },
+        "required": [
+          "result",
+          "label"
+        ],
+        "title": "PlayerOutcome",
+        "type": "object"
+      },
+      "PrepVsRealityModuleOut": {
+        "properties": {
+          "alignment": {
+            "enum": [
+              "aligned",
+              "diverged",
+              "untested",
+              "skipped"
+            ],
+            "title": "Alignment",
+            "type": "string"
+          },
+          "insight": {
+            "default": "",
+            "title": "Insight",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "module_id": {
+            "title": "Module Id",
+            "type": "string"
+          },
+          "planned": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Planned"
+          },
+          "prepared": {
+            "title": "Prepared",
+            "type": "boolean"
+          },
+          "reality": {
+            "default": "",
+            "title": "Reality",
+            "type": "string"
+          }
+        },
+        "required": [
+          "module_id",
+          "label",
+          "prepared",
+          "alignment"
+        ],
+        "title": "PrepVsRealityModuleOut",
+        "type": "object"
+      },
+      "PrepVsRealityOut": {
+        "properties": {
+          "doc_id": {
+            "default": "cchn-naivasha-grid",
+            "title": "Doc Id",
+            "type": "string"
+          },
+          "has_preparation": {
+            "title": "Has Preparation",
+            "type": "boolean"
+          },
+          "modules": {
+            "items": {
+              "$ref": "#/components/schemas/PrepVsRealityModuleOut"
+            },
+            "title": "Modules",
+            "type": "array"
+          },
+          "summary": {
+            "default": "",
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "required": [
+          "has_preparation"
+        ],
+        "title": "PrepVsRealityOut",
+        "type": "object"
+      },
+      "PreparationIn": {
+        "additionalProperties": true,
+        "properties": {
+          "common_shared_space": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Common Shared Space"
+          },
+          "counterpart_iceberg": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Counterpart Iceberg"
+          },
+          "information_quality": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Information Quality"
+          },
+          "island_of_agreements": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Island Of Agreements"
+          },
+          "legitimacy_profile": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legitimacy Profile"
+          },
+          "level_and_narrative": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level And Narrative"
+          },
+          "lines_and_options": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lines And Options"
+          },
+          "meeting_checklist": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meeting Checklist"
+          },
+          "network": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Network"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "skipped": {
+            "default": false,
+            "title": "Skipped",
+            "type": "boolean"
+          }
+        },
+        "title": "PreparationIn",
+        "type": "object"
+      },
+      "ProgressOut": {
+        "description": "Everything the engine knows, turn by turn: for the watching admin or the playtester.",
+        "properties": {
+          "comments": {
+            "items": {
+              "$ref": "#/components/schemas/CommentOut"
+            },
+            "title": "Comments",
+            "type": "array"
+          },
+          "counterpart": {
+            "title": "Counterpart",
+            "type": "string"
+          },
+          "injections": {
+            "items": {
+              "$ref": "#/components/schemas/InjectionOut"
+            },
+            "title": "Injections",
+            "type": "array"
+          },
+          "injects_allowed": {
+            "default": true,
+            "title": "Injects Allowed",
+            "type": "boolean"
+          },
+          "on_timeout": {
+            "default": "guide",
+            "enum": [
+              "guide",
+              "end",
+              "fail",
+              "trainer"
+            ],
+            "title": "On Timeout",
+            "type": "string"
+          },
+          "outcomes": {
+            "items": {
+              "$ref": "#/components/schemas/OutcomeOut"
+            },
+            "title": "Outcomes",
+            "type": "array"
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phase"
+          },
+          "phase_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phase Label"
+          },
+          "player": {
+            "title": "Player",
+            "type": "string"
+          },
+          "seconds_left": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seconds Left"
+          },
+          "session_id": {
+            "format": "uuid",
+            "title": "Session Id",
+            "type": "string"
+          },
+          "state": {
+            "additionalProperties": true,
+            "title": "State",
+            "type": "object"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "turn_running": {
+            "title": "Turn Running",
+            "type": "boolean"
+          },
+          "turns": {
+            "items": {
+              "$ref": "#/components/schemas/TurnProgress"
+            },
+            "title": "Turns",
+            "type": "array"
+          }
+        },
+        "required": [
+          "session_id",
+          "player",
+          "status",
+          "title",
+          "state",
+          "turns",
+          "injections",
+          "outcomes",
+          "counterpart",
+          "comments",
+          "turn_running"
+        ],
+        "title": "ProgressOut",
+        "type": "object"
+      },
+      "ProviderOut": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "label"
+        ],
+        "title": "ProviderOut",
+        "type": "object"
+      },
+      "ReflectionIn": {
+        "properties": {
+          "answers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Answers",
+            "type": "object"
+          }
+        },
+        "title": "ReflectionIn",
+        "type": "object"
+      },
+      "ReflectionQuestionOut": {
+        "properties": {
+          "answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer"
+          },
+          "guidance": {
+            "title": "Guidance",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "prompt": {
+            "title": "Prompt",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "prompt",
+          "guidance"
+        ],
+        "title": "ReflectionQuestionOut",
+        "type": "object"
+      },
+      "ReflectionSectionOut": {
+        "properties": {
+          "completed": {
+            "default": false,
+            "title": "Completed",
+            "type": "boolean"
+          },
+          "doc_id": {
+            "default": "cchn-tool-06",
+            "title": "Doc Id",
+            "type": "string"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/ReflectionQuestionOut"
+            },
+            "title": "Questions",
+            "type": "array"
+          }
+        },
+        "title": "ReflectionSectionOut",
+        "type": "object"
+      },
+      "Role": {
+        "enum": [
+          "admin",
+          "member"
+        ],
+        "title": "Role",
+        "type": "string"
+      },
+      "RoleIn": {
+        "properties": {
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        },
+        "required": [
+          "role"
+        ],
+        "title": "RoleIn",
+        "type": "object"
+      },
+      "RulesIn": {
+        "properties": {
+          "moves": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            "title": "Moves",
+            "type": "object"
+          }
+        },
+        "required": [
+          "moves"
+        ],
+        "title": "RulesIn",
+        "type": "object"
+      },
+      "RulesOut": {
+        "properties": {
+          "can_edit": {
+            "title": "Can Edit",
+            "type": "boolean"
+          },
+          "dials": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Dials",
+            "type": "array"
+          },
+          "moves": {
+            "items": {
+              "$ref": "#/components/schemas/MoveOut"
+            },
+            "title": "Moves",
+            "type": "array"
+          }
+        },
+        "required": [
+          "dials",
+          "moves",
+          "can_edit"
+        ],
+        "title": "RulesOut",
+        "type": "object"
+      },
+      "ScenarioCard": {
+        "properties": {
+          "can_edit": {
+            "title": "Can Edit",
+            "type": "boolean"
+          },
+          "cover": {
+            "$ref": "#/components/schemas/Cover"
+          },
+          "cover_image_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cover Image Version"
+          },
+          "difficulty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Difficulty"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minutes"
+          },
+          "skills": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Skills",
+            "type": "array"
+          },
+          "submitted": {
+            "title": "Submitted",
+            "type": "boolean"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/Visibility"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "cover",
+          "visibility",
+          "version",
+          "submitted",
+          "difficulty",
+          "minutes",
+          "skills",
+          "can_edit"
+        ],
+        "title": "ScenarioCard",
+        "type": "object"
+      },
+      "ScenarioDetail": {
+        "properties": {
+          "brief": {
+            "additionalProperties": true,
+            "title": "Brief",
+            "type": "object"
+          },
+          "can_edit": {
+            "title": "Can Edit",
+            "type": "boolean"
+          },
+          "content": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Content"
+          },
+          "cover": {
+            "$ref": "#/components/schemas/Cover"
+          },
+          "cover_image_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cover Image Version"
+          },
+          "difficulty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Difficulty"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minutes"
+          },
+          "skills": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Skills",
+            "type": "array"
+          },
+          "submitted": {
+            "title": "Submitted",
+            "type": "boolean"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/Visibility"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "cover",
+          "visibility",
+          "version",
+          "submitted",
+          "difficulty",
+          "minutes",
+          "skills",
+          "can_edit",
+          "brief",
+          "content"
+        ],
+        "title": "ScenarioDetail",
+        "type": "object"
+      },
+      "ScenarioIn": {
+        "properties": {
+          "content": {
+            "additionalProperties": true,
+            "title": "Content",
+            "type": "object"
+          },
+          "cover": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Cover"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "title": "ScenarioIn",
+        "type": "object"
+      },
+      "SessionCard": {
+        "properties": {
+          "cover": {
+            "title": "Cover",
+            "type": "string"
+          },
+          "cover_image_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cover Image Version"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/Mode"
+          },
+          "player": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Player"
+          },
+          "player_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Player Id"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result"
+          },
+          "scenario_id": {
+            "format": "uuid",
+            "title": "Scenario Id",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "turn": {
+            "title": "Turn",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "scenario_id",
+          "title",
+          "cover",
+          "mode",
+          "status",
+          "turn",
+          "result",
+          "player",
+          "created_at"
+        ],
+        "title": "SessionCard",
+        "type": "object"
+      },
+      "SessionOut": {
+        "description": "What the player sees. No dials, moves, flags, cues, reveals, scores or prompts.",
+        "properties": {
+          "active_interlocutor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Active Interlocutor"
+          },
+          "brief": {
+            "additionalProperties": true,
+            "title": "Brief",
+            "type": "object"
+          },
+          "counterparts": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/CounterpartOut"
+            },
+            "title": "Counterparts",
+            "type": "array"
+          },
+          "cover": {
+            "title": "Cover",
+            "type": "string"
+          },
+          "debrief_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Debrief Status"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "minutes_total": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minutes Total"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/Mode"
+          },
+          "multiparty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MultipartyOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "on_timeout": {
+            "default": "guide",
+            "enum": [
+              "guide",
+              "end",
+              "fail",
+              "trainer"
+            ],
+            "title": "On Timeout",
+            "type": "string"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlayerOutcome"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "phase": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phase"
+          },
+          "phases": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/PhaseOut"
+            },
+            "title": "Phases",
+            "type": "array"
+          },
+          "preparation": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation"
+          },
+          "preparation_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation Minutes"
+          },
+          "preparation_modules": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Preparation Modules",
+            "type": "array"
+          },
+          "reflection": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reflection"
+          },
+          "scenario_id": {
+            "format": "uuid",
+            "title": "Scenario Id",
+            "type": "string"
+          },
+          "seconds_left": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seconds Left"
+          },
+          "silence_seconds": {
+            "default": 90,
+            "title": "Silence Seconds",
+            "type": "integer"
+          },
+          "stakeholders": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/StakeholderOut"
+            },
+            "title": "Stakeholders",
+            "type": "array"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "transcript": {
+            "items": {
+              "$ref": "#/components/schemas/LineOut"
+            },
+            "title": "Transcript",
+            "type": "array"
+          },
+          "turn": {
+            "title": "Turn",
+            "type": "integer"
+          },
+          "turn_running": {
+            "title": "Turn Running",
+            "type": "boolean"
+          },
+          "warning_minutes": {
+            "default": [
+              5,
+              1
+            ],
+            "items": {
+              "type": "integer"
+            },
+            "title": "Warning Minutes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "scenario_id",
+          "title",
+          "cover",
+          "mode",
+          "status",
+          "turn",
+          "turn_running",
+          "brief",
+          "transcript",
+          "outcome",
+          "debrief_status"
+        ],
+        "title": "SessionOut",
+        "type": "object"
+      },
+      "StageOut": {
+        "properties": {
+          "allow_injects": {
+            "title": "Allow Injects",
+            "type": "boolean"
+          },
+          "hint": {
+            "title": "Hint",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "instruction": {
+            "title": "Instruction",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "hint",
+          "instruction",
+          "allow_injects"
+        ],
+        "title": "StageOut",
+        "type": "object"
+      },
+      "StakeholderOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "influence": {
+            "default": "medium",
+            "title": "Influence",
+            "type": "string"
+          },
+          "persona": {
+            "default": "",
+            "title": "Persona",
+            "type": "string"
+          },
+          "role": {
+            "default": "",
+            "title": "Role",
+            "type": "string"
+          },
+          "scope": {
+            "default": "local",
+            "title": "Scope",
+            "type": "string"
+          },
+          "stance": {
+            "default": "transformative",
+            "title": "Stance",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "StakeholderOut",
+        "type": "object"
+      },
+      "StartIn": {
+        "properties": {
+          "mode": {
+            "$ref": "#/components/schemas/Mode",
+            "default": "solo"
+          },
+          "scenario_id": {
+            "format": "uuid",
+            "title": "Scenario Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scenario_id"
+        ],
+        "title": "StartIn",
+        "type": "object"
+      },
+      "Status": {
+        "enum": [
+          "active",
+          "ended"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "Tier3IssueOut": {
+        "properties": {
+          "finding": {
+            "title": "Finding",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "parked",
+              "conceded",
+              "unresolved",
+              "not_applicable"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "status",
+          "finding"
+        ],
+        "title": "Tier3IssueOut",
+        "type": "object"
+      },
+      "TimeDecisionIn": {
+        "properties": {
+          "result": {
+            "enum": [
+              "ended",
+              "fail"
+            ],
+            "title": "Result",
+            "type": "string"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "TimeDecisionIn",
+        "type": "object"
+      },
+      "TimingDefaultsOut": {
+        "description": "What a scenario without its own `timing` does: the starting point the editor offers an author.",
+        "properties": {
+          "phases": {
+            "items": {
+              "$ref": "#/components/schemas/StageOut"
+            },
+            "title": "Phases",
+            "type": "array"
+          },
+          "silence_after_seconds": {
+            "title": "Silence After Seconds",
+            "type": "integer"
+          },
+          "warnings": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "phases",
+          "warnings",
+          "silence_after_seconds"
+        ],
+        "title": "TimingDefaultsOut",
+        "type": "object"
+      },
+      "TokenIn": {
+        "description": "The invite token travels in the request body: URLs end up in access logs.",
+        "properties": {
+          "token": {
+            "maxLength": 100,
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "title": "TokenIn",
+        "type": "object"
+      },
+      "TurnIn": {
+        "properties": {
+          "interlocutor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interlocutor"
+          },
+          "text": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "TurnIn",
+        "type": "object"
+      },
+      "TurnProgress": {
+        "properties": {
+          "counterpart_request": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Counterpart Request"
+          },
+          "dials": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Dials",
+            "type": "object"
+          },
+          "events": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Events",
+            "type": "array"
+          },
+          "number": {
+            "title": "Number",
+            "type": "integer"
+          },
+          "reply_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reply Text"
+          },
+          "scores": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scores"
+          },
+          "trainee_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trainee Text"
+          }
+        },
+        "required": [
+          "number",
+          "trainee_text",
+          "reply_text",
+          "dials",
+          "events",
+          "scores",
+          "counterpart_request"
+        ],
+        "title": "TurnProgress",
+        "type": "object"
+      },
+      "TwistIn": {
+        "properties": {
+          "text": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "TwistIn",
+        "type": "object"
+      },
+      "UsageOut": {
+        "properties": {
+          "ceiling_usd": {
+            "title": "Ceiling Usd",
+            "type": "number"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/DayUsageOut"
+            },
+            "title": "Days",
+            "type": "array"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelUsageOut"
+            },
+            "title": "Models",
+            "type": "array"
+          },
+          "orgs_today": {
+            "items": {
+              "$ref": "#/components/schemas/OrgUsageOut"
+            },
+            "title": "Orgs Today",
+            "type": "array"
+          },
+          "spent_today_usd": {
+            "title": "Spent Today Usd",
+            "type": "number"
+          }
+        },
+        "required": [
+          "days",
+          "models",
+          "orgs_today",
+          "ceiling_usd",
+          "spent_today_usd"
+        ],
+        "title": "UsageOut",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "Visibility": {
+        "enum": [
+          "private",
+          "org",
+          "public"
+        ],
+        "title": "Visibility",
+        "type": "string"
+      },
+      "VisibilityIn": {
+        "properties": {
+          "visibility": {
+            "$ref": "#/components/schemas/Visibility"
+          }
+        },
+        "required": [
+          "visibility"
+        ],
+        "title": "VisibilityIn",
+        "type": "object"
+      },
+      "ZonesOut": {
+        "properties": {
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "doc_id": {
+            "default": "cchn-tool-13",
+            "title": "Doc Id",
+            "type": "string"
+          },
+          "scale": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "title": "Scale",
+            "type": "object"
+          },
+          "tier_3_issues": {
+            "items": {
+              "$ref": "#/components/schemas/Tier3IssueOut"
+            },
+            "title": "Tier 3 Issues",
+            "type": "array"
+          },
+          "tier_3_parked": {
+            "default": true,
+            "title": "Tier 3 Parked",
+            "type": "boolean"
+          },
+          "zone": {
+            "enum": [
+              "E",
+              "D",
+              "F",
+              "RED",
+              "NO_DEAL"
+            ],
+            "title": "Zone",
+            "type": "string"
+          },
+          "zone_label": {
+            "title": "Zone Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "zone",
+          "zone_label",
+          "description",
+          "scale"
+        ],
+        "title": "ZonesOut",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "KROSS",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/admin/orgs": {
+      "post": {
+        "description": "A new org and a single-use invite link that makes its first admin.",
+        "operationId": "new_org_api_admin_orgs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOrgIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewOrgOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "New Org",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/usage": {
+      "get": {
+        "description": "Model use and estimated cost: per UTC day and per model over `days` days, per org for today.",
+        "operationId": "usage_api_admin_usage_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "days",
+            "required": false,
+            "schema": {
+              "default": 7,
+              "maximum": 90,
+              "minimum": 1,
+              "title": "Days",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Usage",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/auth/guest": {
+      "get": {
+        "operationId": "guest_options_api_auth_guest_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GuestOptionsOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Guest Options",
+        "tags": [
+          "auth"
+        ]
+      },
+      "post": {
+        "description": "An anonymous visitor starts at once: a guest user with a personal org and a short browser session. Refused\nwhen the deployment has not turned guest play on, or when today's quota of new guests is used up. A browser that\nalready holds a live guest keeps it: repeat requests create no new account and spend no quota.",
+        "operationId": "start_guest_api_auth_guest_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Start Guest",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "operationId": "logout_api_auth_logout_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Logout",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/providers": {
+      "get": {
+        "operationId": "list_providers_api_auth_providers_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProviderOut"
+                  },
+                  "title": "Response List Providers Api Auth Providers Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Providers",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/{name}/callback": {
+      "get": {
+        "operationId": "callback_api_auth__name__callback_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Callback",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/{name}/login": {
+      "get": {
+        "operationId": "login_api_auth__name__login_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Login",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/health": {
+      "get": {
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "boolean"
+                  },
+                  "title": "Response Health Api Health Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/api/invites/accept": {
+      "post": {
+        "description": "`acknowledged` must be true — the user has read the admin-visibility notice — or FastAPI answers 422.",
+        "operationId": "accept_api_invites_accept_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcceptOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Accept",
+        "tags": [
+          "invites"
+        ]
+      }
+    },
+    "/api/invites/preview": {
+      "post": {
+        "operationId": "preview_api_invites_preview_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitePreview"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Preview",
+        "tags": [
+          "invites"
+        ]
+      }
+    },
+    "/api/knowledge": {
+      "get": {
+        "description": "Returns all doctrine documents from the CCHN and frontline negotiation knowledge base.",
+        "operationId": "list_knowledge_api_knowledge_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/KnowledgeDocOut"
+                  },
+                  "title": "Response List Knowledge Api Knowledge Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Knowledge",
+        "tags": [
+          "knowledge"
+        ]
+      }
+    },
+    "/api/knowledge/{doc_id}": {
+      "get": {
+        "description": "Returns one specific doctrine document by ID.",
+        "operationId": "read_knowledge_api_knowledge__doc_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "doc_id",
+            "required": true,
+            "schema": {
+              "title": "Doc Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeDocOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Read Knowledge",
+        "tags": [
+          "knowledge"
+        ]
+      }
+    },
+    "/api/me": {
+      "delete": {
+        "operationId": "delete_me_api_me_delete",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Delete Me",
+        "tags": [
+          "account"
+        ]
+      },
+      "get": {
+        "operationId": "me_api_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Me",
+        "tags": [
+          "account"
+        ]
+      }
+    },
+    "/api/me/allowance": {
+      "get": {
+        "description": "The caller's personal token allowance for the current UTC day, read from the usage ledger. A guest is\nenforced against both the general user and the guest token cap and gets the smallest enabled one as its\nreported cap (both off = unlimited); a registered user gets the user cap (0 = unlimited). Personal only: the\norg's daily cap, the deployment's budget and the guests' shared budget apply independently and can refuse a\ncall even while this allowance is unused.",
+        "operationId": "allowance_api_me_allowance_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllowanceOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Allowance",
+        "tags": [
+          "account"
+        ]
+      }
+    },
+    "/api/org/invites": {
+      "get": {
+        "operationId": "invites_api_org_invites_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/InviteOut"
+                  },
+                  "title": "Response Invites Api Org Invites Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Invites",
+        "tags": [
+          "org"
+        ]
+      },
+      "post": {
+        "operationId": "invite_api_org_invites_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Invite",
+        "tags": [
+          "org"
+        ]
+      }
+    },
+    "/api/org/invites/{invite_id}": {
+      "delete": {
+        "operationId": "revoke_api_org_invites__invite_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invite_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Invite Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Revoke",
+        "tags": [
+          "org"
+        ]
+      }
+    },
+    "/api/org/members": {
+      "get": {
+        "operationId": "list_members_api_org_members_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MemberOut"
+                  },
+                  "title": "Response List Members Api Org Members Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Members",
+        "tags": [
+          "org"
+        ]
+      }
+    },
+    "/api/org/members/{user_id}": {
+      "delete": {
+        "operationId": "remove_api_org_members__user_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remove",
+        "tags": [
+          "org"
+        ]
+      },
+      "patch": {
+        "operationId": "change_role_api_org_members__user_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Change Role",
+        "tags": [
+          "org"
+        ]
+      }
+    },
+    "/api/orgs": {
+      "post": {
+        "description": "Any signed-in user starts an org, becomes its admin (its trainer), and lands in it.",
+        "operationId": "start_org_api_orgs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOrgIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrgOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Start Org",
+        "tags": [
+          "account"
+        ]
+      }
+    },
+    "/api/orgs/active": {
+      "post": {
+        "operationId": "choose_org_api_orgs_active_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActiveOrgIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Choose Org",
+        "tags": [
+          "account"
+        ]
+      }
+    },
+    "/api/rules": {
+      "get": {
+        "operationId": "read_rules_api_rules_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RulesOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Read Rules",
+        "tags": [
+          "rules"
+        ]
+      },
+      "put": {
+        "operationId": "edit_rules_api_rules_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RulesIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RulesOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Edit Rules",
+        "tags": [
+          "rules"
+        ]
+      }
+    },
+    "/api/scenarios": {
+      "get": {
+        "operationId": "library_api_scenarios_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ScenarioCard"
+                  },
+                  "title": "Response Library Api Scenarios Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Library",
+        "tags": [
+          "scenarios"
+        ]
+      },
+      "post": {
+        "operationId": "create_api_scenarios_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/builder": {
+      "post": {
+        "description": "One step of the guided builder: the next question (or done). Stateless: the client sends the whole conversation\neach time and saves the scenario itself at the end. The drawing is a separate, optional call.",
+        "operationId": "builder_step_api_scenarios_builder_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuilderIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuilderOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Builder Step",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/builder/picture": {
+      "post": {
+        "description": "The painted picture of the scene so far. Decoration: no key or any failure means {image: null}, never a 5xx.\nEach paid stage gets its own limit check: the illustrator's usage is on the ledger before the painter runs.",
+        "operationId": "builder_picture_api_scenarios_builder_picture_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PictureIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PictureOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Builder Picture",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/convert": {
+      "post": {
+        "description": "A draft from a brief. Nothing is saved; the author edits the draft and saves it with POST /api/scenarios.",
+        "operationId": "convert_api_scenarios_convert_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConvertIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Convert",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/covers": {
+      "get": {
+        "operationId": "covers_api_scenarios_covers_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Response Covers Api Scenarios Covers Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Covers",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/schema": {
+      "get": {
+        "operationId": "schema_api_scenarios_schema_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Schema Api Scenarios Schema Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Schema",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/timing-defaults": {
+      "get": {
+        "operationId": "timing_defaults_api_scenarios_timing_defaults_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimingDefaultsOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Timing Defaults",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/validate": {
+      "post": {
+        "operationId": "check_api_scenarios_validate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContentIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/IssueOut"
+                  },
+                  "title": "Response Check Api Scenarios Validate Post",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Check",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/{scenario_id}": {
+      "delete": {
+        "operationId": "remove_api_scenarios__scenario_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenario_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Scenario Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remove",
+        "tags": [
+          "scenarios"
+        ]
+      },
+      "get": {
+        "operationId": "detail_api_scenarios__scenario_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenario_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Scenario Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Detail",
+        "tags": [
+          "scenarios"
+        ]
+      },
+      "put": {
+        "operationId": "save_api_scenarios__scenario_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenario_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Scenario Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Save",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/{scenario_id}/cover-image": {
+      "get": {
+        "description": "The custom cover bytes, with the scenario's own visibility (404 otherwise). Cached hard: the URL carries a\nversion, and every save of the image changes it.",
+        "operationId": "get_cover_image_api_scenarios__scenario_id__cover_image_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenario_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Scenario Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Cover Image",
+        "tags": [
+          "scenarios"
+        ]
+      },
+      "put": {
+        "description": "A custom card cover: WebP bytes, only for someone who may edit the scenario.",
+        "operationId": "put_cover_image_api_scenarios__scenario_id__cover_image_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenario_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Scenario Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put Cover Image",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/{scenario_id}/duplicate": {
+      "post": {
+        "description": "A private copy for the viewer to edit. Only someone who may read the full content can copy it: a player sees\nthe brief alone, and a copy would hand them the hidden parts.",
+        "operationId": "duplicate_api_scenarios__scenario_id__duplicate_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenario_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Scenario Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Duplicate",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/{scenario_id}/return": {
+      "post": {
+        "operationId": "hand_back_api_scenarios__scenario_id__return_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenario_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Scenario Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Hand Back",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/{scenario_id}/submit": {
+      "post": {
+        "operationId": "submit_api_scenarios__scenario_id__submit_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenario_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Scenario Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Submit",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/scenarios/{scenario_id}/visibility": {
+      "post": {
+        "operationId": "publish_api_scenarios__scenario_id__visibility_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenario_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Scenario Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VisibilityIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Publish",
+        "tags": [
+          "scenarios"
+        ]
+      }
+    },
+    "/api/sessions": {
+      "get": {
+        "operationId": "list_sessions_api_sessions_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "scope",
+            "required": false,
+            "schema": {
+              "default": "mine",
+              "enum": [
+                "mine",
+                "org"
+              ],
+              "title": "Scope",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SessionCard"
+                  },
+                  "title": "Response List Sessions Api Sessions Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Sessions",
+        "tags": [
+          "play"
+        ]
+      },
+      "post": {
+        "operationId": "start_session_api_sessions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Start Session",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}": {
+      "delete": {
+        "description": "The player deletes their own session; the turns, scores, comments and debrief go with it.",
+        "operationId": "delete_session_api_sessions__session_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Session",
+        "tags": [
+          "play"
+        ]
+      },
+      "get": {
+        "operationId": "read_session_api_sessions__session_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Read Session",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/coach": {
+      "post": {
+        "description": "Interactive debrief with an AI Coach grounded in CCHN frontline negotiation doctrine.",
+        "operationId": "take_coach_api_sessions__session_id__coach_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CoachMessageIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Take Coach",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/coach/suggestions": {
+      "get": {
+        "description": "Provides tailored coach questions and relevant CCHN knowledge articles for this session.",
+        "operationId": "coach_suggestions_api_sessions__session_id__coach_suggestions_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CoachSuggestionsOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Coach Suggestions",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/comments": {
+      "post": {
+        "description": "A trainer's note on one turn, during play and after the end. The player never sees comments.",
+        "operationId": "comment_api_sessions__session_id__comments_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Comment",
+        "tags": [
+          "steer"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/debrief": {
+      "get": {
+        "description": "After the end only: outcome, milestones, the debrief, the final scores, the rule flags and the final dials.\nA debrief still pending five minutes after the end lost its finisher (a crash or restart) and is written again\nin the background.",
+        "operationId": "read_debrief_api_sessions__session_id__debrief_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DebriefOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Read Debrief",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/dials": {
+      "post": {
+        "description": "A trainer override of one dial. It never ends the session; the next trainee message decides.",
+        "operationId": "steer_dial_api_sessions__session_id__dials_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DialIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Steer Dial",
+        "tags": [
+          "steer"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/end": {
+      "post": {
+        "description": "The player stops. The debrief is written in the background; poll GET /debrief.",
+        "operationId": "end_session_api_sessions__session_id__end_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "End Session",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/inject": {
+      "post": {
+        "description": "A preset twist, by whoever may steer: the playtester in their own playtest, or an org admin in a member's\nsolo session. The outcome is decided on the next trainee message.",
+        "operationId": "twist_api_sessions__session_id__inject_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InjectIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Twist",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/interlocutor": {
+      "post": {
+        "operationId": "set_interlocutor_api_sessions__session_id__interlocutor_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InterlocutorIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Interlocutor",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/nudge": {
+      "post": {
+        "description": "An inactivity/silence nudge: when the trainee has been silent, the counterpart prompts them in-character.",
+        "operationId": "take_nudge_api_sessions__session_id__nudge_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Take Nudge",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/preparation": {
+      "put": {
+        "operationId": "save_preparation_api_sessions__session_id__preparation_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreparationIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Save Preparation",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/progress": {
+      "get": {
+        "description": "Live progress: 404 for anyone who cannot read the session, 403 for the player of a solo session.",
+        "operationId": "watch_api_sessions__session_id__progress_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Watch",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/reflection": {
+      "put": {
+        "operationId": "save_reflection_api_sessions__session_id__reflection_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReflectionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Save Reflection",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/time-decision": {
+      "post": {
+        "description": "The trainer ends a meeting whose time has run out, with or without a result. Only for a scenario whose\n`on_timeout` is \"trainer\", once the server's clock agrees that the time is up.",
+        "operationId": "decide_time_up_api_sessions__session_id__time_decision_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TimeDecisionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Decide Time Up",
+        "tags": [
+          "steer"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/time-up": {
+      "post": {
+        "description": "The clock ran out in the player's browser. If the scenario's rules end the meeting then, and the server's own\nclock agrees, it ends now (as a failure or without a result); otherwise this is refused.",
+        "operationId": "time_up_session_api_sessions__session_id__time_up_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Time Up Session",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/turns": {
+      "post": {
+        "description": "One trainee message. The answer is a stream of events: reply chunks, then done (or error).",
+        "operationId": "take_turn_api_sessions__session_id__turns_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TurnIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Take Turn",
+        "tags": [
+          "play"
+        ]
+      }
+    },
+    "/api/sessions/{session_id}/twists": {
+      "post": {
+        "description": "A free-text twist: the director rewrites it in character, the bias check flags it, and it is applied with the\nflag kept. No transaction stays open during the two model calls; they count toward the steering admin's limits.",
+        "operationId": "steer_twist_api_sessions__session_id__twists_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TwistIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgressOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Steer Twist",
+        "tags": [
+          "steer"
+        ]
+      }
+    }
+  }
+}

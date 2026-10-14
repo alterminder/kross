@@ -1,0 +1,134 @@
+schema: negotiation-scenario/v2
+id: fwb_guards_paid_in_kind
+title: "FWB Facility Guards Paid in Kind"
+difficulty: intermediate
+estimated_minutes: 15
+skills_tested:
+  - "Neutrality Red Lines"
+  - "Counterpart Iceberg"
+  - "Currency Crisis Adaptation"
+  - "Alternative Compensation"
+sources: { bank: "CCHN Worked Case: FWB In-Kind Demands", cchn_tools: [1, 9, 13, 14, 17] }
+
+negotiation:
+  nature: transactional
+  type: factual
+  start_level: technical
+
+island_of_agreements:
+  agreed_facts:
+    - "Local currency has depreciated 400% over the last 90 days"
+    - "Security guards protect the central warehouse containing 2,000 tons of humanitarian food supplies"
+    - "Cash salary is no longer sufficient to purchase basic staple foods in local markets"
+  contested_facts:
+    - "Whether in-kind provision of fuel and food aid violates international donor agreements"
+    - "Whether warehouse rations would be diverted to local armed militia checkpoints"
+  convergent_norms:
+    - "Facility guards must be fairly supported so they can feed their families"
+    - "Humanitarian warehouses must remain protected from looting and diversion"
+  divergent_norms:
+    - "Whether humanitarian aid inventory can be converted into employment compensation"
+
+trainee_brief:
+  situation: >
+    Severe hyperinflation has made cash wages worthless in the provincial capital.
+    Sergeant Bako, head of the local guard detachment guarding the main Food Without Borders (FWB) food depot,
+    informs you that all 30 guards will abandon their posts tomorrow morning unless their salaries are converted into monthly rations of cooking oil, diesel fuel, and rice.
+  objective: "Maintain facility security without compromising neutrality or permitting humanitarian aid diversion."
+  mandate:
+    can_decide:
+      - "Index salaries to a stable currency benchmark or market basket equivalent"
+      - "Provide on-site duty meals and hot food during shifts"
+      - "Introduce staff transport allowances or company busing"
+    must_refer:
+      - "Distributing warehouse humanitarian rations as salary replacement"
+      - "Transferring diesel fuel barrels to guards"
+  red_lines:
+    - { text: "No diversion of humanitarian food aid stock for commercial or private salary remuneration", source: legal }
+    - { text: "No fuel transfers that could be converted for military or combatant use", source: institutional }
+
+counterparts:
+  - id: sergeant_bako
+    role: "Head of Facility Guard Detachment"
+    persona: >
+      Responsible, pragmatic guard supervisor who protects the humanitarian compound fiercely but faces intense desperation from guards' starving households.
+    cultural_profile: "Veteran protector who evaluates employers by tangible loyalty in times of famine."
+    authority:
+      decides: ["Whether the guard detachment remains on duty tonight"]
+      must_consult: ["The guard council representing the 30 night and day watchmen"]
+    opening: >
+      Director, we have guarded your grain silos through three firefights. But today, the local bank notes you pay us cannot buy two loaves of bread in the bazaar. My men cannot eat paper. If our compensation is not paid in rice sacks and diesel drums by tomorrow, we will walk off the gates.
+    iceberg:
+      position:
+        stated: "Convert salary into 5 bags of rice, 2 tins of cooking oil, and 50 liters of diesel per guard."
+      tactical_reasoning:
+        type: necessity
+        text: "Direct commodities retain real value and provide immediate family nutrition amidst currency collapse."
+      motives_values:
+        values: ["Family preservation", "Equitable reciprocity"]
+        emotions: ["Despair", "Frustration"]
+        deep_needs: ["Reliable household nutrition and protection from runaway inflation"]
+    hidden_interests:
+      - id: real_value_needs
+        layer: motive_value
+        text: "The guards do not specifically need warehouse grain; they need stable purchasing power and food on the table."
+        reveal_when: { any: [{ move: identifies_interest }, { trust_gte: 45 }] }
+      - id: fuel_resale_risk
+        layer: tactical_reasoning
+        text: "The diesel was requested because it can be traded for medicine, but Bako admits fuel resale invites armed militia taxation."
+        reveal_when: { trust_gte: 55 }
+    challenges:
+      - "You are sitting on 2,000 tons of food while our children sleep on empty stomachs!"
+      - "Paper money is dead in this city. Only food has value."
+      - "If we leave these gates, the neighbourhood mobs will loot this depot in two hours."
+    state_initial: { trust: 35, rigidity: 75, hostility: 45 }
+
+issues:
+  - id: compensation_modality
+    label: "Salary valuation and inflation adjustment"
+    tier: 1
+    own: { ideal: "Cash salary pegged to regional market food basket, zero in-kind aid diversion", bottom_line: "Hard-currency pegged cash payout plus daily on-shift meals" }
+    counterpart: { ideal: "Warehouse food rations and fuel drums delivered directly", bottom_line: "Hard currency or voucher redeemable at local merchant grain stores", red_line: "Continuing with depreciated local currency paper banknotes" }
+  - id: guard_retention
+    label: "Warehouse perimeter security continuity"
+    tier: 1
+    own: { ideal: "Uninterrupted guard protection 24/7", bottom_line: "Guards remain on duty while new payment framework is finalized" }
+    counterpart: { ideal: "Immediate delivery of goods before tonight's shift", bottom_line: "Written guarantee of market-basket indexed pay within 48 hours", red_line: "Vague promises while families starve" }
+
+triggers:
+  - when: { move: negotiates_own_red_line }
+    say: "Good. Have the forklifts load the rice bags behind our quarters after dark."
+    dials: { trust: -25, rigidity: +15 }
+  - when: { move: frames_shared_benefit }
+    say: "A hard currency contract with vouchers redeemable at the grain merchants? That gives my men real food without breaking your audit rules."
+    dials: { rigidity: -30, trust: +25, hostility: -20 }
+  - when: { move: premature_red_line }
+    say: "Then guard the warehouse yourself, Director. We pack our lockers tonight."
+    dials: { hostility: +25, rigidity: +25 }
+
+injections:
+  - id: merchant_voucher_offer
+    label: "Local merchant voucher feasibility"
+    instruction: "Logistics coordinator informs trainee that two wholesale grain merchants accept NGO commercial vouchers."
+  - id: night_shift_threat
+    label: "Night shift ultimatum"
+    instruction: "Sergeant Bako warns that the night guards will not take post at 18:00 without a signed agreement."
+
+outcomes:
+  - id: contract_stabilized
+    label: "Indexed compensation secured; neutrality and warehouse protected"
+    result: success
+    when: { trust_gte: 60, rigidity_lte: 45, hostility_lte: 40 }
+  - id: aid_diverted
+    label: "Breached neutrality by distributing humanitarian stock as salary"
+    result: fail
+    when: { trust_lte: 15 }
+
+rubric:
+  dimensions: [red_lines, relationship_management, clarity, questioning]
+  indicators:
+    - "Refuses in-kind distribution of humanitarian aid inventory to guards"
+    - "Explores genuine purchasing power needs through active questioning"
+    - "Develops creative, compliant alternatives like market-basket indexing"
+    - "Maintains guard trust and compound security continuity"
+

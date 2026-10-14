@@ -1,0 +1,166 @@
+# KROSS reverse proxy for a host Nginx, root-path deployment
+# (NLAB_ROOT_PATH empty). Validated with Nginx 1.30.5; requires Nginx >= 1.25.1 with SSL and HTTP/2.
+#
+# Install: replace every negotiation.example.org (domain + certificate paths),
+# then place this file in /etc/nginx/sites-enabled/ and run `nginx -t`.
+#   sed 's/negotiation.example.org/<your.domain>/g' deploy/nginx.conf.example > /etc/nginx/sites-available/nlab.conf
+# The app must publish on 127.0.0.1:8000 (compose default). Sub-path hosting is
+# not supported: keep NLAB_ROOT_PATH empty.
+# Rates are pilot values; shared training-room IPs need measured tuning.
+
+map "$request_method:$uri" $nlab_guest_key {
+    default "";
+    ~^POST:/api/auth/guest$ $binary_remote_addr;
+}
+
+map $uri $nlab_auth_key {
+    default "";
+    /api/auth/guest "";
+    /api/auth/providers "";
+    ~^/api/auth/ $binary_remote_addr;
+}
+
+map "$request_method:$uri" $nlab_llm_key {
+    default "";
+    ~^POST:/api/scenarios/(convert|builder(/picture)?)$ $binary_remote_addr;
+    ~^POST:/api/sessions/[^/]+/(turns|coach|nudge|twists|end|time-up|time-decision)$ $binary_remote_addr;
+}
+
+map $uri $nlab_cache_control {
+    # The edge owns cache policy everywhere: the app's Cache-Control is hidden
+    # (proxy_hide_header below) and never duplicated.
+    default "no-store";
+}
+
+# Static assets (Vite /assets/*, app /covers/*.webp) are keyed out of the
+# API request/connection accounting and into their own bounded budget.
+map $uri $nlab_general_key {
+    default $binary_remote_addr;
+    "~^/(covers|assets)/" "";
+}
+map $uri $nlab_static_key {
+    default "";
+    "~^/(covers|assets)/" $binary_remote_addr;
+}
+
+# Safe log: method/path/status/IP only. No query strings, cookies or bodies.
+log_format nlab_safe escape=json '{"time":"$time_iso8601","peer":"$remote_addr","method":"$request_method","path":"$uri","status":$status,"duration":$request_time}';
+
+limit_req_zone $nlab_general_key zone=nlab_general:10m rate=30r/s;
+limit_req_zone $nlab_guest_key zone=nlab_guest:10m rate=5r/m;
+limit_req_zone $nlab_auth_key zone=nlab_auth:10m rate=10r/m;
+limit_req_zone $nlab_llm_key zone=nlab_llm:10m rate=30r/m;
+limit_conn_zone $nlab_general_key zone=nlab_connections:10m;
+# Covers/assets budget: a page load fetches the 17 scenario covers at once
+# (limit_conn counts in-flight requests, HTTP/2 streams included). 24 per-IP
+# static concurrency allows that and stays below uvicorn's global 32 bound
+# (not an absolute API-starvation guarantee across multiple client IPs).
+limit_req_zone $nlab_static_key zone=nlab_static:10m rate=30r/s;
+limit_conn_zone $nlab_static_key zone=nlab_static_conn:10m;
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    return 444;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name negotiation.example.org;
+    return 308 https://negotiation.example.org$request_uri;
+}
+
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    server_name _;
+    ssl_reject_handshake on;
+    return 444;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name negotiation.example.org;
+
+    ssl_certificate /etc/letsencrypt/live/negotiation.example.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/negotiation.example.org/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    client_max_body_size 16m;
+    client_header_timeout 15s;
+    client_body_timeout 30s;
+    send_timeout 30s;
+    server_tokens off;
+
+    # All limit_req directives stay at server level so streaming routes inherit
+    # them too; a location-level limit would drop inheritance for its siblings.
+    limit_req zone=nlab_general burst=50 nodelay;
+    limit_req zone=nlab_static burst=100 nodelay;
+    limit_req zone=nlab_guest burst=5 nodelay;
+    limit_req zone=nlab_auth burst=10 nodelay;
+    limit_req zone=nlab_llm burst=5 nodelay;
+    limit_req_status 429;
+    limit_conn nlab_connections 8;
+    limit_conn nlab_static_conn 24;
+    limit_conn_status 429;
+
+    # Keep add_header at server level only; a location add_header would drop
+    # inheritance for that location. Increase HSTS after renewal is verified.
+    add_header Strict-Transport-Security "max-age=86400" always;
+
+    # The edge owns these headers: hide the app's copies so browsers never see
+    # duplicates (two CSP headers combine, two X-Frame-Options may be ignored).
+    proxy_hide_header Strict-Transport-Security;
+    proxy_hide_header Content-Security-Policy;
+    proxy_hide_header X-Frame-Options;
+    proxy_hide_header X-Content-Type-Options;
+    proxy_hide_header Referrer-Policy;
+    proxy_hide_header Cache-Control;
+    add_header X-Frame-Options "DENY" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';" always;
+    add_header Cache-Control $nlab_cache_control always;
+
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host negotiation.example.org;
+    # Replace, don't append: one address here, hostile client headers discarded.
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Host "";
+    proxy_set_header X-Forwarded-Port "";
+    proxy_set_header Forwarded "";
+    proxy_connect_timeout 5s;
+    proxy_send_timeout 60s;
+    proxy_read_timeout 60s;
+    proxy_cache off;
+    access_log /var/log/nginx/nlab-access.log nlab_safe;
+    error_log /var/log/nginx/nlab-error.log warn;
+
+    # SSE / streaming routes: no response buffering, longer inactivity timeout
+    # (an interval between reads, not a total-work deadline).
+    location ~ ^/api/sessions/[^/]+/(turns|coach|nudge)$ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_buffering off;
+        proxy_read_timeout 300s;
+    }
+
+    # Auth routes keep their queries out of the error log: nginx's error log
+    # always writes the raw request line (query strings included) at any
+    # severity, so every severity on these routes is discarded to /dev/null.
+    # The nlab_safe access log still records path/status metrics without them.
+    location /api/auth/ {
+        error_log /dev/null;
+        proxy_pass http://127.0.0.1:8000;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+    }
+}

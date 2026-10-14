@@ -1,0 +1,91 @@
+name: backend
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: nlab
+          POSTGRES_PASSWORD: nlab
+          POSTGRES_DB: nlab
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U nlab"
+          --health-interval 2s
+          --health-retries 15
+    env:
+      NLAB_TEST_DATABASE_URL: postgresql+asyncpg://nlab:nlab@localhost:5432/nlab_test
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked
+      - run: uv run ruff check
+      - run: uv run ruff format --check
+      - run: uv run mypy
+      - run: uv run pytest
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure disposable production environment
+        run: |
+          python3 - <<'PY'
+          import json
+          import secrets
+          from pathlib import Path
+
+          files = {
+              ".env": {
+                  "POSTGRES_PASSWORD": secrets.token_hex(32),
+                  "POSTGRES_APP_PASSWORD": secrets.token_hex(32),
+              },
+              ".env.app": {
+                  "NLAB_PRODUCTION": "true",
+                  "NLAB_SECRET_KEY": secrets.token_hex(32),
+                  "NLAB_PUBLIC_URL": "https://nlab-ci.invalid",
+                  "NLAB_COOKIE_SECURE": "true",
+                  "NLAB_SESSION_RETENTION_DAYS": "365",
+                  "NLAB_SUPERADMIN_IDENTITIES": "{}",
+                  "NLAB_FORWARDED_ALLOW_IPS": "127.0.0.1",
+                  "NLAB_DAILY_SPEND_CEILING_USD": "25",
+                  "NLAB_MODEL_PRICES": json.dumps({"ci-model": [1, 2]}),
+                  "LLM_MODEL": "ci-model",
+                  "LLM_API_KEY": "",
+              },
+          }
+          for name, values in files.items():
+              path = Path(name)
+              path.touch(mode=0o600, exist_ok=False)
+              path.write_text("".join(f"{key}={value}\n" for key, value in values.items()))
+          PY
+      - name: Build, migrate, seed, health check
+        run: |
+          docker compose build app db
+          docker compose up -d --wait db
+          docker compose run --rm migrate
+          docker compose run --rm migrate python -m nlab.api.seed
+          deploy/db/provision-roles.sh
+          docker compose up -d --wait app
+          docker compose run --rm app sh -c 'test ! -e /app/backend/tests'  # the passwordless dev server is never in the image
+          curl -fsS http://127.0.0.1:8000/api/health
+          test "$(curl -fsS http://127.0.0.1:8000/api/auth/providers)" = "[]"
+          curl -fsS http://127.0.0.1:8000/scenarios/x | grep -q '<base href="/" />'
+          curl -fsSI http://127.0.0.1:8000/covers/field.webp | grep -qi 'content-type: image/webp'
+          docker compose run --rm app python -m nlab.api.purge
+      - name: Logs
+        if: always()
+        run: docker compose logs --no-color | tail -200
+      - name: Remove disposable stack
+        if: always()
+        run: docker compose down --volumes

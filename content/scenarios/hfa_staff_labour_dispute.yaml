@@ -1,0 +1,135 @@
+schema: negotiation-scenario/v2
+id: hfa_staff_labour_dispute
+title: "HfA Staff Held in Labour Dispute"
+difficulty: intermediate
+estimated_minutes: 15
+skills_tested:
+  - "Labour Dispute Mediation"
+  - "De-escalation"
+  - "Common Shared Space"
+  - "Mandate Boundaries"
+sources: { bank: "CCHN Worked Case: HfA Labour Dispute", cchn_tools: [2, 4, 8, 9, 13, 14] }
+
+negotiation:
+  nature: relational
+  type: factual
+  start_level: technical
+
+island_of_agreements:
+  agreed_facts:
+    - "A local contractor failed to pay 4 months of wages and terminal benefits to 45 national staff"
+    - "HfA terminated the contract with the rogue local contractor"
+    - "Former staff have blocked compound gates and prevented 8 international personnel from leaving"
+  contested_facts:
+    - "Whether HfA is directly legally liable for the subcontractor's unpaid wages"
+    - "The exact calculation of severance and hardship compensation"
+  convergent_norms:
+    - "Workers are entitled to fair compensation for honest labour"
+    - "Humanitarian staff must not be harmed or indefinitely detained"
+  divergent_norms:
+    - "Whether physical detention of personnel is a legitimate customary dispute mechanism"
+
+trainee_brief:
+  situation: >
+    In the rural base of Humanitarian for All (HfA), former local logistics workers and community allies
+    have padlocked compound gates, preventing vehicles and 8 staff members from departing.
+    A rogue contractor hired by HfA fled with unpaid payroll funds. You are meeting Mr. Daoud, spokesperson for the workers.
+  objective: "Resolve the compound blockade and secure safe movement for staff while agreeing an equitable dispute resolution framework."
+  mandate:
+    can_decide:
+      - "Establish an immediate joint audit committee to review worker contracts and timesheets"
+      - "Provide immediate emergency humanitarian stipends for affected families pending full audit"
+      - "Agree on timeline and mediation venue with local labour authorities"
+    must_refer:
+      - "Direct cash payment of full subcontractor liabilities without legal review"
+      - "Conceding legal liability on behalf of headquarters"
+  red_lines:
+    - { text: "No payments made under direct threat of physical violence or extortion", source: institutional }
+    - { text: "Staff safety and freedom of movement cannot be compromised", source: moral }
+
+counterparts:
+  - id: mr_daoud
+    role: "Spokesperson, Former Employees Committee"
+    persona: >
+      Former warehouse supervisor, respected community elder, carrying the burden of 45 families facing starvation due to unpaid wages.
+    cultural_profile: "Community dispute elder bound by customary collective responsibility."
+    authority:
+      decides: ["Whether to unlock compound gates and permit vehicle egress"]
+      must_consult: ["The 45 workers and clan elders gathered outside the perimeter"]
+    opening: >
+      Welcome, Director. Look outside these gates. 45 families have had no income for four months. Our children have been expelled from school for unpaid fees. Your organization hired the thief who stole our money. Nobody leaves this compound until our wages are in our hands.
+    iceberg:
+      position:
+        stated: "Full cash settlement of all 45 claims immediately, or the compound stays blockaded."
+      tactical_reasoning:
+        type: necessity
+        text: "Once the international staff leave, workers fear HfA will abandon the base and ignore their claims."
+      motives_values:
+        values: ["Family survival", "Community dignity", "Protection from deceit"]
+        emotions: ["Desperation", "Betrayal", "Righteous anger"]
+        deep_needs: ["Guaranteed verification that workers will receive compensation without being abandoned"]
+    hidden_interests:
+      - id: fear_of_abandonment
+        layer: motive_value
+        text: "The blockade is driven by the terror that HfA will pack up its assets and leave town without paying."
+        reveal_when: { any: [{ move: identifies_interest }, { trust_gte: 45 }] }
+      - id: verifiable_escrow
+        layer: tactical_reasoning
+        text: "He is willing to unlock the gates if emergency family stipends are paid today and an escrow audit is signed."
+        reveal_when: { trust_gte: 55 }
+    challenges:
+      - "Your contractor stole our sweat and tears!"
+      - "We protected this warehouse during the shelling, and this is how you repay us?"
+      - "You have millions in donor funding, but you refuse $20,000 for your own workers?"
+      - "If the trucks try to force the gate, the village will hold the drivers."
+    state_initial: { trust: 25, rigidity: 80, hostility: 60 }
+
+issues:
+  - id: compound_blockade
+    label: "Lifting the compound blockade"
+    tier: 1
+    own: { ideal: "Immediate unrestricted opening of compound gates", bottom_line: "Removal of padlocks and free movement of personnel during mediation" }
+    counterpart: { ideal: "Gates locked until full cash handed over", bottom_line: "Gates open for staff, vehicles held until emergency stipend paid", red_line: "Staff evacuated while workers receive zero response" }
+  - id: wage_compensation
+    label: "Unpaid wage settlement"
+    tier: 2
+    own: { ideal: "Subcontractor pursued through courts; HfA pays no direct settlement", bottom_line: "Emergency humanitarian hardship stipend now; formal legal audit within 14 days" }
+    counterpart: { ideal: "Instant 100% payout plus hardship bonus", bottom_line: "Immediate 30% emergency stipend for family food and school fees, binding audit for balance", red_line: "Being told to sue the bankrupt contractor alone" }
+
+triggers:
+  - when: { move: counter_argues }
+    say: "Do not lecture us on contracts while our children go hungry! The gates stay locked!"
+    dials: { hostility: +15, rigidity: +10 }
+  - when: { move: pause_and_acknowledge }
+    say: "You hear our pain. The workers know you were not the thief, but the hunger is real."
+    dials: { hostility: -20, trust: +15 }
+  - when: { move: frames_shared_benefit }
+    say: "An emergency stipend to feed our families today, with a joint committee to review every timesheet? That we can take to the elders."
+    dials: { rigidity: -25, trust: +20, hostility: -15 }
+
+injections:
+  - id: crowd_agitation
+    label: "Youths shake the perimeter fence"
+    instruction: "Say that younger village relatives are getting impatient and threatening to cut the generator cables."
+  - id: contractor_location
+    label: "Contractor spotted in town"
+    instruction: "Inform trainee that the absconding contractor was spotted in the provincial capital."
+
+outcomes:
+  - id: dispute_mediated
+    label: "Blockade lifted with equitable resolution framework"
+    result: success
+    when: { trust_gte: 60, rigidity_lte: 45, hostility_lte: 40 }
+  - id: violent_escalation
+    label: "Blockade escalated into property damage and confrontation"
+    result: fail
+    when: { hostility_gte: 90 }
+
+rubric:
+  dimensions: [active_listening, hostility_handling, relationship_management, clarity, red_lines]
+  indicators:
+    - "Acknowledges former workers' hardship and anger without validating illegal detention"
+    - "Separates rogue subcontractor fault from frontline staff presence"
+    - "Frames immediate emergency stipends and joint audit as Common Shared Space"
+    - "Refuses to make payments under coercion or threats of violence"
+

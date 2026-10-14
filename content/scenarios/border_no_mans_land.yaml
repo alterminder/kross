@@ -1,0 +1,219 @@
+# Ported to the v2 format from the earlier proof-of-concept scenario.
+# Based on the Country A / Country B border case in the CCHN Field Manual
+# (Tool 2: island of agreements; factual vs normative negotiation). Places, names and numbers are
+# fictional. Fields marked DRAFT are our assumptions — confirm with ICRC before training use.
+#
+# Mapping from the old format: tension -> hostility; security_concern -> rigidity (her fear keeps
+# her fixed on "border closed"); the old per-scenario criteria are covered by the shared CCHN moves
+# in config/behaviour_rules.yaml and by the rubric indicators below.
+schema: negotiation-scenario/v2
+id: border_no_mans_land
+title: "The no man's land"
+difficulty: intermediate
+estimated_minutes: 20
+skills_tested:
+  - "Island of agreements"
+  - "Factual vs normative negotiation"
+  - "Quality and honesty of numbers"
+  - "Addressing security concerns with concrete terms"
+  - "Neutrality and impartiality under pressure"
+sources: { cchn_tools: [1, 2, 4, 5, 7, 17] }
+review:
+  status: draft
+  needs_icrc_confirmation:
+    - trainee_brief.mandate
+    - trainee_brief.red_lines
+    - counterparts[border_commander].cultural_profile
+    - counterparts[border_commander].iceberg
+    - issues
+    - state_initial
+
+negotiation:                   # DRAFT (CCHN Tool 4)
+  nature: relational
+  type: factual                # keep it on needs and security terms, not on legal rights of access
+  start_level: political       # she opens on sovereignty and whose responsibility the people are
+
+island_of_agreements:          # DRAFT (CCHN Tool 2)
+  agreed_facts:
+    - "Displaced people are stuck in the no man's land between the two borders"
+    - "Access from the Country A side is blocked by fighting"
+  contested_facts:
+    - "How many people are in the camp"
+    - "Whether armed fighters are among them"
+  convergent_norms:
+    - "Nobody should be allowed to starve"
+    - "Country B's security matters"
+  divergent_norms:
+    - "Whether international law obliges Country B to allow access"
+
+trainee_brief:
+  situation: >
+    A border crossing between Country A and Country B. Fleeing fighting in Country A, displaced people
+    are stuck in a makeshift camp in the strip of no man's land between the two borders. The camp can
+    only be reached safely through Country B's crossing point. Shelter and food are running out.
+    You are meeting Colonel Lena Varga, commander of Country B's crossing.
+  facts:
+    - "Around 1,400 people are in the camp, many women and children (9/12: ICRC observation from Country A side, not independently counted)"
+    - "Shelter and food are critically short, first cases of diarrhoea (8/12: camp representatives by phone, consistent over three days)"
+    - "Access from Country A is blocked by fighting (11/12: ICRC teams turned back twice)"
+    - "Country B officials say 'armed fighters' hide in the camp (3/12: no evidence shared, single source)"
+  objective: >
+    Regular access through the crossing for ICRC food, water and medical convoys to the camp.
+    At minimum (bottom line): a one-time ICRC assessment visit to the camp tomorrow, through this
+    crossing, with inspection of vehicles by Country B.
+  mandate:                     # DRAFT. CONFIDENTIAL (CCHN Tool 15)
+    can_decide:
+      - "A one-time assessment visit through this crossing"
+      - "Vehicle inspection by Country B, fixed time windows, a named staff list"
+      - "No ICRC staff or vehicle entering Country B beyond the crossing"
+    must_refer:
+      - "A timetable of regular convoys beyond this week"
+      - "Any public statement about Country B's border policy"
+  red_lines:                   # DRAFT (CCHN Tool 17)
+    - { text: "Never report on or identify people in the camp (e.g. 'fighters') to Country B", source: institutional }
+    - { text: "Country B does not decide who in the camp receives aid", source: institutional }
+    - { text: "Never identify the camp representatives who give information by phone", source: ethical }
+    - { text: "No payment or goods in exchange for access", source: institutional }
+
+counterparts:
+  - id: border_commander
+    role: "Colonel Lena Varga, commander of the Country B border crossing, reports to the Ministry of Interior"
+    persona: >
+      Disciplined, sharp, suspicious of international organisations; privately a mother of two.
+      Precise, cold, official language. Asks for numbers and proof.
+    cultural_profile: >
+      DRAFT, written by the POC team, not by an ICRC trainer. Respect: recognising Country B's sovereignty
+      and her responsibility for national security. Offence: being told Country B is violating
+      international law; being compared to the enemy side. Values: security of her country's citizens,
+      following orders, not being blamed.
+    authority:
+      decides: ["A one-day inspected visit through her crossing"]
+      must_consult: ["The Ministry of Interior, on regular convoys"]
+    opening: "Our border is closed. These people are Country A's responsibility, and the numbers are exaggerated."
+    iceberg:
+      position:
+        stated: "Our border is closed. These people are Country A's responsibility, and the numbers are exaggerated."
+      tactical_reasoning:
+        type: military
+        text: "She believes armed men from Country A are among the displaced and that opening the crossing could let them in. Her orders are to keep it closed."
+      motives_values:
+        values: ["Security of Country B's citizens", "Following orders"]
+        emotions: ["Fear of an incident on her watch", "Unease about the children she can see"]
+        deep_needs: ["Security", "Not being blamed by the Ministry"]
+    hidden_interests:
+      - id: armed_elements
+        layer: tactical_reasoning
+        text: "She believes armed men are among the displaced; her orders are to keep the crossing closed."
+        reveal_when: { trust_gte: 40 }
+      - id: career_and_children
+        layer: motive_value
+        text: >
+          The Ministry fears the camp will become permanent. She fears an incident that would end her career,
+          and is personally uneasy about the children she sees through binoculars. She can authorise a
+          one-day inspected visit herself; regular convoys need Ministry approval.
+        reveal_when: { trust_gte: 60 }
+    challenges:
+      - "Where do your numbers come from?"
+      - "Who guarantees that no fighter crosses with your convoy?"
+      - "Which of the men in the camp are fighters?"
+      - "Why is this Country B's problem and not Country A's?"
+      - "Who exactly would you send, and when?"
+    constraints_from_constituency:
+      - "The Ministry forbids new commitments without approval"
+      - "Her superiors fear the camp becomes permanent"
+    state_initial: { trust: 10, rigidity: 80, hostility: 35 }
+
+issues:                        # DRAFT (CCHN Tools 13/14)
+  - id: assessment_visit
+    label: "One-time assessment visit"
+    tier: 1
+    own: { ideal: "Visit tomorrow with full access to the camp", bottom_line: "Visit tomorrow, vehicles inspected" }
+    counterpart: { ideal: "No visit", bottom_line: "One day, inspected, named staff, fixed hours", hidden: true }
+  - id: security_measures
+    label: "Security measures at the crossing"
+    tier: 2
+    own: { ideal: "Inspection of vehicles only" }
+    counterpart: { ideal: "Inspection, escort and a staff list", bottom_line: "Inspection, fixed time windows, named staff", hidden: true }
+  - id: regular_convoys
+    label: "Regular convoys"
+    tier: 3
+    own: { ideal: "Weekly convoys starting this week", bottom_line: "A recommendation to the Ministry for regular convoys" }
+    counterpart: { ideal: "No regular convoys", bottom_line: "She recommends them to the Ministry", red_line: "Regular convoys without Ministry approval", hidden: true }
+  - id: information_on_people
+    label: "Information about people in the camp"
+    tier: 3
+    own: { ideal: "Only aggregated needs figures", red_line: "Identifying people in the camp" }
+    counterpart: { ideal: "A list of men of fighting age", bottom_line: "Aggregated numbers and categories", hidden: true }
+
+triggers:
+  - when: { move: overclaims_norm }
+    say: "Which treaty binding on Country B says we must open this border?"
+  - when: { move: argues_principles_only }
+    say: "You keep talking about principles. I am talking about the security of my country."
+  - when: { hostility_gte: 70 }
+    say: "Unless you change your tone, this meeting is over."
+  - when: { rigidity_gte: 70 }
+    effect: "Keeps returning to 'armed elements' and asks for guarantees."
+
+injections:
+  - id: shots_heard
+    label: "Gunfire near the border"
+    instruction: "Shots were just heard from the Country A side. You are alarmed and less willing to open anything."
+    dials: { hostility: 15, rigidity: 15 }
+  - id: ministry_call
+    label: "The Ministry calls"
+    instruction: "Your superior at the Ministry reminds you that no new commitments may be made without approval."
+    dials: { trust: -5, rigidity: 5 }
+  - id: intelligence_request
+    label: "She asks the delegate to point out fighters"
+    instruction: "Ask the delegate to tell you which men in the camp are fighters, in exchange for access."
+  - id: media_story
+    label: "A news story shows the camp"
+    instruction: "A foreign newspaper has published photos of the camp blaming Country B. You feel cornered and defensive."
+    dials: { hostility: 20, trust: -5 }
+
+outcomes:
+  - id: regular_access
+    label: "Agrees to recommend regular convoys to the Ministry, first convoy this week (full goal)"
+    result: success
+    when: { goal_requested: true, trust_gte: 70, rigidity_lte: 40, hostility_lte: 55 }
+  - id: bottom_line
+    label: "One-time inspected assessment visit tomorrow (bottom line)"
+    result: partial
+    when: { goal_requested: true, trust_gte: 50, rigidity_lte: 60, hostility_lte: 65 }
+  - id: meeting_ended
+    label: "She ends the meeting"
+    result: fail
+    when: { hostility_gte: 95 }
+  - id: refused
+    label: "Refused today — door left open"
+    result: fail
+    when: { turn_gte: 20 }
+
+implementation_checklist:
+  - { id: date_and_time_window, criterion: 1 }
+  - { id: vehicle_inspection, criterion: 3 }
+  - { id: named_staff_list, criterion: 2 }
+  - { id: no_crossing_into_country_b, criterion: 5 }
+  - { id: contact_if_incident, criterion: 4 }
+
+rubric:
+  dimensions: [information_quality, shared_objectives, legitimacy, trust_building, normative_reasoning, red_lines, transaction_design, implementation]
+  indicators:
+    - "Starts from agreed facts or shared values before the contested issue of access"
+    - "Keeps to facts and needs rather than a legal-rights battle"
+    - "Uses the ICRC's own observations and says how reliable they are"
+    - "Recognises Country B's right to control its border and its security concerns"
+    - "Offers concrete security measures (inspection, fixed times, named staff, no crossing into Country B)"
+    - "Explains the ICRC's neutral, impartial role"
+    - "Refuses to identify people in the camp or let Country B decide who receives aid"
+
+# Portrait and ElevenLabs voice (copied from the Streamlit POC; sim/avatar.py, sim/voice.py). DRAFT: ICRC to review.
+avatar:
+  look: {skin: "#f1c7a5", hair: "#6b4a2b", outfit: "#4b5320", hat: beret, long_hair: true}
+  voice: {name: Colonel Lena Varga, id: jNrVtsGYVLJWtMvruGMg}   # designed with ElevenLabs Voice Design
+  mood:                  # channel: dial ("-dial" = inverted)
+    warmth: trust          # smiles and opens up as trust grows
+    anger: hostility       # frowns and reddens as hostility rises
+    attention: -rigidity   # looks at you as she stops holding to his position
+    confusion: -consistency  # one brow raised when the delegate stops making sense

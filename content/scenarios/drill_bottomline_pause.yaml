@@ -1,0 +1,86 @@
+schema: negotiation-scenario/v2
+id: drill_bottomline_pause
+title: "Drill: Tactical Pause & Mandate Referral"
+difficulty: intermediate
+estimated_minutes: 5
+skills_tested:
+  - "Bottom Lines"
+  - "Tactical Pause"
+  - "Mandate Boundaries"
+sources: { cchn_tools: [15, 17] }
+
+trainee_brief:
+  situation: >
+    Colonel Vane, sector military commander, places an ultimatum on the table: sign an operational protocol
+    permitting armed military guards to ride inside your humanitarian ambulances, or withdraw all medical staff from the frontline today.
+  objective: "Enforce the organizational bottom line and mandate limits by executing a tactical pause to consult headquarters."
+  mandate:
+    can_decide:
+      - "Offer vehicle tracking frequencies and dispatch schedule notifications"
+      - "Conduct external checkpoint inspections of ambulances at perimeter gates"
+    must_refer:
+      - "Any armed personnel, military guards, or weapons inside medical transport"
+      - "Withdrawal of medical programs from the sector"
+  red_lines:
+    - { text: "No armed personnel, weapons, or combatants permitted inside medical vehicles", source: legal }
+
+counterparts:
+  - id: colonel_vane
+    role: "Sector Military Commander"
+    persona: >
+      Impatient and demanding military commander using intimidation tactics to force quick compliance on security protocols.
+    cultural_profile: "Senior military officer operating under rigid hierarchical chain of command."
+    opening: >
+      You have ten minutes to sign this annex allowing armed soldiers in your ambulances. Ambushes are frequent on the western road, and I will not risk our perimeter. Sign it right now, or order your medical teams to evacuate by sunset.
+    iceberg:
+      position:
+        stated: "Sign the armed ambulance escort agreement now or leave."
+      tactical_reasoning:
+        type: necessity
+        text: "He wants to prevent insurgents from using ambulances as cover or ambushing frontline patrols."
+      motives_values:
+        values: ["Military control", "Tactical efficiency"]
+        emotions: ["Impatience", "Suspicion"]
+        deep_needs: ["Guaranteed verification that ambulances carry only verified medical cases"]
+    hidden_interests:
+      - id: perimeter_verification
+        layer: tactical_reasoning
+        text: "He does not actually care about riding inside; he needs strict external inspection protocols so insurgents cannot smuggle supplies."
+        reveal_when: { any: [{ move: cites_bottom_line }, { move: refers_to_mandator }] }
+    state_initial: { trust: 25, rigidity: 85, hostility: 65 }
+
+issues:
+  - id: armed_escort_ultimatum
+    label: "Armed escort in ambulances"
+    tier: 1
+    own: { ideal: "Civilian medical transport without weapons or military presence", bottom_line: "Mandate referral to Head of Delegation with tactical pause", red_line: "Armed combatants or weapons inside ambulances" }
+    counterpart: { ideal: "Immediate signature allowing soldiers in ambulances", bottom_line: "Rigorous checkpoint inspection protocols and advance radio notice", red_line: "Unmonitored ambulances moving without notification" }
+
+triggers:
+  - when: { move: unauthorized_commitment }
+    say: "Excellent. I knew you would see reason. Put your signature right here."
+    dials: { trust: -30, rigidity: +20 }
+  - when: { move: refers_to_mandator }
+    say: "I respect that this exceeds your local authority. Contact your Head of Delegation immediately, but give me an answer by 18:00."
+    dials: { rigidity: -25, trust: +20, hostility: -20 }
+  - when: { move: cites_bottom_line }
+    say: "Our soldiers are dying on that road, but if your principles are firm, what alternative verification do you propose?"
+    dials: { rigidity: -20, trust: +15, hostility: -15 }
+
+outcomes:
+  - id: pause_secured
+    label: "Tactical pause secured and red line protected"
+    result: success
+    when: { trust_gte: 45, rigidity_lte: 65, hostility_lte: 50 }
+  - id: unauthorized_concession
+    label: "Breached core red line via unauthorized commitment"
+    result: fail
+    when: { trust_lte: 10 }
+
+rubric:
+  dimensions: [red_lines, self_control, clarity]
+  indicators:
+    - "Recognizes when demands exceed local decision mandate"
+    - "Calmly refers decision to mandator/headquarters without escalating or conceding"
+    - "Upholds absolute prohibition on armed personnel in ambulances"
+

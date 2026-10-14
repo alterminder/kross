@@ -1,0 +1,215 @@
+# CCHN Tripartite Siege Access Scenario (CCHN Tool 14 Multi-party & Tool 12 Network Play)
+schema: negotiation-scenario/v2
+id: s08_tripartite_siege
+title: "Tripartite Siege Access: Al-Mansoura Enclave"
+difficulty: advanced
+estimated_minutes: 20
+skills_tested:
+  - "Multi-Party Negotiation"
+  - "Network Mapping"
+  - "Confidentiality & Information Management"
+  - "Cost-Benefit Options"
+  - "Common Shared Space"
+sources: { bank: "CCHN Worked Case: Tripartite Siege", cchn_tools: [4, 7, 9, 12, 13, 14, 17] }
+review:
+  status: draft
+  needs_icrc_confirmation:
+    - trainee_brief.mandate
+    - counterparts[gov_colonel].cultural_profile
+    - counterparts[opposition_cmdr].cultural_profile
+    - issues
+
+negotiation:
+  nature: relational
+  type: normative
+  start_level: political
+
+island_of_agreements:
+  agreed_facts:
+    - "The town of Al-Mansoura has been under military siege for 14 months with 45,000 civilians inside"
+    - "Severe malnutrition rates and critical shortages of surgical supplies are documented by local health workers"
+    - "A 12-truck emergency humanitarian convoy is assembled and waiting at the outer perimeter"
+  contested_facts:
+    - "Whether opposition fighters inside are hoarding medical supplies and baby formula"
+    - "Whether government forces will allow unconditional medical evacuation of 20 critical patients"
+  convergent_norms:
+    - "Civilian women, children, and elderly must not starve or perish from lack of basic primary care"
+    - "Humanitarian convoys must not be used for smuggling weapons or ammunition"
+  divergent_norms:
+    - "Whether armed opposition fighters are entitled to medical treatment under IHL"
+    - "Whether humanitarian access must be synchronized simultaneously with reciprocal access to a pro-government enclave"
+
+trainee_brief:
+  situation: >
+    The town of Al-Mansoura is besieged by government armed forces, while inside the perimeter, the Al-Fajr Brigade controls access, distribution, and local civil administration.
+    You must negotiate simultaneous safe passage for a 12-truck medical and food convoy through the outer checkpoint controlled by Government Colonel Bashir, and the inner checkpoint controlled by Opposition Commander Tareq.
+    You also have access to local stakeholders: Sheikh Khalil (an influential community elder respected by both sides) and the ICRC Head of Sub-delegation.
+  objective: "Secure binding agreement from both military commanders for safe entry, non-diversion, and unconditional medical evacuation of critical wounded, without breaching multi-party confidentiality."
+  mandate:
+    can_decide:
+      - "Authorize joint visual inspection of cargo at the outer perimeter line in the presence of neutral staff"
+      - "Provide direct humanitarian food parcels and surgical supplies to Al-Mansoura central hospital"
+      - "Facilitate neutral medical evacuation of 20 critical civilian patients under humanitarian escort"
+    must_refer:
+      - "Agreeing to military escort of convoy trucks by armed government soldiers"
+      - "Surrendering identity manifests of medical staff or patients to military intelligence"
+  red_lines:
+    - { text: "No sharing of confidential security positions or operational data between opposing commanders", source: ethical }
+    - { text: "No armed military escorts inside humanitarian convoy vehicles", source: institutional }
+
+counterparts:
+  - id: gov_colonel
+    role: "Government Sector Commander (Col. Bashir)"
+    persona: >
+      Rigid, suspicious military commander enforcing the siege. Believes aid sustains the rebellion and demands full inspection, exclusion of surgical kits, and list of names.
+    cultural_profile: "Authoritarian military security doctrine where siege warfare is viewed as a legitimate pressure tactic."
+    authority:
+      decides: ["Authorizing passage through the outer siege perimeter and checkpoint inspection protocol"]
+      must_consult: ["General Staff Military Intelligence in Damascus"]
+    opening: >
+      This town is harboring terrorists who fire mortars at our positions. If you bring food and medicine to them, you are keeping them alive to kill my men. I will not let a single truck through unless my officers inspect every carton and remove all surgical supplies and fuel.
+    iceberg:
+      position:
+        stated: "No passage without military inspection, confiscation of surgical equipment, and vetting of all aid recipients."
+      tactical_reasoning:
+        type: military
+        text: "Fears surgical kits will treat wounded opposition fighters and fuel will power opposition combat tunnels."
+      motives_values:
+        values: ["Military discipline", "Loyalty to state", "Force protection"]
+        emotions: ["Suspicion", "Contempt", "Pressure"]
+        deep_needs: ["Assurance that aid will not give tactical advantage to enemies"]
+    hidden_interests:
+      - id: fuel_tunnel_fear
+        layer: tactical_reasoning
+        text: "His greatest operational fear is that diesel fuel in the convoy will be used to ventilate combat tunnels."
+        reveal_when: { any: [{ move: identifies_interest }, { trust_gte: 45 }] }
+      - id: general_staff_pressure
+        layer: motive_value
+        text: "General staff wants to avoid international sanctions and negative UN Security Council resolutions."
+        reveal_when: { trust_gte: 55 }
+    challenges:
+      - "Why should we feed an enemy enclave while they shell our checkpoints?"
+      - "I demand a full list of all doctors and wounded people you intend to treat."
+      - "Surgical supplies are dual-use; they belong to military logistics, not aid."
+    state_initial: { trust: 25, rigidity: 80, hostility: 50 }
+
+  - id: opposition_cmdr
+    role: "Opposition Brigade Commander (Commander Tareq)"
+    persona: >
+      Defiant, besieged insurgent commander who views the government siege as collective punishment and war crimes. Deeply distrustful of external negotiators.
+    cultural_profile: "Besieged insurgent command culture where any concession is perceived as imminent surrender."
+    authority:
+      decides: ["Authorizing entry at the inner gate and security of humanitarian staff inside the enclave"]
+      must_consult: ["Local Shura and Civilian Relief Committee"]
+    opening: >
+      For over a year, Bashir's forces have starved our children and bombed our hospitals. Now you come from their side asking us for guarantees? Unless you bring surgical materials and guarantee our wounded will not be arrested, we will not allow any UN staff past our barricades.
+    iceberg:
+      position:
+        stated: "Complete humanitarian access without government surveillance or conditionalities, plus immediate evacuation of wounded fighters."
+      tactical_reasoning:
+        type: military
+        text: "The field hospital has run out of anesthetics and basic IV fluids; patients are dying daily."
+      motives_values:
+        values: ["Civilian protection", "Resistance against siege", "Dignity"]
+        emotions: ["Desperation", "Bitterness", "Defiance"]
+        deep_needs: ["Reliable medical relief without exposing the population to reprisal"]
+    hidden_interests:
+      - id: hospital_collapse
+        layer: tactical_reasoning
+        text: "The underground hospital is 48 hours away from running out of oxygen cylinders."
+        reveal_when: { any: [{ move: identifies_interest }, { trust_gte: 45 }] }
+      - id: community_revolt_fear
+        layer: motive_value
+        text: "Tareq is facing rising anger from civilian mothers demanding food and threatening riots at his checkpoints."
+        reveal_when: { trust_gte: 55 }
+    challenges:
+      - "Are you working with Bashir's intelligence officers to trap our people?"
+      - "If government soldiers touch one grain of this wheat, the convoy will be torched."
+      - "We need surgical supplies right now, not just biscuits and blankets."
+    state_initial: { trust: 30, rigidity: 75, hostility: 45 }
+
+stakeholders:
+  - id: sheikh_khalil
+    role: "Venerated Community Elder & Intermediary"
+    influence: high
+    stance: transformative
+    scope: local
+    tactic: cooperation
+    persona: >
+      Respected 70-year-old elder born in Al-Mansoura with family members on both sides of the frontlines. Holds immense moral authority with both Bashir and Tareq.
+    interests: "Preventing civilian starvation and facilitating peaceful humanitarian truce"
+  - id: icrc_head_subdelegation
+    role: "ICRC Head of Sub-delegation"
+    influence: medium
+    stance: transformative
+    scope: global
+    tactic: alliance
+    persona: >
+      Veteran Swiss delegate with deep expertise in simultaneous dual-enclave evacuations and neutral inspection modalities.
+    interests: "Ensuring strict neutrality, confidentiality, and professional standard of humanitarian convoy protocols"
+
+multiparty:
+  # object form: a breach fires only when the term is repeated to a party outside `between`
+  confidential_between:
+    - { term: "tunnel coordinates", between: [opposition_cmdr] }
+    - { term: "secret weapons depot", between: [opposition_cmdr] }
+    - { term: "general staff offensive", between: [gov_colonel] }
+    - { term: "ambush positions", between: [opposition_cmdr] }
+
+issues:
+  - id: convoy_inspection
+    label: "Convoy inspection protocol"
+    tier: 1
+    own: { ideal: "Visual inspection at outer checkpoint solely by neutral humanitarian team", bottom_line: "Joint visual inspection with government officer in presence of neutral monitor", red_line: "Unrestricted search and unloading of trucks by armed combatants" }
+    counterpart: { ideal: "Full unloading and military confiscation of medical items", bottom_line: "Joint visual inspection at outer checkpoint", red_line: "Convoy passes without any government verification", hidden: true }
+  - id: medical_evacuation
+    label: "Medical evacuation of critical civilians"
+    tier: 2
+    own: { ideal: "Unconditional medical evacuation of 20 critical civilians to neutral hospital", bottom_line: "Evacuation of critical cases under ICRC escort with notification of patient numbers", red_line: "Handing over names of patients for military interrogation" }
+    counterpart: { ideal: "Evacuation denied or patients placed under military custody", bottom_line: "Evacuation of certified civilians under ICRC escort", red_line: "Evacuation of active combatants without intelligence screening", hidden: true }
+  - id: political_truce_demilitarization
+    label: "Full political truce and demilitarization"
+    tier: 3
+    own: { ideal: "Permanent humanitarian ceasefire and demilitarized zone", bottom_line: "Temporary 24-hour humanitarian pause for convoy passage", red_line: "Trainee guaranteeing military concessions or surrender terms" }
+    counterpart: { ideal: "Unconditional surrender of opposing brigade", bottom_line: "Ceasefire strictly during convoy transit", red_line: "Accepting political legitimacy of opponent", hidden: true }
+
+implementation_checklist:
+  - { id: joint_inspection_procedure, criterion: 1 }
+  - { id: icrc_neutral_escort, criterion: 2 }
+  - { id: hospital_direct_handover, criterion: 3 }
+  - { id: radio_hotline_protocol, criterion: 4 }
+
+outcomes:
+  - id: tripartite_convoy_agreement
+    label: "Both commanders agreed to neutral inspection and safe convoy entry"
+    result: success
+    when: { all: [{ trust_gte: 50 }, { rigidity_lte: 45 }, { hostility_lte: 35 }] }
+  - id: emergency_medical_corridor
+    label: "Partial agreement: emergency medical corridor opened for evacuations"
+    result: partial
+    when: { all: [{ trust_gte: 40 }, { hostility_lte: 50 }] }
+  - id: siege_stalemate
+    label: "Impasse: checkpoint closed and convoy turned back"
+    result: fail
+    when: { any: [{ hostility_gte: 80 }, { rigidity_gte: 95 }] }
+
+rubric:
+  dimensions: [context_analysis, questioning, trust_building, interests, concessions, mandate_understanding, transaction_design, red_lines, implementation, sequencing]
+
+reflection:
+  questions:
+    - id: t6_counterpart_perspective
+      prompt: "Were you available to explore and discuss the counterpart's points on their own terms before presenting your own demands?"
+      guidance: "In CCHN doctrine (Tool 6), active perceiving precedes active persuading. Did you validate their operational constraints before advocating your needs?"
+    - id: t6_options_under_resistance
+      prompt: "Were you able to raise creative options and alternatives when confronted with resistance, rather than insisting on a single solution?"
+      guidance: "CCHN Tool 6 & 13: Under resistance, propose alternative modalities, routes, or timing rather than debating positions."
+    - id: t6_clear_next_steps
+      prompt: "Did you establish concrete next steps, responsibilities, and a clear understanding of what to do if views diverge during implementation?"
+      guidance: "CCHN Tool 7 emphasizes that every meeting should formulate next steps and an escalation-prevention process ('negotiator's hotline') for field hiccups."
+    - id: fh_conflict_style
+      prompt: "Which conflict-handling style (Competing, Collaborating, Compromising, Avoiding, Accommodating) dominated your approach in this session, and was it effective given the counterpart's stance?"
+      guidance: "Frontline Humanitarian Negotiation Session 12 (Conflict Styles): High assertiveness with high cooperativeness (Collaborating) builds lasting agreements, whereas Compromising splits differences quickly under time pressure, and Competing may be needed strictly for non-negotiable red lines."
+    - id: fh_challenge_or_dilemma
+      prompt: "Did you encounter an operational challenge (resolvable through tactical options and logistics) or a genuine ethical dilemma (requiring trade-offs between fundamental principles or mandate imperatives)?"
+      guidance: "Frontline Humanitarian Negotiation Session 1: Operational challenges can be solved with procedural creativity and resources; humanitarian dilemmas involve irreconcilable tensions where every option carries severe moral or political costs."

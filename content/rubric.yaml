@@ -1,0 +1,265 @@
+# Shared assessment rubric.
+# 24 dimensions come verbatim from the ICRC scenario bank ("TRAINEE ASSESSMENT DIMENSIONS", source: bank).
+# 5 more are added from the CCHN Field Manual (source: cchn) where the manual makes a behaviour central and the
+# bank list has no home for it. Clusters, the 1-5 scale and the flags are our design.
+# Each dimension carries `cchn` (closest tool) and `look_for` (observable behaviours from the manual) so scores
+# anchor on behaviour, not style.
+# Each scenario picks the dimensions it scores (rubric.dimensions) and adds its own indicators.
+# Scoring rule for the evaluator: every score MUST cite a transcript quote as evidence, or be "not observed".
+
+status: draft
+scale: { min: 1, max: 5, not_observed: null }     # design: neither the bank nor CCHN defines a scale
+
+clusters:
+  understanding:
+    label: "Context & understanding"
+    dimensions:
+      context_analysis:
+        label: "Context analysis"
+        source: bank
+        cchn: "T1, T2"
+        look_for:
+          - "Separates facts from norms; sorts agreed vs contested facts and convergent vs divergent norms"
+          - "Starts the dialogue from agreed facts and convergent norms"
+      questioning:
+        label: "Quality of questioning"
+        source: bank
+        cchn: "T6, T9"
+        look_for:
+          - "Asks open questions about the counterpart's reasoning before proposing anything"
+          - "Follows the order what (position) -> how (reasoning) -> why (motives)"
+      active_listening:
+        label: "Active listening"
+        source: bank
+        cchn: "T6, T8"
+        look_for:
+          - "Restates or lists the counterpart's points and lets them take the initiative"
+          - "Acknowledges emotion in words"
+      facts_vs_assumptions:
+        label: "Distinguishing facts from assumptions"
+        source: bank
+        cchn: "T1, T2"
+        look_for:
+          - "Labels what is verified and what is assumed; acknowledges uncertainty"
+          - "Does not present rumours or single-source claims as facts"
+      stakeholders:
+        label: "Understanding of stakeholders"
+        source: bank
+        cchn: "T12"
+        look_for:
+          - "Asks who influences the counterpart, who decides and who only diverts"
+          - "Recognizes the limits the counterpart's own constituency puts on them"
+      information_quality:
+        label: "Quality of information presented"
+        source: cchn
+        cchn: "T1"
+        look_for:
+          - "Gives source, chain of custody, clear specifics and corroboration for a claim"
+          - "Leads with the strongest elements; does not bundle weak ones with strong ones"
+  counterpart_analysis:
+    label: "Position / interest / motive"
+    dimensions:
+      positions:
+        label: "Identification of positions"
+        source: bank
+        cchn: "T9"
+        look_for:
+          - "Restates the counterpart's explicit and implicit position accurately"
+          - "Checks how clear and authoritative the position is (who is speaking, how clearly, through which channel)"
+      interests:
+        label: "Identification of interests"
+        source: bank
+        cchn: "T9"
+        look_for:
+          - "Finds the logic behind the position (legal, professional, military, political reasoning)"
+          - "Tests that logic without arguing against it"
+      motives:
+        label: "Identification of motives"
+        source: bank
+        cchn: "T9"
+        look_for:
+          - "Explores values, identity, emotions (fear, loss, grievance) and deep needs (security, recognition, sovereignty)"
+          - "Treats motives as assumptions until the counterpart confirms them"
+      shared_objectives:
+        label: "Identification of shared objectives"
+        source: bank
+        cchn: "T11, T13"
+        look_for:
+          - "Names a shared value or benefit before claiming their own"
+          - "Looks for overlap at each level: values, reasoning, positions"
+  relationship:
+    label: "Legitimacy & relationship"
+    dimensions:
+      legitimacy:
+        label: "Legitimacy"
+        source: bank
+        cchn: "T3"
+        look_for:
+          - "Answers 'who are you, why are you here' in the counterpart's terms"
+          - "Uses the source of legitimacy that fits this counterpart (institution, expertise, personal, adaptability, network); does not argue legitimacy from principle alone"
+      trust_building:
+        label: "Trust building"
+        source: bank
+        cchn: "T3"
+        look_for:
+          - "Clear messages, adapts to the counterpart's perspective, stays predictable"
+      relationship_management:
+        label: "Relationship management"
+        source: bank
+        cchn: "T4, T6"
+        look_for:
+          - "Treats the relationship, not the single deal, as the asset"
+          - "Avoids humiliating the counterpart; thanks them even without agreement"
+      influence:
+        label: "Use of influence"
+        source: bank
+        cchn: "T12"
+        look_for:
+          - "Mobilizes third parties and networks instead of pressure"
+          - "Does not use threats or superiors as leverage"
+      future_dialogue:
+        label: "Ability to preserve future dialogue"
+        source: bank
+        cchn: "T4"
+        look_for:
+          - "Treats a refusal as 'a moment in a relationship', not the end"
+          - "Leaves a next step or contact"
+      predictability:
+        label: "Predictability"
+        source: cchn
+        cchn: "T3, T6"
+        look_for:
+          - "Does not change a central position, priority or terminology unexpectedly, even in the counterpart's favour"
+          - "Follows the agenda and process they announced"
+  mandate:
+    label: "Mandate & limits"
+    dimensions:
+      mandate_understanding:
+        label: "Understanding of mandate"
+        source: bank
+        cchn: "T15"
+        look_for:
+          - "States what they can decide and what they must refer, without exaggerating authority"
+          - "Keeps the specific terms of the mandate confidential"
+      bottom_lines:
+        label: "Recognition of bottom lines"
+        source: bank
+        cchn: "T14"
+        look_for:
+          - "Notices when added risk outweighs added benefit and pauses to consult"
+          - "Communicates the pause without breaking the relationship"
+      red_lines:
+        label: "Recognition of red lines"
+        source: bank
+        cchn: "T17"
+        look_for:
+          - "Recognizes a red line when it is presented and does not try to revise it themselves"
+          - "States limits constructively, not as an opening move; does not buckle to 'others accepted'"
+      concessions:
+        label: "Management of concessions"
+        source: bank
+        cchn: "T14"
+        look_for:
+          - "Trades within the mandate and links each concession to a return"
+          - "Does not concede under artificial time pressure"
+  conduct:
+    label: "Conduct under pressure"
+    dimensions:
+      self_control:
+        label: "Emotional self-control"
+        source: bank
+        cchn: "T8"
+        look_for:
+          - "Stays assertive, not aggressive; pauses before answering aggression"
+      hostility_handling:
+        label: "Handling hostility"
+        source: bank
+        cchn: "T8"
+        look_for:
+          - "Pauses, then acknowledges the emotion in words ('I hear you'), not 'I understand your situation'"
+          - "Reformulates the core issue, reframes, asks open / closed / open questions; does not apologize just to calm"
+      clarity:
+        label: "Clarity of communication"
+        source: bank
+        cchn: "T3, T7"
+        look_for:
+          - "Unambiguous messages; unpacks jargon and principles"
+          - "Confirms both sides understand the terms the same way"
+  outcome:
+    label: "Options & transaction"
+    dimensions:
+      option_generation:
+        label: "Option generation"
+        source: bank
+        cchn: "T6, T14"
+        look_for:
+          - "Brings several options and weighs pros and cons with the counterpart"
+      transaction_design:
+        label: "Transaction design"
+        source: bank
+        cchn: "T7"
+        look_for:
+          - "Commitments are clear, roles defined, reciprocal and sequenced, with a process for divergence and responsibilities matched to power"
+      implementation:
+        label: "Implementation planning"
+        source: bank
+        cchn: "T7"
+        look_for:
+          - "Names who does what, when, where; contacts; contingencies; consults those who will implement"
+  tactics:
+    label: "Tactical reading"
+    dimensions:
+      level_management:
+        label: "Managing the level of the negotiation"
+        source: cchn
+        cchn: "T4"
+        look_for:
+          - "Recognizes whether a question is political (who / why), professional (how) or technical (what / where / when)"
+          - "Answers who / why before how / what when asked; does not take diversionary bait; politicizes or depoliticizes deliberately"
+      normative_reasoning:
+        label: "Handling norms and legal arguments"
+        source: cchn
+        cchn: "T5, T17"
+        look_for:
+          - "Verifies a norm exists and that the counterpart recognizes it before invoking it"
+          - "Tells a factual excuse (necessity) from a genuine conflict of norms; bridges through local norms and the counterpart's own logic"
+      sequencing:
+        label: "Sequencing of issues"
+        source: cchn
+        cchn: "T14"
+        look_for:
+          - "Opens with quick wins (tier 1), tests limits (tier 2), parks the hardest issues for the mandator (tier 3)"
+          - "Orders steps so that safety comes before compensation, release before long-term questions"
+
+# Hard flags: shown in red on the trainer console, independent of scores
+flags:
+  mandate_breach:
+    text: "Trainee committed to something in the must_refer zone (between bottom line and red line) without referring to the mandator"
+    cchn: "T14, T15"
+  red_line_crossed:
+    text: "Trainee accepted a condition beyond a red line (legal, institutional, professional or ethical)"
+    cchn: "T17"
+  confidentiality:
+    text: "Trainee disclosed confidential or protected information: mandate terms, another party's position in a parallel negotiation, sources, beneficiaries"
+    cchn: "T1, T15, T16"
+  escalation:
+    text: "Trainee escalated unnecessarily: aggressive emotional leverage, threat, humiliation or ultimatum"
+    cchn: "T8"
+
+# CCHN Competence Chart on Humanitarian Negotiation (Caux consultation, June 2019, 22 practitioners; Field Manual Annex,
+# p. 381), condensed. Placement checked against the chart; see content/knowledge/cchn/competences.md.
+competence_levels:
+  core:
+    knowledge: ["Humanitarian principles and basic rules", "Analysing contexts and interests", "Analysing networks", "Cultural protocols"]
+    attitudes: ["Self-awareness of one's perceptions", "Emotional intelligence", "Accepting complexity", "Intercultural flexibility", "Empathy"]
+    skills: ["Thinking tactically and critically", "Working under pressure", "Dealing with difficult people", "Sharing experience and perspectives openly"]
+  advanced:
+    knowledge: ["Understanding and managing multiple external stakeholders", "Leveraging influence in complex environments", "Balancing interests and finding the right compromises", "Strategic thinking and decision-making", "Reflecting and deliberating on complex issues systematically"]
+    attitudes: ["Adaptability to changing environments", "Creating options out of complex problems"]
+    skills: ["Addressing negotiations tactically, including the use of social media", "Working and living in complex environments"]
+  expert:
+    knowledge: ["Forecasting changing environments and positions", "Developing multifaceted strategies for multiple stakeholders", "Leveraging competing sources of influence"]
+    attitudes: ["Taking and managing risks", "Leading a negotiation process", "Aligning priorities within one's organization and keeping a clear mandate"]
+    skills: ["Mentoring and coaching negotiation teams in complex environments"]
+# DRAFT mapping of the bank's four difficulty labels onto the manual's three levels. Confirm with ICRC.
+difficulty_to_level: { beginner: core, intermediate: core, advanced: advanced, expert: expert }

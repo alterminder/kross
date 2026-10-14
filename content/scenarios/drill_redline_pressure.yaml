@@ -1,0 +1,86 @@
+schema: negotiation-scenario/v2
+id: drill_redline_pressure
+title: "Drill: Holding Red Lines Under Pressure"
+difficulty: intermediate
+estimated_minutes: 5
+skills_tested:
+  - "Red Lines"
+  - "Principled Firmness"
+  - "Constructive Framing"
+sources: { cchn_tools: [17] }
+
+trainee_brief:
+  situation: >
+    Major Kasun controls the southern supply corridor. He demands that 15% of your convoy's flour and oil rations
+    be offloaded at his garrison as an "administrative security contribution" before he stamps your transit pass.
+  objective: "Refuse any diversion of aid rations while preserving working relations and obtaining convoy passage."
+  mandate:
+    can_decide:
+      - "Offer standard operational coordination and convoy timing notice"
+      - "Conduct joint verification of warehouse security conditions"
+    must_refer:
+      - "Any alteration of aid cargo or distribution beneficiaries"
+  red_lines:
+    - { text: "No diversion of humanitarian aid to armed forces or combatants", source: legal }
+    - { text: "No payment of cash tributes, security taxes, or in-kind bribes", source: institutional }
+
+counterparts:
+  - id: major_kasun
+    role: "Sector Garrison Logistics Officer"
+    persona: >
+      Hardened military logistics officer who believes humanitarians take state protection for granted while ignoring soldier hardships.
+    cultural_profile: "Field logistics officer navigating resource scarcity and unit discipline under pressure."
+    opening: >
+      Look, my soldiers haven't had regular rations in three weeks while you bring truckloads of flour to civilians right past our base. Leave 150 bags of flour here for our garrison families, and your convoy rolls through in ten minutes. Otherwise, you wait here until next week.
+    iceberg:
+      position:
+        stated: "150 bags of flour must stay at the base to get transit clearance."
+      tactical_reasoning:
+        type: necessity
+        text: "Severe food shortages in the garrison threaten unit discipline and morale."
+      motives_values:
+        values: ["Soldier welfare", "Fairness and burden sharing"]
+        emotions: ["Resentment", "Fatigue"]
+        deep_needs: ["Alleviating hunger among base dependents without appearing corrupt"]
+    hidden_interests:
+      - id: garrison_dependents
+        layer: motive_value
+        text: "The families of wounded soldiers and camp followers living near the garrison are genuinely malnourished."
+        reveal_when: { any: [{ move: identifies_interest }, { move: frames_shared_benefit }] }
+    state_initial: { trust: 30, rigidity: 80, hostility: 45 }
+
+issues:
+  - id: diversion_demand
+    label: "Aid diversion demand"
+    tier: 1
+    own: { ideal: "Zero diversion, convoy passes intact", bottom_line: "Convoy passes intact without any illicit transfer", red_line: "Any aid handed over to military units" }
+    counterpart: { ideal: "150 bags handed over directly", bottom_line: "Independent humanitarian assessment of vulnerable civilian families near the base", red_line: "Total dismissal of his unit's plight" }
+
+triggers:
+  - when: { move: negotiates_own_red_line }
+    say: "Good, so you can spare at least 50 bags then. Bring them around to the depot."
+    dials: { trust: -20, rigidity: +15 }
+  - when: { move: frames_shared_benefit }
+    say: "If our civilian dependents are assessed by your community teams fairly, that helps keep peace around the perimeter."
+    dials: { rigidity: -25, trust: +20 }
+  - when: { move: premature_red_line }
+    say: "Don't lecture me about rules while my soldiers watch food drive past their hungry children. Convoy is blocked."
+    dials: { hostility: +20, rigidity: +20 }
+
+outcomes:
+  - id: red_line_held
+    label: "Red line upheld and alternative pathway agreed"
+    result: success
+    when: { trust_gte: 50, rigidity_lte: 50, hostility_lte: 45 }
+  - id: compromised_red_line
+    label: "Compromised humanitarian red line"
+    result: fail
+    when: { trust_lte: 15 }
+
+rubric:
+  dimensions: [red_lines, relationship_management, clarity]
+  indicators:
+    - "Firmly refuses diversion of food aid rations to armed combatants"
+    - "Explores legitimate alternatives such as independent community assessment"
+    - "Avoids aggressive counter-threats or premature breakdown"
+

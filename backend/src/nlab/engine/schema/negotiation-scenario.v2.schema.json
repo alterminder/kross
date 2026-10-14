@@ -1,0 +1,551 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Negotiation scenario (engine input), aligned with the CCHN Field Manual",
+  "description": "One scenario file. Shared rules live in config/behaviour_rules.yaml and config/rubric.yaml and are referenced by id (moves, dimensions, flags); validate.py cross-checks those ids. Field names trainee_brief.mandate and implementation_checklist are referenced by behaviour_rules.yaml.",
+  "type": "object",
+  "required": ["schema", "id", "title", "difficulty", "trainee_brief", "counterparts", "rubric", "outcomes"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "negotiation-scenario/v2"},
+    "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "title": {"type": "string"},
+    "difficulty": {"enum": ["beginner", "intermediate", "advanced", "expert"]},
+    "estimated_minutes": {"type": "integer", "minimum": 1},
+    "skills_tested": {"$ref": "#/$defs/strings"},
+    "generated": {
+      "description": "Set by processor.py: provenance of an LLM-converted scenario.",
+      "type": "object",
+      "properties": {
+        "tool": {"type": "string"},
+        "model": {"type": "string"},
+        "prompt_version": {"type": "string"},
+        "source_sha256": {"type": "string"},
+        "notes": {"$ref": "#/$defs/strings"},
+        "warnings": {"$ref": "#/$defs/strings"}
+      }
+    },
+    "sources": {
+      "type": "object",
+      "properties": {
+        "bank": {"type": "string"},
+        "cchn_tools": {"type": "array", "items": {"type": "integer", "minimum": 1, "maximum": 17}}
+      }
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "status": {"enum": ["draft", "reviewed"]},
+        "needs_icrc_confirmation": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+
+    "negotiation": {
+      "description": "CCHN Tool 4 (typology, level) and Tools 2/5 (factual vs normative).",
+      "type": "object",
+      "properties": {
+        "nature": {"enum": ["relational", "transactional", "adversarial"]},
+        "type": {"enum": ["factual", "normative"]},
+        "start_level": {"enum": ["political", "professional", "technical"]}
+      }
+    },
+    "island_of_agreements": {
+      "description": "CCHN Tool 2. Start the dialogue from agreed facts and convergent norms.",
+      "type": "object",
+      "properties": {
+        "agreed_facts": {"$ref": "#/$defs/strings"},
+        "contested_facts": {"$ref": "#/$defs/strings"},
+        "convergent_norms": {"$ref": "#/$defs/strings"},
+        "divergent_norms": {"$ref": "#/$defs/strings"}
+      }
+    },
+    "preparation": {
+      "description": "CCHN Naivasha Grid preparation stage before transaction.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "time_limit_minutes": {"type": "integer", "minimum": 1},
+        "modules": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "island_of_agreements",
+              "information_quality",
+              "legitimacy_profile",
+              "level_and_narrative",
+              "counterpart_iceberg",
+              "common_shared_space",
+              "network",
+              "lines_and_options",
+              "meeting_checklist"
+            ]
+          }
+        }
+      }
+    },
+    "claims": {
+      "description": "CCHN Tool 1: Information claims and author assessment key.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "text"],
+        "properties": {
+          "id": {"type": "string"},
+          "text": {"type": "string"},
+          "criteria": {
+            "type": "object",
+            "properties": {
+              "source": {"type": "integer", "minimum": 0, "maximum": 3},
+              "method": {"type": "integer", "minimum": 0, "maximum": 3},
+              "fact_checking": {"type": "integer", "minimum": 0, "maximum": 3},
+              "relevance": {"type": "integer", "minimum": 0, "maximum": 3}
+            }
+          }
+        }
+      }
+    },
+    "own_iceberg": {
+      "description": "CCHN Tools 4 & 10: Trainee's own iceberg (why/how/what) for level and narrative.",
+      "type": "object",
+      "properties": {
+        "why": {"type": "string"},
+        "how": {"type": "string"},
+        "what": {"type": "string"}
+      }
+    },
+    "css": {
+      "description": "CCHN Tool 11: Common shared space elements.",
+      "type": "object",
+      "properties": {
+        "convergent": {"$ref": "#/$defs/strings"},
+        "divergent": {"$ref": "#/$defs/strings"},
+        "potential_synergies": {"$ref": "#/$defs/strings"}
+      }
+    },
+    "degradation_cues": {
+      "description": "CCHN Tool 8: Early warning indicators that security, safety, or counterpart posture is degrading.",
+      "$ref": "#/$defs/strings"
+    },
+    "reflection": {
+      "description": "CCHN Tool 6: Post-negotiation transaction reflection questions for the trainee.",
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "prompt"],
+            "properties": {
+              "id": {"type": "string"},
+              "prompt": {"type": "string"},
+              "guidance": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "debrief": {
+      "description": "Per-scenario debrief section control and feedback style.",
+      "type": "object",
+      "properties": {
+        "sections": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "agreement_check",
+              "zones",
+              "level_timeline",
+              "iceberg_depth",
+              "deescalation_report",
+              "prep_vs_reality",
+              "reflection",
+              "competences"
+            ]
+          }
+        },
+        "feedback_style": {
+          "enum": ["coaching", "rigorous", "direct", "supportive"]
+        }
+      }
+    },
+
+    "trainee_brief": {
+      "type": "object",
+      "required": ["situation", "objective", "mandate", "red_lines"],
+      "properties": {
+        "situation": {"type": "string", "minLength": 1},
+        "objective": {"type": "string", "minLength": 1},
+        "decision_options": {"$ref": "#/$defs/strings", "description": "Choices the trainee must weigh, when the brief lists them (e.g. s18)."},
+        "facts": {"$ref": "#/$defs/strings", "description": "Key verified starting facts the trainee holds (CCHN Tool 1)."},
+        "mandate": {
+          "description": "CCHN Tool 14/15. can_decide = ideal outcome to bottom line; must_refer = bottom line to red line (needs mandator instruction). CONFIDENTIAL: never shown to the counterpart.",
+          "type": "object",
+          "required": ["can_decide", "must_refer"],
+          "properties": {
+            "can_decide": {"$ref": "#/$defs/strings"},
+            "must_refer": {"$ref": "#/$defs/strings"}
+          }
+        },
+        "red_lines": {
+          "description": "CCHN Tool 17. Set by the mandator, never revised by the negotiator.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["text", "source"],
+            "properties": {
+              "text": {"type": "string"},
+              "source": {"enum": ["legal", "institutional", "professional", "ethical", "moral"]},
+              "flexible_by_mandator_only": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    },
+
+    "counterparts": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "role", "persona", "cultural_profile", "iceberg", "state_initial"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "role": {"type": "string"},
+          "persona": {"type": "string"},
+          "cultural_profile": {"type": "string", "description": "Authored by an ICRC trainer, never by the model. Keep 'TO BE AUTHORED BY ICRC TRAINER' until then."},
+          "authority": {
+            "description": "CCHN Tool 9 three-pronged test: how much authority, clarity and predictability this interlocutor has.",
+            "type": "object",
+            "properties": {
+              "decides": {"$ref": "#/$defs/strings"},
+              "must_consult": {"$ref": "#/$defs/strings"}
+            }
+          },
+          "opening": {"type": "string", "minLength": 1, "description": "Verbatim from the brief. Absent when the brief has none (e.g. phased scenarios)."},
+          "fallback": {"type": "string", "minLength": 1, "description": "One line in the counterpart's own voice, said when the language model gives no answer to a turn, so the counterpart never breaks character. Absent: the trainee sees a plain note that the counterpart did not answer."},
+          "preferred_level": {"enum": ["political", "professional", "technical"], "description": "CCHN Tool 4: the counterpart's preferred negotiation level."},
+          "legitimacy_weights": {
+            "description": "CCHN Tool 3: Legitimacy source weights for counterpart.",
+            "type": "object",
+            "properties": {
+              "legal": {"type": "string"},
+              "institutional": {"type": "string"},
+              "professional": {"type": "string"},
+              "moral": {"type": "string"}
+            }
+          },
+          "motive_candidates": {"$ref": "#/$defs/strings", "description": "When the brief lists several possible motives and says the trainee must not assume which; the engine picks one per run (seeded)."},
+          "iceberg": {
+            "description": "CCHN Tool 9. position (what) -> tactical reasoning (how) -> motives and values (why).",
+            "type": "object",
+            "required": ["position"],
+            "properties": {
+              "position": {
+                "type": "object",
+                "required": ["stated"],
+                "properties": {"stated": {"type": "string"}, "implicit": {"$ref": "#/$defs/strings"}}
+              },
+              "tactical_reasoning": {
+                "type": "object",
+                "properties": {
+                  "type": {"enum": ["legal", "professional", "logical", "military", "political", "necessity", "alternative_norm", "ignorance"]},
+                  "text": {"type": "string"}
+                }
+              },
+              "motives_values": {
+                "type": "object",
+                "properties": {
+                  "values": {"$ref": "#/$defs/strings"},
+                  "emotions": {"$ref": "#/$defs/strings"},
+                  "deep_needs": {"$ref": "#/$defs/strings"}
+                }
+              }
+            }
+          },
+          "hidden_interests": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "layer", "text"],
+              "properties": {
+                "id": {"type": "string"},
+                "layer": {"enum": ["tactical_reasoning", "motive_value"]},
+                "text": {"type": "string"},
+                "reveal_when": {"$ref": "#/$defs/condition"}
+              }
+            }
+          },
+          "challenges": {"$ref": "#/$defs/strings"},
+          "behaviours": {
+            "description": "Scenario-specific behaviours, e.g. deliberate vagueness (CCHN Tools 6, 7).",
+            "type": "object",
+            "properties": {
+              "vague_replies": {"$ref": "#/$defs/strings"},
+              "closing_test": {"type": "string"}
+            }
+          },
+          "constraints_from_constituency": {"$ref": "#/$defs/strings"},
+          "state_initial": {
+            "type": "object",
+            "required": ["trust", "rigidity", "hostility"],
+            "additionalProperties": false,
+            "properties": {
+              "trust": {"$ref": "#/$defs/dial"},
+              "rigidity": {"$ref": "#/$defs/dial"},
+              "hostility": {"$ref": "#/$defs/dial"}
+            }
+          }
+        }
+      }
+    },
+
+    "issues": {
+      "description": "CCHN Tools 13/14. Per issue: ideal (A) -> bottom line (B) -> red line (C) for each side, plus a tier for sequencing. Counterpart lines are hidden and surface when a trainee proposal reaches them.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "tier"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "label": {"type": "string"},
+          "tier": {"enum": [1, 2, 3], "description": "1 quick win, 2 demanding, 3 complicated / refer to mandator"},
+          "own": {"$ref": "#/$defs/lines"},
+          "counterpart": {"$ref": "#/$defs/lines"}
+        }
+      }
+    },
+    "stakeholders": {
+      "description": "CCHN Tool 12. Position on the counterpart's map (as the counterpart perceives them).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "role"],
+        "properties": {
+          "id": {"type": "string"},
+          "role": {"type": "string"},
+          "stance": {"enum": ["transformative", "conservative"]},
+          "scope": {"enum": ["global", "local"]},
+          "influence": {"enum": ["high", "medium", "low"]},
+          "degrees_to_counterpart": {"type": "integer", "minimum": 1},
+          "red_line_on_counterpart": {"type": "string"},
+          "tactic": {"enum": ["alliance", "cooperation", "coalition", "mitigation"]}
+        }
+      }
+    },
+    "multiparty": {
+      "description": "Parallel negotiations (CCHN Tool 14, tripartite siege).",
+      "type": "object",
+      "properties": {
+        "confidential_between": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {"type": "string"},
+              {
+                "type": "object",
+                "properties": {
+                  "term": {"type": "string"},
+                  "between": {"type": "array", "items": {"type": "string"}}
+                },
+                "required": ["term"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      }
+    },
+
+    "timing": {
+      "description": "How the session is paced. Every part is optional; what is left out keeps the built-in behaviour.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "phases": {
+          "description": "The meeting's stages, in order, by turn. Each stage tells the counterpart how to behave; the last one runs to the end. Left empty or out, the built-in opening, exploration and closing apply, timed by the scenario's length.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "instruction"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+              "label": {"type": "string", "description": "What the trainee sees as the stage's name. Default: the id."},
+              "hint": {"type": "string", "description": "What the trainee sees about the stage. Never the counterpart's instruction."},
+              "instruction": {"type": "string", "minLength": 1, "description": "How the counterpart behaves in this stage. The trainee never sees it."},
+              "until_turn": {"type": "integer", "minimum": 1, "description": "The stage lasts up to and including this trainee turn. Every stage but the last needs it, rising from stage to stage."},
+              "allow_injects": {"type": "boolean", "description": "False: a trainer cannot fire a twist during this stage (the request is refused until it ends). Default true. Twists the scenario fires by itself are not affected."}
+            }
+          }
+        },
+        "warnings": {
+          "description": "Minutes left at which the trainee sees a soft banner. Default: 5 and 1.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "integer", "minimum": 1}
+        },
+        "on_timeout": {
+          "description": "What happens when the scenario's minutes run out: guide = nothing, the banner says time is up (default); end = the meeting ends without a result; fail = it ends as a failure; trainer = the trainer watching the session is asked to end it, with or without a result (without a trainer nothing ends).",
+          "enum": ["guide", "end", "fail", "trainer"]
+        },
+        "silence": {
+          "description": "What happens when the trainee goes quiet. Every part is optional.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "after_seconds": {"type": "integer", "minimum": 10, "maximum": 600, "description": "Seconds of silence before the counterpart speaks up. Default 90."},
+            "line": {"type": "string", "minLength": 1, "description": "What the counterpart says then, word for word, in their own voice. Absent: the model improvises an impatient prompt."},
+            "penalty": {"type": "integer", "minimum": 1, "maximum": 50, "description": "How hard a silence hits: hostility rises by this much. Default 5."}
+          }
+        }
+      }
+    },
+
+    "phases": {
+      "description": "Ordered stages of a long scenario (e.g. the capstone). Verbatim counterpart lines only.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "name": {"type": "string"},
+          "instruction": {"type": "string", "description": "What the counterpart / engine does in this phase"},
+          "counterpart_says": {"type": "string", "description": "Verbatim line from the brief"},
+          "trainee_must": {"type": "string"}
+        }
+      }
+    },
+
+    "triggers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["when"],
+        "anyOf": [{"required": ["say"]}, {"required": ["effect"]}],
+        "properties": {
+          "when": {"$ref": "#/$defs/condition"},
+          "say": {"type": "string"},
+          "effect": {"type": "string"},
+          "shift_level": {"enum": ["political", "professional", "technical"]}
+        }
+      }
+    },
+    "injections": {
+      "description": "Buttons on the trainer console.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "instruction"],
+          "properties": {
+            "id": {"type": "string"}, "label": {"type": "string"}, "instruction": {"type": "string"}
+            ,"auto": {
+              "type": "object",
+              "properties": {
+                "at_turn": {"type": "integer", "minimum": 1},
+                "when": {"$ref": "#/$defs/condition"}
+              },
+              "anyOf": [{"required": ["at_turn"]}, {"required": ["when"]}]
+            },
+            "dials": {"type": "object", "additionalProperties": {"type": "integer", "minimum": -100, "maximum": 100}}
+          }
+      }
+    },
+    "outcomes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "result", "when"],
+        "properties": {
+          "id": {"type": "string"},
+          "label": {"type": "string"},
+          "result": {"enum": ["success", "partial", "fail"]},
+          "when": {"$ref": "#/$defs/condition"}
+        }
+      }
+    },
+    "implementation_checklist": {
+      "description": "Tracked deterministically via the clarifies_operational_detail move. criterion = CCHN Tool 7: 1 clear commitments, 2 roles and tasks, 3 sequence and conditions, 4 process for divergence, 5 power and responsibility.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "criterion"],
+        "properties": {
+          "id": {"type": "string"},
+          "criterion": {"enum": [1, 2, 3, 4, 5]}
+        }
+      }
+    },
+    "rubric": {
+      "type": "object",
+      "required": ["dimensions"],
+      "properties": {
+        "dimensions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "indicators": {"$ref": "#/$defs/strings"},
+        "score_scale": {
+          "type": "object",
+          "description": "Per-scenario scoring scale overrides.",
+          "properties": {
+            "min": {"type": "integer"},
+            "max": {"type": "integer"},
+            "labels": {
+              "type": "object",
+              "additionalProperties": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "overrides": {"type": "object", "description": "Any value of behaviour_rules.yaml this scenario replaces."},
+    "avatar": {
+      "description": "Optional portrait and ElevenLabs voice of the first counterpart (sim/avatar.py, sim/voice.py).",
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "look": {"type": "object", "properties": {"skin": {"type": "string"}, "hair": {"type": "string"}, "outfit": {"type": "string"},
+          "hat": {"enum": ["none", "cap", "beret"]}, "moustache": {"type": "boolean"}, "long_hair": {"type": "boolean"}}},
+        "mood": {"type": "object", "description": "Which dial drives each expression; \"-dial\" inverts it.",
+          "properties": {"warmth": {"type": "string"}, "anger": {"type": "string"}, "attention": {"type": "string"},
+            "worry": {"type": "string"}, "daylight": {"type": "string"}, "confusion": {"type": "string"}}},
+        "voice": {"type": "object", "properties": {"id": {"type": "string"}, "name": {"type": "string"},
+          "description": {"type": "string"}, "sample": {"type": "string"}}}
+      }
+    }
+  },
+
+  "$defs": {
+    "strings": {"type": "array", "items": {"type": "string"}},
+    "dial": {"type": "integer", "minimum": 0, "maximum": 100},
+    "lines": {
+      "type": "object",
+      "properties": {
+        "ideal": {"type": ["string", "null"]},
+        "bottom_line": {"type": ["string", "null"]},
+        "red_line": {"type": ["string", "null"]},
+        "hidden": {"type": "boolean"}
+      }
+    },
+    "condition": {
+      "description": "Machine-evaluable condition. Keys combine with AND; any / all nest.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "move": {"type": "string", "description": "A move id from behaviour_rules.yaml"},
+        "goal_requested": {"type": "boolean"},
+        "trust_gte": {"$ref": "#/$defs/dial"}, "trust_lte": {"$ref": "#/$defs/dial"},
+        "rigidity_gte": {"$ref": "#/$defs/dial"}, "rigidity_lte": {"$ref": "#/$defs/dial"},
+        "hostility_gte": {"$ref": "#/$defs/dial"}, "hostility_lte": {"$ref": "#/$defs/dial"},
+        "turn_lte": {"type": "integer", "minimum": 1}, "turn_gte": {"type": "integer", "minimum": 1},
+        "level": {"enum": ["political", "professional", "technical"]},
+        "proposal_reaches": {
+          "type": "object",
+          "required": ["issue", "side", "line"],
+          "properties": {
+            "issue": {"type": "string"},
+            "side": {"enum": ["own", "counterpart"]},
+            "line": {"enum": ["bottom_line", "red_line"]}
+          }
+        },
+        "any": {"type": "array", "items": {"$ref": "#/$defs/condition"}},
+        "all": {"type": "array", "items": {"$ref": "#/$defs/condition"}}
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+!.env.app.example
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.venv/
+dist/
+build/
+*.egg-info/
+node_modules/
+frontend/test-results/
+frontend/playwright-report/
+
+# TypeScript incremental build info
+tsconfig.tsbuildinfo

@@ -1,0 +1,533 @@
+{
+ "session_id": "c35a6833c744",
+ "scenario_id": "s01_idp_camp_access",
+ "recording_reproduced_by_old_engine": true,
+ "scenario": {
+  "schema": "negotiation-scenario/v2",
+  "id": "s01_idp_camp_access",
+  "title": "Access to an IDP camp",
+  "difficulty": "intermediate",
+  "estimated_minutes": 20,
+  "skills_tested": [
+   "Context analysis",
+   "Information gathering",
+   "Building trust",
+   "Identifying interests",
+   "Clarifying operational terms",
+   "Avoiding premature concessions",
+   "Reaching an implementable agreement"
+  ],
+  "sources": {
+   "bank": "SCENARIO 01",
+   "cchn_tools": [
+    3,
+    7,
+    13,
+    14,
+    17
+   ]
+  },
+  "review": {
+   "status": "draft",
+   "needs_icrc_confirmation": [
+    "trainee_brief.mandate",
+    "trainee_brief.red_lines",
+    "counterparts[militia_rep].cultural_profile",
+    "counterparts[militia_rep].iceberg",
+    "issues",
+    "state_initial"
+   ]
+  },
+  "negotiation": {
+   "nature": "relational",
+   "type": "factual",
+   "start_level": "technical"
+  },
+  "island_of_agreements": {
+   "agreed_facts": [
+    "A convoy of assistance is ready to depart",
+    "The camp is controlled locally by a militia, within an area nominally under the state military"
+   ],
+   "contested_facts": [
+    "How serious the needs inside the camp are",
+    "Convoy composition, route and staff (not yet known to the counterpart)"
+   ],
+   "convergent_norms": [
+    "Nobody wants a security incident in or around the camp",
+    "Assistance should reach the people who need it"
+   ],
+   "divergent_norms": [
+    "Who controls distribution: militia control vs the organization's independence",
+    "Armed escort by a party to the conflict"
+   ]
+  },
+  "trainee_brief": {
+   "situation": "Your organization is trying to deliver emergency assistance to an IDP camp controlled locally by an armed militia, in an area nominally under state military authority. You have been discussing access with both. A convoy is ready to depart. You are meeting the representative responsible for authorizing access.\n",
+   "objective": "Negotiate access for the convoy while preserving operational independence and the safety of staff and beneficiaries.\n",
+   "mandate": {
+    "can_decide": [
+     "Share convoy composition: number of trucks, cargo types, drivers' identities",
+     "Agree date, time, route and checkpoint procedure",
+     "Set up a communication channel and contact persons"
+    ],
+    "must_refer": [
+     "Sharing aggregated beneficiary information (numbers and categories only)",
+     "A militia liaison or observers present at distribution, without handling the assistance"
+    ]
+   },
+   "red_lines": [
+    {
+     "text": "Distribution controlled by the organization (no third-party handling of the assistance)",
+     "source": "institutional"
+    },
+    {
+     "text": "No armed escort by a party to the conflict",
+     "source": "institutional",
+     "flexible_by_mandator_only": true
+    },
+    {
+     "text": "No transfer of beneficiary personal data",
+     "source": "institutional"
+    }
+   ]
+  },
+  "counterparts": [
+   {
+    "id": "militia_rep",
+    "role": "Militia representative authorizing camp access",
+    "persona": "Calm, methodical, suspicious. Wants control and information before authorizing anything.\n",
+    "cultural_profile": "TO BE AUTHORED BY ICRC TRAINER",
+    "authority": {
+     "decides": [
+      "Whether the convoy may enter",
+      "Checkpoint procedure for this convoy"
+     ],
+     "must_consult": [
+      "His commanders, on distribution and escort"
+     ]
+    },
+    "opening": "We understand that you want to send trucks into the camp. Before we authorize anything, I need to know exactly what you are bringing, who will be travelling with the convoy, and why your organization insists on controlling the distribution itself.\n",
+    "iceberg": {
+     "position": {
+      "stated": "No convoy without full information, our distributors and our escort."
+     },
+     "tactical_reasoning": {
+      "type": "military",
+      "text": "Whoever enters the camp must be known and controlled; if something goes wrong the militia answers for it."
+     },
+     "motives_values": {
+      "values": [
+       "Authority over the camp"
+      ],
+      "emotions": [
+       "Suspicion",
+       "Fear of being blamed"
+      ],
+      "deep_needs": [
+       "Control",
+       "Security",
+       "Recognition"
+      ]
+     }
+    },
+    "hidden_interests": [
+     {
+      "id": "loss_of_control",
+      "layer": "tactical_reasoning",
+      "text": "My commanders are worried they will lose control over what happens inside the camp.",
+      "reveal_when": {
+       "any": [
+        {
+         "move": "identifies_interest"
+        },
+        {
+         "trust_gte": 55
+        }
+       ]
+      }
+     },
+     {
+      "id": "security_blame",
+      "layer": "motive_value",
+      "text": "If an incident happens, the militia fears it will be blamed by the military.",
+      "reveal_when": {
+       "trust_gte": 65
+      }
+     }
+    ],
+    "challenges": [
+     "Why should we trust the information you have about needs inside the camp?",
+     "How many trucks are you bringing?",
+     "What exactly is inside those trucks?",
+     "Who are your drivers?",
+     "Why do you need your own staff inside the camp?",
+     "Our people can distribute the assistance for you. Why isn't that acceptable?",
+     "We need the beneficiary list before we authorize the convoy.",
+     "Why won't you allow our soldiers to accompany the convoy?",
+     "What route are you planning to use?",
+     "What happens if one of our checkpoints refuses passage?",
+     "Who from your organization has the authority to make commitments today?",
+     "If there is a security incident, who takes responsibility?",
+     "You want guarantees from us. What guarantees are you giving us?",
+     "Why should we give your organization special treatment?",
+     "Other organizations accepted our conditions. Why won't you?"
+    ],
+    "constraints_from_constituency": [
+     "His commanders expect him to keep control of the camp",
+     "The state military may hold the militia responsible for incidents"
+    ],
+    "state_initial": {
+     "trust": 35,
+     "rigidity": 70,
+     "hostility": 30
+    }
+   }
+  ],
+  "issues": [
+   {
+    "id": "operational_terms",
+    "label": "Convoy composition, date, time, route, checkpoints, contacts",
+    "tier": 1,
+    "own": {
+     "ideal": "Share composition; agree date, time, route and checkpoint procedure together"
+    },
+    "counterpart": {
+     "ideal": "Full details in advance",
+     "hidden": true
+    }
+   },
+   {
+    "id": "incident_responsibility",
+    "label": "Who takes responsibility for a security incident",
+    "tier": 2,
+    "own": {
+     "ideal": "The militia guarantees safe passage and takes responsibility on its territory",
+     "bottom_line": "Shared responsibility with a joint incident procedure"
+    },
+    "counterpart": {
+     "ideal": "The organization takes responsibility",
+     "bottom_line": "Shared responsibility with a joint incident procedure",
+     "hidden": true
+    }
+   },
+   {
+    "id": "distribution",
+    "label": "Who handles the distribution",
+    "tier": 3,
+    "own": {
+     "ideal": "The organization distributes alone",
+     "bottom_line": "A militia liaison observes; the organization handles the assistance",
+     "red_line": "The militia handles the assistance"
+    },
+    "counterpart": {
+     "ideal": "The militia distributes",
+     "bottom_line": "The militia is present and consulted on distribution points",
+     "red_line": "The militia has no visibility or role in the camp",
+     "hidden": true
+    }
+   },
+   {
+    "id": "beneficiary_information",
+    "label": "Beneficiary information",
+    "tier": 3,
+    "own": {
+     "ideal": "No data shared",
+     "bottom_line": "Aggregated numbers and categories only",
+     "red_line": "Personal data (names, addresses)"
+    },
+    "counterpart": {
+     "ideal": "The full beneficiary list",
+     "bottom_line": "Aggregated data plus observers who can verify",
+     "red_line": "No way at all to verify who is in the camp",
+     "hidden": true
+    }
+   },
+   {
+    "id": "escort",
+    "label": "Armed escort",
+    "tier": 3,
+    "own": {
+     "ideal": "No escort",
+     "red_line": "Armed escort by a party to the conflict"
+    },
+    "counterpart": {
+     "ideal": "Their soldiers accompany the convoy",
+     "bottom_line": "Liaison officers and notification along the route",
+     "red_line": "The convoy moves without their knowledge",
+     "hidden": true
+    }
+   }
+  ],
+  "triggers": [
+   {
+    "when": {
+     "move": "positional_demand",
+     "turn_lte": 3
+    },
+    "say": "You keep telling me what you are entitled to do. You haven't explained why allowing this convoy is in our interest."
+   },
+   {
+    "when": {
+     "hostility_gte": 70
+    },
+    "say": "If you believe you can operate here without our cooperation, perhaps there is nothing more to discuss."
+   },
+   {
+    "when": {
+     "trust_gte": 50
+    },
+    "say": "I appreciate that you are trying to understand our concerns. Let me explain what worries us about these convoys."
+   },
+   {
+    "when": {
+     "proposal_reaches": {
+      "issue": "distribution",
+      "side": "counterpart",
+      "line": "bottom_line"
+     }
+    },
+    "effect": "Counterpart says he must consult his commanders before answering."
+   }
+  ],
+  "injections": [
+   {
+    "id": "military_call",
+    "label": "Military objects",
+    "instruction": "Say you just received a call: the state military now objects to the convoy."
+   },
+   {
+    "id": "list_demand",
+    "label": "Demand beneficiary list",
+    "instruction": "Make the beneficiary list a hard precondition: 'No list, no convoy.'"
+   },
+   {
+    "id": "bribe",
+    "label": "Bribe request",
+    "instruction": "Privately suggest that a few boxes for your men would make approval faster.",
+    "auto": {
+     "when": {
+      "trust_gte": 50
+     }
+    }
+   }
+  ],
+  "outcomes": [
+   {
+    "id": "access",
+    "label": "Independent convoy access agreed",
+    "result": "success",
+    "when": {
+     "goal_requested": true,
+     "trust_gte": 65,
+     "rigidity_lte": 55,
+     "hostility_lte": 60
+    }
+   },
+   {
+    "id": "next_step",
+    "label": "Operational next step agreed; access still pending",
+    "result": "partial",
+    "when": {
+     "goal_requested": true,
+     "trust_gte": 50,
+     "rigidity_lte": 70,
+     "hostility_lte": 70
+    }
+   },
+   {
+    "id": "refused",
+    "label": "Access refused",
+    "result": "fail",
+    "when": {
+     "any": [
+      {
+       "hostility_gte": 90
+      },
+      {
+       "turn_gte": 15
+      }
+     ]
+    }
+   }
+  ],
+  "implementation_checklist": [
+   {
+    "id": "number_of_trucks",
+    "criterion": 1
+   },
+   {
+    "id": "cargo",
+    "criterion": 1
+   },
+   {
+    "id": "drivers",
+    "criterion": 1
+   },
+   {
+    "id": "route",
+    "criterion": 1
+   },
+   {
+    "id": "checkpoint_procedure",
+    "criterion": 3
+   },
+   {
+    "id": "communication_channel",
+    "criterion": 2
+   },
+   {
+    "id": "contingency_if_checkpoint_refuses",
+    "criterion": 4
+   },
+   {
+    "id": "security_responsibilities",
+    "criterion": 5
+   }
+  ],
+  "rubric": {
+   "dimensions": [
+    "context_analysis",
+    "questioning",
+    "trust_building",
+    "interests",
+    "concessions",
+    "mandate_understanding",
+    "transaction_design",
+    "red_lines",
+    "implementation",
+    "sequencing"
+   ],
+   "indicators": [
+    "Asks questions before proposing solutions",
+    "Clarifies the counterpart's concerns",
+    "Establishes credible information about humanitarian needs",
+    "Identifies practical rather than purely positional concerns",
+    "Explains the organization's operating methods",
+    "Negotiates precise operational arrangements",
+    "Identifies who must authorize what",
+    "Establishes communication channels",
+    "Discusses checkpoint procedures",
+    "Establishes contingency procedures",
+    "Confirms responsibilities on both sides",
+    "Avoids making commitments outside their mandate"
+   ]
+  },
+  "avatar": {
+   "look": {
+    "skin": "#a8744f",
+    "hair": "#222222",
+    "outfit": "#5b5a3c",
+    "hat": "none",
+    "moustache": true
+   },
+   "voice": {
+    "name": "Commander Tariq",
+    "id": "KhkLSmhXgYfYY5LspPg5"
+   },
+   "mood": {
+    "warmth": "trust",
+    "anger": "hostility",
+    "attention": "-rigidity",
+    "confusion": "-consistency"
+   }
+  }
+ },
+ "actions": [
+  {
+   "op": "step",
+   "text": "hello, we are bringing food and we are 3 people, driver, translator and me from redcross",
+   "classification": {
+    "moves": [
+     {
+      "id": "clarifies_operational_detail",
+      "quote": "we are bringing food and we are 3 people, driver, translator and me from redcross"
+     }
+    ],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [
+     {
+      "id": "cargo",
+      "quote": "we are bringing food"
+     },
+     {
+      "id": "drivers",
+      "quote": "driver, translator and me from redcross"
+     }
+    ],
+    "mandate_breaches": []
+   }
+  },
+  {
+   "op": "end"
+  }
+ ],
+ "expected": [
+  {
+   "turn": 1,
+   "dials": {
+    "trust": 37,
+    "rigidity": 70,
+    "hostility": 30,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [],
+   "covered_details": [
+    "cargo",
+    "drivers"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "clarifies_operational_detail",
+     "quote": "we are bringing food and we are 3 people, driver, translator and me from redcross"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [],
+   "offered": null,
+   "reached": [],
+   "outcome": null
+  },
+  {
+   "turn": 1,
+   "dials": {
+    "trust": 37,
+    "rigidity": 70,
+    "hostility": 30,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [],
+   "covered_details": [
+    "cargo",
+    "drivers"
+   ],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "clarifies_operational_detail",
+     "quote": "we are bringing food and we are 3 people, driver, translator and me from redcross"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [],
+   "offered": null,
+   "reached": [],
+   "outcome": {
+    "id": "ended_by_trainee",
+    "label": "Session ended by the trainee",
+    "result": "ended",
+    "turn": 1
+   }
+  }
+ ]
+}

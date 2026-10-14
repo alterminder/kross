@@ -1,0 +1,143 @@
+schema: negotiation-scenario/v2
+id: imn_detainee_access_network
+title: "IMN Detainee Access via Network Mapping"
+difficulty: advanced
+estimated_minutes: 20
+skills_tested:
+  - "Network Mapping"
+  - "Detention Confidentiality"
+  - "Legitimacy Building"
+  - "Common Shared Space"
+sources: { bank: "CCHN Worked Case: IMN Detainee Access", cchn_tools: [3, 9, 12, 13, 15, 17] }
+
+negotiation:
+  nature: relational
+  type: normative
+  start_level: political
+
+island_of_agreements:
+  agreed_facts:
+    - "The Southern Front holds 28 captured government soldiers at a rural detention facility"
+    - "Families of detainees have submitted tracing requests through religious elders"
+    - "IMN provides neutral emergency medical support across the entire conflict zone"
+  contested_facts:
+    - "Whether the captured personnel are prisoners of war or illegal criminal combatants"
+    - "Whether medical inspection reports will remain confidential"
+  convergent_norms:
+    - "Humane treatment of wounded and sick captives is mandated by customary rules"
+    - "Detainee health prevents dangerous disease outbreaks among guards and captives"
+  divergent_norms:
+    - "Whether international humanitarian standards override local military intelligence secrecy"
+
+trainee_brief:
+  situation: >
+    The Southern Front insurgent command has held 28 government soldiers in an undisclosed detention camp for six months.
+    Rumours of disease, malnutrition, and medical neglect are escalating tensions.
+    You are meeting Commander Jibril, head of internal security, to negotiate confidential medical visits and family messages (Red Cross messages).
+  objective: "Obtain access to visit all detainees in private according to standard humanitarian detention modalities."
+  mandate:
+    can_decide:
+      - "Provide emergency medicines, hygiene kits, and nutritional supplements for detainees and guards"
+      - "Offer confidential written medical recommendations directly to Commander Jibril"
+      - "Facilitate purely family-welfare correspondence (no military information)"
+    must_refer:
+      - "Agreeing to public disclosure or government sharing of detention conditions"
+      - "Accepting visits where guards remain present during private medical examinations"
+  red_lines:
+    - { text: "No intelligence sharing with opposing military forces or public media", source: ethical }
+    - { text: "Medical interviews with detainees must be conducted in private without armed guard surveillance", source: institutional }
+
+counterparts:
+  - id: commander_jibril
+    role: "Head of Internal Security, Southern Front"
+    persona: >
+      Hardened, ideologically committed security chief who suspects humanitarian visits are espionage tools used to locate their hidden bases.
+    cultural_profile: "Guerrilla security operative where information control is a life-or-death survival asset."
+    authority:
+      decides: ["Authorizing access to detention sites and approving interview formats"]
+      must_consult: ["The supreme military council of the Southern Front"]
+    opening: >
+      These men are not prisoners of war. They are war criminals who bombed our villages. We feed them according to our own customs. Why should we allow foreign doctors to inspect our bases and speak to our prisoners in private? How do I know you are not transmitting coordinates to government air command?
+    iceberg:
+      position:
+        stated: "No access to detention camps; medicine may be dropped at our headquarters."
+      tactical_reasoning:
+        type: military
+        text: "Extreme fear of airstrikes or covert rescue operations if detention facility locations leak."
+      motives_values:
+        values: ["Military secrecy", "Protection of the movement", "Political legitimacy"]
+        emotions: ["Paranoia", "Distrust", "Pride"]
+        deep_needs: ["Guaranteed verification of confidentiality and international recognition as a disciplined movement"]
+    hidden_interests:
+      - id: airstrike_paranoia
+        layer: motive_value
+        text: "The primary barrier is terror of location coordinates leaking to government combat aviation."
+        reveal_when: { any: [{ move: identifies_interest }, { trust_gte: 45 }] }
+      - id: cholera_risk
+        layer: tactical_reasoning
+        text: "Several detainees and three guards have contracted severe waterborne diarrhoea, risking an uncontrollable outbreak."
+        reveal_when: { trust_gte: 55 }
+    challenges:
+      - "You want private interviews so they can pass you military secrets!"
+      - "The government never gives you access to our captured brothers in the central prison!"
+      - "If our position is bombed after your visit, you will be held personally accountable."
+    state_initial: { trust: 20, rigidity: 85, hostility: 55 }
+
+stakeholders:
+  - id: sheikh_zubair
+    role: "Senior Religious Council Scholar"
+    influence: high
+    interests: "Upholding Islamic treatment of prisoners; encouraging family messages"
+  - id: haji_musa
+    role: "President of the Regional Chamber of Commerce"
+    influence: medium
+    interests: "Maintaining cross-line trade and humanitarian supply flow"
+
+issues:
+  - id: private_interview
+    label: "Private interviews without guards"
+    tier: 1
+    own: { ideal: "Private interviews with all detainees without visual or audio surveillance", bottom_line: "Private medical interviews within sight but out of earshot of guards", red_line: "Interviews conducted under direct interrogation by guards" }
+    counterpart: { ideal: "No interviews; guards relay medical needs", bottom_line: "Interviews conducted within sight of guards in an open courtyard", red_line: "Unmonitored physical movement inside underground cells" }
+  - id: family_correspondence
+    label: "Family tracing messages"
+    tier: 2
+    own: { ideal: "Exchange of written family messages checked only for civilian content", bottom_line: "Censored family welfare messages verified jointly", red_line: "Falsification of messages" }
+    counterpart: { ideal: "No correspondence", bottom_line: "Strictly vetted family messages confirming survival", red_line: "Disclosure of captive names to foreign press" }
+
+triggers:
+  - when: { move: discloses_confidential }
+    say: "I knew you were careless with secrets. This discussion is over."
+    dials: { trust: -30, hostility: +25 }
+  - when: { move: translates_principle }
+    say: "Sheikh Zubair reminded us that mistreating captives stains our righteous cause. If your doctors respect our security protocols, we may consider a health inspection."
+    dials: { rigidity: -25, trust: +20, hostility: -15 }
+  - when: { move: frames_shared_benefit }
+    say: "A medical inspection that brings clean water purification and antibiotics for both captives and guards addresses the illness outbreak."
+    dials: { rigidity: -20, trust: +15 }
+
+injections:
+  - id: elder_endorsement
+    label: "Religious Council letter"
+    instruction: "Trainee receives a letter from Sheikh Zubair advising Commander Jibril to permit medical treatment for sick detainees."
+  - id: fever_escalation
+    label: "Detainee collapses from fever"
+    instruction: "Guard enters to whisper to Jibril that two more prisoners have collapsed with high fever."
+
+outcomes:
+  - id: detention_access_secured
+    label: "Confidential medical detention visits authorized"
+    result: success
+    when: { trust_gte: 60, rigidity_lte: 50, hostility_lte: 40 }
+  - id: espionage_breakdown
+    label: "Talks failed amidst accusations of espionage"
+    result: fail
+    when: { hostility_gte: 90 }
+
+rubric:
+  dimensions: [stakeholders, relationship_management, red_lines, clarity]
+  indicators:
+    - "Engages key network stakeholders (religious elders, chamber of commerce) to unlock access"
+    - "Strictly preserves detention inspection confidentiality"
+    - "Addresses counterpart security fears regarding airstrikes and intelligence leaks"
+    - "Insists on private interviews with detainees without armed guard presence"

@@ -1,0 +1,365 @@
+{
+ "session_id": "d6a6a7c7e44b",
+ "scenario_id": "s09_hostile_checkpoint",
+ "recording_reproduced_by_old_engine": true,
+ "scenario": {
+  "schema": "negotiation-scenario/v2",
+  "id": "s09_hostile_checkpoint",
+  "title": "Hostile checkpoint commander",
+  "difficulty": "intermediate",
+  "estimated_minutes": 10,
+  "skills_tested": [
+   "De-escalation",
+   "Human elements",
+   "Active listening",
+   "Maintaining dignity",
+   "Operational problem solving"
+  ],
+  "sources": {
+   "bank": "SCENARIO 09",
+   "cchn_tools": [
+    4,
+    8,
+    9,
+    17
+   ]
+  },
+  "review": {
+   "status": "draft",
+   "needs_icrc_confirmation": [
+    "trainee_brief.mandate",
+    "trainee_brief.red_lines",
+    "counterparts[checkpoint_commander].cultural_profile",
+    "counterparts[checkpoint_commander].iceberg",
+    "issues",
+    "state_initial"
+   ]
+  },
+  "negotiation": {
+   "nature": "relational",
+   "type": "factual",
+   "start_level": "technical"
+  },
+  "island_of_agreements": {
+   "agreed_facts": [
+    "A humanitarian convoy is at the checkpoint",
+    "The commander controls this checkpoint"
+   ],
+   "contested_facts": [
+    "Whether passage was authorized, and by whom",
+    "Whether the commander was ever informed"
+   ],
+   "convergent_norms": [
+    "A commander answers for what passes his checkpoint",
+    "Nobody wants an incident at the checkpoint"
+   ],
+   "divergent_norms": [
+    "Whether an authorization from the capital binds the local commander"
+   ]
+  },
+  "trainee_brief": {
+   "situation": "A humanitarian convoy reaches a checkpoint. You believed passage had already been authorized. The commander refuses to allow the convoy through.\n",
+   "objective": "Get the convoy through, or agree a safe way forward, without escalating.",
+   "mandate": {
+    "can_decide": [
+     "Share the authorization details you hold (who, when, reference)",
+     "Call the organization's liaison / established communication channel",
+     "Wait, or turn back for today, if staff safety requires it"
+    ],
+    "must_refer": [
+     "Changing the convoy route or cargo",
+     "Opening all trucks beyond the agreed inspection procedure"
+    ]
+   },
+   "red_lines": [
+    {
+     "text": "No payment, gift or diversion of cargo to pass",
+     "source": "legal"
+    },
+    {
+     "text": "No action that puts staff or drivers at risk",
+     "source": "institutional"
+    }
+   ]
+  },
+  "counterparts": [
+   {
+    "id": "checkpoint_commander",
+    "role": "Checkpoint commander",
+    "persona": "Mid-level commander, proud of his authority over this checkpoint. Was not informed of the authorization and feels bypassed by the capital. Suspicious of humanitarian organizations.\n",
+    "cultural_profile": "TO BE AUTHORED BY ICRC TRAINER",
+    "authority": {
+     "decides": [
+      "Whether anything passes this checkpoint without confirmation"
+     ],
+     "must_consult": [
+      "His superior, who alone can confirm an authorization"
+     ]
+    },
+    "opening": "I don't care what they told you in the capital. This is my checkpoint. Your trucks are not passing.\n",
+    "iceberg": {
+     "position": {
+      "stated": "The convoy will not pass.",
+      "implicit": [
+       "He wants to be consulted and to be seen deciding"
+      ]
+     },
+     "tactical_reasoning": {
+      "type": "military",
+      "text": "He received no order; anything unauthorized that passes is his responsibility."
+     },
+     "motives_values": {
+      "values": [
+       "Authority over his checkpoint",
+       "Face in front of his men"
+      ],
+      "emotions": [
+       "Anger at being bypassed",
+       "Suspicion",
+       "Fear of punishment"
+      ],
+      "deep_needs": [
+       "Recognition",
+       "Security of his position"
+      ]
+     }
+    },
+    "hidden_interests": [
+     {
+      "id": "face",
+      "layer": "motive_value",
+      "text": "He needs his authority and face respected in front of his men.",
+      "reveal_when": {
+       "any": [
+        {
+         "move": "shows_respect_curiosity"
+        },
+        {
+         "trust_gte": 45
+        }
+       ]
+      }
+     },
+     {
+      "id": "not_informed",
+      "layer": "tactical_reasoning",
+      "text": "He genuinely received no order and fears punishment if he lets through something unauthorized.",
+      "reveal_when": {
+       "trust_gte": 55
+      }
+     }
+    ],
+    "challenges": [
+     "Who gave you authorization?",
+     "Why didn't anyone inform me?",
+     "Are you saying my orders don't matter?",
+     "Open the trucks.",
+     "Give me the drivers' documents.",
+     "You humanitarian people think you can do whatever you want.",
+     "Turn around."
+    ],
+    "state_initial": {
+     "trust": 20,
+     "rigidity": 80,
+     "hostility": 60
+    }
+   }
+  ],
+  "issues": [
+   {
+    "id": "authorization_check",
+    "label": "How the authorization is confirmed",
+    "tier": 1,
+    "own": {
+     "ideal": "The commander accepts the authorization as shown",
+     "bottom_line": "The commander confirms it with his superior before the convoy passes"
+    },
+    "counterpart": {
+     "ideal": "The convoy turns around",
+     "bottom_line": "Passage only after his own superior confirms",
+     "red_line": "Letting through something he cannot justify to his superior",
+     "hidden": true
+    }
+   },
+   {
+    "id": "cargo_inspection",
+    "label": "Inspection of the cargo",
+    "tier": 2,
+    "own": {
+     "ideal": "Manifest check only",
+     "bottom_line": "A limited inspection under an agreed procedure",
+     "red_line": "Any diversion of cargo, or payment, to pass"
+    },
+    "counterpart": {
+     "ideal": "Open all trucks",
+     "bottom_line": "Manifest plus a spot check",
+     "red_line": "No inspection at all (he loses face)",
+     "hidden": true
+    }
+   }
+  ],
+  "triggers": [
+   {
+    "when": {
+     "move": "threatens"
+    },
+    "say": "So you're threatening me with my superiors?"
+   },
+   {
+    "when": {
+     "all": [
+      {
+       "move": "shows_respect_curiosity"
+      },
+      {
+       "hostility_lte": 50
+      }
+     ]
+    },
+    "say": "Fine. Tell me exactly what authorization you received."
+   },
+   {
+    "when": {
+     "trust_gte": 70
+    },
+    "effect": "Commander agrees to call his superior to confirm; passage possible once confirmed."
+   },
+   {
+    "when": {
+     "hostility_gte": 90
+    },
+    "effect": "Commander orders the convoy to turn around. Session ends."
+   }
+  ],
+  "injections": [
+   {
+    "id": "open_trucks",
+    "label": "Demand to inspect cargo",
+    "instruction": "Order the trainee to open all trucks immediately."
+   },
+   {
+    "id": "soft_bribe",
+    "label": "Hint at a 'fee'",
+    "instruction": "Suggest that a small 'processing fee' would make things faster."
+   },
+   {
+    "id": "radio_silence",
+    "label": "Superior unreachable",
+    "instruction": "Say you tried to call your superior and nobody answers.",
+    "auto": {
+     "at_turn": 4
+    }
+   }
+  ],
+  "outcomes": [
+   {
+    "id": "passage",
+    "label": "Convoy passage agreed",
+    "result": "success",
+    "when": {
+     "goal_requested": true,
+     "trust_gte": 65,
+     "rigidity_lte": 50,
+     "hostility_lte": 50
+    }
+   },
+   {
+    "id": "safe_next_step",
+    "label": "Safe confirmation procedure agreed",
+    "result": "partial",
+    "when": {
+     "goal_requested": true,
+     "trust_gte": 45,
+     "rigidity_lte": 70,
+     "hostility_lte": 65
+    }
+   },
+   {
+    "id": "turned_around",
+    "label": "Convoy turned around",
+    "result": "fail",
+    "when": {
+     "any": [
+      {
+       "hostility_gte": 90
+      },
+      {
+       "turn_gte": 12
+      }
+     ]
+    }
+   }
+  ],
+  "rubric": {
+   "dimensions": [
+    "active_listening",
+    "hostility_handling",
+    "self_control",
+    "relationship_management",
+    "clarity",
+    "red_lines",
+    "level_management"
+   ],
+   "indicators": [
+    "Avoids humiliating the commander",
+    "Recognizes the commander's need for authority and face",
+    "Clarifies the misunderstanding",
+    "Uses established communication channels",
+    "Seeks confirmation rather than confrontation",
+    "Protects staff safety",
+    "Avoids unnecessary escalation",
+    "Pauses and acknowledges the commander's anger in words ('I hear you') rather than 'I understand your situation'",
+    "Reformulates the anger into a shared problem: confirming the authorization",
+    "Offers options (call his superior, wait, agree an inspection procedure) instead of a single demand"
+   ]
+  }
+ },
+ "actions": [
+  {
+   "op": "step",
+   "text": "what can we do for you to access it?",
+   "classification": {
+    "moves": [
+     {
+      "id": "asks_good_question",
+      "quote": "what can we do for you to access it?"
+     }
+    ],
+    "asked_for_goal": false,
+    "red_lines": [],
+    "proposals": [],
+    "operational_details": [],
+    "mandate_breaches": []
+   }
+  }
+ ],
+ "expected": [
+  {
+   "turn": 1,
+   "dials": {
+    "trust": 28,
+    "rigidity": 77,
+    "hostility": 60,
+    "consistency": 100
+   },
+   "level": "technical",
+   "goal_requested": false,
+   "revealed": [],
+   "covered_details": [],
+   "moves": [
+    {
+     "turn": 1,
+     "id": "asks_good_question",
+     "quote": "what can we do for you to access it?"
+    }
+   ],
+   "flags": [],
+   "proposals": [],
+   "injections": [],
+   "cues": [],
+   "offered": null,
+   "reached": [],
+   "outcome": null
+  }
+ ]
+}

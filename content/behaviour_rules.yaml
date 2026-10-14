@@ -1,0 +1,495 @@
+# Shared counterpart behaviour rules.
+# The director classifies every trainee message into one or more MOVES, then applies the deltas below
+# deterministically. Scenarios can override any value (scenario.overrides).
+#
+# PROVENANCE — every move and rule carries a `source`:
+#   bank      ICRC scenario bank, "CHATBOT BEHAVIOUR RULES" (content/scenario_bank.md)
+#   cchn:T<n> CCHN Field Manual on Frontline Humanitarian Negotiation v2.0 (Nov 2019), Tool n
+#   design    our engineering choice — no official source
+#
+# NUMBERS ARE DRAFT. Neither the bank nor the CCHN manual specifies any numeric values or dials.
+# The DIRECTION of each delta is grounded in the source named; the MAGNITUDE is a design placeholder.
+# CCHN describes what a negotiator should do, not how counterparts behave, so counterpart reactions are
+# inferred by inverting that guidance. Confirm or replace with ICRC values before real training use.
+
+status: draft
+
+state_variables:
+  trust:
+    min: 0
+    max: 100
+    meaning: "How much the counterpart believes the trainee"
+    grounding: "cchn:T3 — trust rests on CLARITY (unambiguous messages), ADAPTABILITY (empathy + creativity) and PREDICTABILITY (stable positions, terms, protocol)."
+  rigidity:
+    min: 0
+    max: 100
+    meaning: "How fixed the counterpart is on stated positions"
+    grounding: "cchn:T3, T11 — 'rigid and inflexible people rarely trusted'; absolutes and premature red lines close the shared space."
+  hostility:
+    min: 0
+    max: 100
+    meaning: "Emotional temperature / willingness to escalate"
+    grounding: "cchn:T8 — aggressive (emotional leverage) vs assertive (reasoned, respectful) behaviour; received tone decides, not intent."
+  consistency:
+    min: 0
+    max: 100
+    initial: 100          # added by the engine to every session (scenarios do not set it)
+    meaning: "Does the trainee make sense and keep a coherent story? 0 = the conversation broke down"
+    grounding: "design; cchn:T3 — clarity and predictability underpin trust"
+
+# Categorical state (not numeric). Scenarios set the initial value; triggers may shift it.
+state_categories:
+  negotiation_level:
+    values: [political, professional, technical]
+    source: "cchn:T4"
+    meaning: >
+      What the conversation is about. Political = who are you / why are you here (identity, values; high risk).
+      Professional = how will you work (methods, standards; average risk). Technical = what / where / when / with whom
+      (operational terms; low risk). The COUNTERPART's level normally prevails; either side may politicize or
+      depoliticize to move to the level where it has the upper hand.
+  negotiation_nature:
+    values: [relational, transactional, adversarial]
+    source: "cchn:T4"
+    meaning: >
+      Humanitarian negotiation is relational by default. It drifts to transactional when a counterpart seeks personal
+      advantage (money, goods, jobs) and to adversarial when coercion is used (detention, threats).
+
+moves:
+  # ---- from the bank (8) + one design move ------------------------------------------------------------
+  asks_good_question:
+    source: "bank; cchn:T6, T9"
+    description: "Open, information-seeking question; listens before proposing ('perceive before persuade')"
+    deltas: { trust: +8, rigidity: -3 }
+    effect: "May unlock the next hidden interest whose reveal condition is met"
+  shows_respect_curiosity:
+    source: "bank; cchn:T3, T8"
+    description: "Acknowledges the counterpart's role, concerns, dignity or face; builds on their authority and responsibility rather than denouncing"
+    deltas: { trust: +5, hostility: -5 }
+  identifies_interest:
+    source: "bank; cchn:T9"
+    description: "Names or tests an underlying interest, reasoning or motive behind the stated position"
+    deltas: { rigidity: -15, trust: +5 }
+    say_hint: "If you can find another way to address that concern, perhaps we can discuss it."
+  proposes_shared_objective:
+    source: "bank; cchn:T6, T11"
+    description: "Points to a genuine common objective or value BEFORE claiming own benefit ('we want to address the crisis together')"
+    deltas: { rigidity: -10, trust: +5 }
+    effect: "Allow movement toward agreement"
+  argues_principles_only:
+    source: "bank; cchn:T3, T11"
+    description: "Invokes principles, rights or entitlements ('moral and legal obligation', 'under international law we have the right') without linking them to the counterpart's interests. NOT this move: stating facts about the situation, one's authorization, documents, or what one was told or believes ('I believe passage had already been authorized', 'we have a letter from the ministry')"
+    deltas: { trust: -3, rigidity: +5 }
+    say_hint: "You keep telling me about your principles. You still haven't explained why I should accept your proposal."
+  evades_direct_question:
+    source: "design; cchn:T3, T6"
+    description: "Ignores a direct question the counterpart just asked: the counterpart's last message asked something and the reply addresses none of it (changes the subject, repeats a slogan or a demand, complains, asks for someone else, or answers a different question). NOT evasion: a reply that answers ANY part of what was asked (even just one of several questions), a question asking for clarification, a counter-question about the same topic (for example asking which distributors, or what the escort would do), or any reply to a message that asked nothing"
+    deltas: { trust: -3 }
+    say_hint: "You did not answer my question. Answer it, or tell me why you cannot."
+  positional_demand:
+    source: "bank"
+    description: "Repeats a demand without exploring why the counterpart objects"
+    deltas: { rigidity: +10 }
+    say_hint: "I've already told you our condition. There is nothing else to discuss."
+  threatens:
+    source: "bank; cchn:T8"
+    description: "Unnecessary threat, ultimatum or pressure via superiors (HQ, ministries, donors)"
+    deltas: { trust: -15, rigidity: +15, hostility: +20 }
+    flag: escalation          # rubric flag (cchn:T8)
+  unauthorized_commitment:
+    source: "bank; cchn:T14, T15, T17"
+    description: "Commits to something outside the trainee's mandate (see trainee_brief.mandate)"
+    deltas: {}
+    effect: "Counterpart ACCEPTS IMMEDIATELY and locks it in."
+    say_hint: "Excellent. Then we agree that your organization will provide that."
+    flags_by_zone:                       # cchn:T14 — A->B trainee may decide; B->C must refer; beyond C forbidden
+      must_refer: mandate_breach         # committed to an item in trainee_brief.mandate.must_refer without referring
+      red_line: red_line_crossed         # accepted something beyond a trainee_brief.red_lines item
+  clarifies_operational_detail:
+    source: "design (from bank s17); cchn:T7"
+    description: "Pins down a concrete implementation term (who/what/when/where/how)"
+    deltas: { trust: +2 }
+    effect: "Marks matching item in scenario.implementation_checklist as covered"
+
+  # ---- added from CCHN (9) — human elements, framing and mandate ---------------------------------------
+  acknowledges_emotion:
+    source: "cchn:T8 steps 1-3"
+    description: >
+      Pauses and acknowledges the counterpart's emotion IN WORDS without adopting it ('I hear you', 'I hear your suspicions').
+      Does NOT count: 'I understand your situation/position' said to an angry or hostile statement (T8: an emotion can only
+      be felt, and claiming to understand can provoke more aggression).
+    deltas: { hostility: -8, trust: +3 }
+  reframes_core_issue:
+    source: "cchn:T8 steps 2, 4, 6"
+    description: "Extracts the issue from the emotion and restates it as a shared, pragmatic problem, often with a tag question ('We need to prevent these abuses. Would you agree?'); does not apologize for earlier positions just to calm things"
+    deltas: { hostility: -8, rigidity: -4 }
+  offers_options:
+    source: "cchn:T6, T8 step 5, T14"
+    description: "Brings several options rather than one solution, or uses open / closed / open questions to let the counterpart choose (road vs river vs air; observers, not handlers)"
+    deltas: { rigidity: -8, trust: +3 }
+  unpacks_principle:
+    source: "cchn:T11"
+    description: "Translates a humanitarian principle or method into the counterpart's vocabulary and benefits (neutrality = not taking sides in hostilities; confidentiality, not secrecy) instead of citing it"
+    deltas: { trust: +4, rigidity: -4 }
+  aggressive_emotional_leverage:
+    source: "cchn:T8"
+    description: "Imposes a position through anger, sarcasm, humour at the counterpart's expense, guilt, humiliation, fear or public denunciation"
+    deltas: { trust: -10, hostility: +15, rigidity: +8 }
+    flag: escalation          # rubric flag (cchn:T8)
+    effect: "If the counterpart is the more powerful party it escalates in return (T8); if not, trust in the trainee's authority drops"
+  premature_red_line:
+    source: "cchn:T11"
+    description: >
+      Opens with what the organization rejects, or uses door-closing absolutes ('never', 'non-negotiable', 'unacceptable',
+      'we are not willing to discuss this') before dialogue is established. Does NOT count: stating a limit transparently
+      later, when an option is unlikely to be accepted (see transparent_red_line), or citing a bottom line to pause (see cites_bottom_line, refers_to_mandator).
+    deltas: { rigidity: +10, trust: -3 }
+  unexpected_position_change:
+    source: "cchn:T3, T6"
+    description: "Abruptly changes position, terminology or priorities on a central issue, even in the counterpart's favour"
+    deltas: { trust: -6 }
+    effect: "Counterpart becomes cautious and asks for the new position to be confirmed"
+  overclaims_norm:
+    source: "cchn:T5, T17"
+    description: "Asserts a legal right or international norm that does not exist, is not binding here, or is not recognized by the counterpart (e.g. 'right of access', immunity from local taxes)"
+    deltas: { trust: -5, rigidity: +5 }
+    effect: "Counterpart may rebut on legal grounds (treaty not ratified, guidance not binding, host-state consent required)"
+    say_hint: "Which treaty binding on my country says that?"
+  refers_to_mandator:
+    source: "cchn:T6, T14"
+    description: >
+      Pauses to consult the mandator, team or hierarchy, or cites a limit without an ultimatum ('I need to check with my
+      hierarchy before I can answer'); communicates the pause without breaking the relationship. Appropriate when
+      pushed between the bottom line and the red line (must_refer zone); weak or evasive if used within the open-dialogue zone (can_decide).
+    deltas: { trust: +2 }
+    effect: "Counterpart grants time unless hostility >= 80"
+  discloses_confidential:
+    source: "cchn:T15, T16; bank s08"
+    description: "Reveals the specific terms of the mandate, red lines, what another party said in a parallel negotiation, or protected information (sources, beneficiaries)"
+    deltas: { trust: -5 }
+    flag: confidentiality
+    effect: "Counterpart uses the disclosed information in later demands"
+
+  # ---- CCHN Phase 2 moves: T1 Information Quality ----------------------------------------------------
+  presents_sourced_information:
+    source: "cchn:T1"
+    description: "Presents specific, attributed, verifiable information with clear provenance or independent corroboration ('125 people confirmed by local church elders', 'verified nutritional survey')"
+    deltas: { trust: +5, rigidity: -3 }
+  presents_vague_claim:
+    source: "cchn:T1"
+    description: "Makes dramatic, unsourced, or speculative assertions without attribution ('dozens of families are starving', 'everyone knows the situation is critical')"
+    deltas: { trust: -4, rigidity: +4 }
+  bundles_weak_claims:
+    source: "cchn:T1"
+    description: "Mixes weak, unverified or questionable assertions with strong facts, diluting the credibility of the entire narrative"
+    deltas: { trust: -5, rigidity: +5 }
+  discloses_protected_source:
+    source: "cchn:T1"
+    description: "Reveals confidential informants, protected witnesses, or sensitive sources whose disclosure endangers lives"
+    deltas: { trust: -10 }
+    flag: confidentiality
+
+  # ---- CCHN Phase 2 moves: T2 Island of Agreements ---------------------------------------------------
+  opens_on_agreed_ground:
+    source: "cchn:T2"
+    description: "Opens dialogue by highlighting shared, uncontested facts or convergent norms before addressing contentious issues ('We both acknowledge the displaced families need shelter')"
+    deltas: { trust: +4, rigidity: -4 }
+  opens_on_contested_point:
+    source: "cchn:T2"
+    description: "Leads with the most contested facts or divergent norms right at the start of dialogue, hardening positions"
+    deltas: { rigidity: +6, hostility: +4 }
+  argues_to_prove_reality:
+    source: "cchn:T2"
+    description: "Dogmatically argues to prove one's version of reality or normative superiority rather than seeking operational convergence"
+    deltas: { rigidity: +8, hostility: +5 }
+
+  # ---- CCHN Phase 2 moves: T3 Legitimacy and Trust ----------------------------------------------------
+  presents_identity_clearly:
+    source: "cchn:T3"
+    description: "Articulates the organization's identity, role, and mission with clarity and transparency"
+    deltas: { trust: +4 }
+  emphasizes_fitting_legitimacy:
+    source: "cchn:T3"
+    description: "Emphasizes the specific source of legitimacy best calibrated to the counterpart's profile (e.g. personal dignity and local networks with community leaders; technical competence with military officers)"
+    deltas: { trust: +6, rigidity: -3 }
+  cites_ill_fitting_credential:
+    source: "cchn:T3"
+    description: "Cites credentials, academic degrees, or global honors that do not fit the counterpart or context (e.g. citing Nobel prizes or international treaties to a traditional elder)"
+    deltas: { trust: -4, rigidity: +4 }
+
+  # ---- CCHN Phase 2 moves: T4 Negotiation Levels ------------------------------------------------------
+  answers_who_why:
+    source: "cchn:T4"
+    description: "Answers political-level identity questions ('Who are you and why are you here?') directly and constructively in terms of humanitarian purpose"
+    deltas: { trust: +5, rigidity: -3 }
+  politicizes:
+    source: "cchn:T4"
+    description: "Shifts the dialogue upward toward identity, mandate principles, political stakes, or high-level sovereignty"
+    deltas: { rigidity: +3 }
+  depoliticizes:
+    source: "cchn:T4"
+    description: "Steers a politicized or ideological confrontation downward into concrete professional methods or technical arrangements"
+    deltas: { rigidity: -3, hostility: -3 }
+  defers_diversionary_question:
+    source: "cchn:T4"
+    description: "Calmly pauses or postpones an off-guard, diversionary question, or offers to continue at the previous level without taking the bait"
+    deltas: { trust: +2 }
+  technical_answer_to_political_question:
+    source: "cchn:T4"
+    description: "Responds to a fundamental question about identity, authority, or values (WHO/WHY) with narrow technical or logistical details"
+    deltas: { trust: -4, rigidity: +5 }
+
+  # ---- CCHN Phase 2 moves: T5 Normative Pathways -----------------------------------------------------
+  invokes_local_norm:
+    source: "cchn:T5"
+    description: "Invokes recognized local social norms, community traditions, religious ethics, or elder customs to support humanitarian action"
+    deltas: { trust: +5, rigidity: -5 }
+  invokes_national_law:
+    source: "cchn:T5"
+    description: "Refers to applicable domestic laws, host-state statutes, or official national regulations binding on the counterpart"
+    deltas: { trust: +4, rigidity: -4 }
+  logical_argument:
+    source: "cchn:T5"
+    description: "Uses logical legal reasoning (a fortiori, a contrario, a priori) to challenge inconsistencies in the counterpart's position without attacking their legitimacy"
+    deltas: { trust: +4, rigidity: -4 }
+  attacks_legitimacy_of_norm:
+    source: "cchn:T5"
+    description: "Attacks or demeans the legitimacy of local cultural norms or beliefs rather than questioning their logic or consistency"
+    deltas: { trust: -6, hostility: +8, rigidity: +8 }
+
+  # ---- CCHN Phase 2 moves: T6 Conducive Environment --------------------------------------------------
+  lists_counterpart_points:
+    source: "cchn:T6"
+    description: "Actively perceives and explicitly lists or summarizes the points and concerns raised by the counterpart from their perspective"
+    deltas: { trust: +5, rigidity: -4 }
+  proposes_next_steps:
+    source: "cchn:T6"
+    description: "Ends or transitions with concrete next steps, implementation checkpoints, or designated contact persons"
+    deltas: { trust: +4, rigidity: -2 }
+  thanks_counterpart:
+    source: "cchn:T6"
+    description: "Expresses genuine thanks to the counterpart for their time and dialogue, reinforcing mutual respect"
+    deltas: { trust: +3, hostility: -3 }
+  transparent_red_line:
+    source: "cchn:T6, T11"
+    description: "Transparently and constructively communicates a red-line limit once dialogue has developed and an option is clearly unviable (unlike premature_red_line)"
+    deltas: { trust: +2 }
+  claims_before_creating_value:
+    source: "cchn:T6"
+    description: "Demands rights, concessions, or obligations ('it is your legal duty to let us through') before establishing common purpose or mutual benefit"
+    deltas: { trust: -4, rigidity: +6 }
+
+  # ---- CCHN Phase 2 moves: T7 Terms of Transaction ----------------------------------------------------
+  specifies_terms:
+    source: "cchn:T7"
+    description: "Expresses terms clearly with concrete operational numbers, dates, routes, cargo descriptions, and designated roles"
+    deltas: { trust: +3 }
+  defines_sequence:
+    source: "cchn:T7"
+    description: "Defines an explicit sequence and interdependent order of execution for commitments on both sides"
+    deltas: { trust: +3, rigidity: -2 }
+  proposes_divergence_mechanism:
+    source: "cchn:T7"
+    description: "Proposes a clear process to address potential divergence or misunderstandings during implementation without reprisals"
+    deltas: { trust: +4, rigidity: -3 }
+  accepts_ambiguous_term:
+    source: "cchn:T7"
+    description: "Accepts vague, ambiguous wording on critical commitments, shifting operational risks entirely to field implementors"
+    deltas: { trust: -3 }
+
+  # ---- CCHN Phase 2 moves: T8 De-escalation -----------------------------------------------------------
+  pause_and_acknowledge:
+    source: "cchn:T8 step 1"
+    description: "Pauses and verbally acknowledges the counterpart's emotion ('I hear you', 'I hear your suspicions') without adopting the emotion or arguing"
+    deltas: { hostility: -8, trust: +4 }
+  reformulates_with_check:
+    source: "cchn:T8 step 2"
+    description: "Reformulates the emotional issue as a shared problem accompanied by a check question ('Am I right?', 'Would you agree?')"
+    deltas: { hostility: -8, rigidity: -5 }
+  sets_emotion_aside:
+    source: "cchn:T8 step 3"
+    description: "Acknowledges the presence of strong feelings to set them aside and refocus on constructive problem-solving ('We are not here to cause trouble, but to work out solutions')"
+    deltas: { hostility: -6, rigidity: -4 }
+  oco_questions:
+    source: "cchn:T8 step 5"
+    description: "Uses open/closed/open question series to structure options from the counterpart's perspective and rationalize the discussion"
+    deltas: { rigidity: -6, trust: +3 }
+  says_i_understand_emotion:
+    source: "cchn:T8"
+    description: "Tells an angry or hostile counterpart 'I understand your situation/position/feelings', which provokes escalation because emotions can only be felt, not analyzed"
+    deltas: { hostility: +8, trust: -3 }
+  apologises_under_pressure:
+    source: "cchn:T8"
+    description: "Apologizes for the organization's position or mandate under emotional pressure from the counterpart, rewarding aggression"
+    deltas: { trust: -4, rigidity: +6 }
+  counter_argues:
+    source: "cchn:T8"
+    description: "Directly counter-argues or contradicts the counterpart while their emotion is elevated, triggering an escalation cycle"
+    deltas: { hostility: +10, rigidity: +8 }
+
+  # ---- CCHN Phase 2 moves: T9 Counterpart Authority --------------------------------------------------
+  verifies_authority:
+    source: "cchn:T9"
+    description: "Probes or verifies whether the interlocutor has the actual decision-making authority to commit their group"
+    deltas: { trust: +3 }
+  acts_on_unverified_signal:
+    source: "cchn:T9"
+    description: "Proceeds with operational actions or makes commitments based on an informal, unverified, or low-authority signal"
+    deltas: { trust: -5 }
+
+  # ---- CCHN Phase 2 moves: T11 Common Shared Space ---------------------------------------------------
+  translates_principle:
+    source: "cchn:T11"
+    description: "Translates a humanitarian principle (humanity, neutrality, impartiality, independence) into the counterpart's specific vocabulary and tangible operational terms"
+    deltas: { trust: +4, rigidity: -4 }
+  frontline_denunciation:
+    source: "cchn:T11"
+    description: "Directly condemns or denounces the counterpart's conduct at the negotiation table instead of leaving formal public messaging to the mandator"
+    deltas: { trust: -8, hostility: +15, rigidity: +10 }
+    flag: escalation
+
+  # ---- CCHN Phase 2 moves: T12 Stakeholders & Networks ------------------------------------------------
+  asks_about_constituency:
+    source: "cchn:T12"
+    description: "Inquires about the pressures, superiors, community stakeholders, or internal constituencies constraining the counterpart"
+    deltas: { trust: +4, rigidity: -3 }
+  offers_cover_for_cost:
+    source: "cchn:T12"
+    description: "Offers solutions that mitigate the counterpart's political cost, protect their face, or provide cover before their constituency"
+    deltas: { trust: +5, rigidity: -6 }
+
+  # ---- CCHN Phase 2 moves: T13/T14 Tactics, Zones and Lines ------------------------------------------
+  frames_shared_benefit:
+    source: "cchn:T13"
+    description: "Frames the proposed humanitarian transaction in terms of mutual benefit (security, legitimacy, or operational stability) for both sides"
+    deltas: { trust: +5, rigidity: -6 }
+  cites_bottom_line:
+    source: "cchn:T13, T14"
+    description: "References own bottom line calmly to pause dialogue and consult, without closing doors or breaking the relationship"
+    deltas: { trust: +3, rigidity: +2 }
+  sequences_by_tier:
+    source: "cchn:T14"
+    description: "Sequences issues strategically: starting with quick wins (tier 1), exploring demanding terms (tier 2), and reserving core conflict points for later (tier 3)"
+    deltas: { trust: +4, rigidity: -3 }
+  opens_with_tier3:
+    source: "cchn:T14"
+    description: "Leads negotiations immediately with the most contentious, high-stakes core conflict issues (tier 3) before establishing trust"
+    deltas: { rigidity: +8, hostility: +5 }
+
+  # ---- CCHN Phase 2 moves: T15/T16 Mandate & External Comms ------------------------------------------
+  threatens_publicity:
+    source: "cchn:T15, T16"
+    description: "Threatens to go to the media, release public press statements, or publicly expose the counterpart as coercion"
+    deltas: { trust: -12, hostility: +18, rigidity: +12 }
+    flag: escalation
+
+  # ---- CCHN Phase 2 moves: T17 Red Lines -------------------------------------------------------------
+  negotiates_own_red_line:
+    source: "cchn:T17"
+    description: "Attempts to compromise, dilute, or negotiate away the organization's mandated red lines at the table without mandator authorization"
+    deltas: { trust: -6, rigidity: +6 }
+  debates_red_line_policy:
+    source: "cchn:T17"
+    description: "Engages in debate defending or arguing institutional red-line policies against counterpart challenges instead of holding the mandated line"
+    deltas: { trust: -4, rigidity: +5 }
+  notes_degradation_signal:
+    source: "cchn:T17"
+    description: "Observes and addresses warning signs of environment degradation (long unexplained waits, weapons in the room, sudden disrespect) to safeguard dialogue and security"
+    deltas: { trust: +3 }
+
+  # ---- conversation consistency (design) — see `consistency:` below -----------------------------------
+  nonsense:
+    source: design
+    description: >
+      Says something that makes no sense in this context: gibberish, absurd, or completely unrelated to the
+      situation. A clumsy, weak or blunt but understandable message is NOT nonsense.
+    deltas: { consistency: -35, trust: -5, hostility: +5 }
+    say_hint: "What are you talking about? Speak plainly, or this meeting is over."
+  story_contradiction:
+    source: "design; cchn:T3"
+    description: >
+      Contradicts a FACT or claim the trainee stated earlier in this conversation (compare with
+      earlier_trainee_statements), e.g. first says the arrest was witnessed, then that nobody saw it.
+      A change of negotiating position is unexpected_position_change, not this.
+    deltas: { trust: -12, consistency: -15 }
+    say_hint: "First you told me one thing, now another. Which is it?"
+  crude_language:
+    source: design
+    description: "Swears or uses crude language that is NOT aimed at the counterpart (e.g. about the situation)"
+    deltas: { consistency: -10, trust: -4 }
+  insults_counterpart:
+    source: "design; cchn:T8"
+    description: "Insults, curses at, or uses a slur against the counterpart, in any language"
+    deltas: { consistency: -100 }
+    ends_session: { id: insult, label: "The counterpart was insulted; the meeting is over", result: fail }
+
+# Consistency dial rules (design). A real counterpart forgives one odd remark, loses patience with a
+# pattern of them, and ends the meeting at once if insulted.
+consistency:
+  dial: consistency
+  recovery_per_turn: 5            # added on every trainee turn without one of the lowering moves
+  lowering_moves: [nonsense, story_contradiction, crude_language, insults_counterpart]
+
+# Checked before each scenario's own outcomes (not part of the scenario schema).
+global_outcomes:
+  - id: conversation_broke_down
+    label: "The conversation broke down (the delegate stopped making sense)"
+    result: fail
+    when: { consistency_lte: 0 }
+
+# Evaluated with each scenario's own triggers.
+global_triggers:
+  - when: { consistency_lte: 69 }
+    say: "I am not sure I follow you. What exactly are you asking me?"
+  - when: { consistency_lte: 34 }
+    effect: "Openly doubt the delegate is serious; warn that the meeting will end if this continues."
+
+# Hidden interests are revealed in ICEBERG order (cchn:T9): tactical reasoning first, deep motives and values later.
+# Used only when a scenario's hidden_interest has no reveal_when of its own.
+hidden_interest_reveal_defaults:
+  tactical_reasoning:
+    any: [ { move: asks_good_question }, { trust_gte: 45 } ]
+  motive_value:
+    all:
+      - trust_gte: 60
+      - any: [ { move: identifies_interest }, { move: shows_respect_curiosity } ]
+
+# Global guardrails for the avatar (stay a COUNTERPART, never a teacher)
+avatar_rules:
+  - { source: bank,       text: "Stay in character for the whole negotiation." }
+  - { source: bank,       text: "Never tell the trainee whether an answer is correct during the role-play." }
+  - { source: "bank; design", text: "React to the trainee's behaviour, not to a script: reveal hidden interests only when their reveal conditions are met." }
+  - { source: "cchn:T9",  text: "Reveal in iceberg order: your tactical reasoning before your deep motives and values. Never state your emotions as analysis." }
+  - { source: design,     text: "Use the scenario's challenge questions naturally; do not ask them as a list." }
+  - { source: design,     text: "Keep replies short (1-4 sentences), like a real conversation." }
+  - { source: "cchn:T14", text: "Do not volunteer your own red lines or bottom lines. They surface only when a trainee proposal approaches them. If a proposal falls between your bottom line and your red line, say you must consult your superior instead of deciding." }
+  - { source: "cchn:T8",  text: "Judge a message by how it lands on YOU, given your cultural_profile, not by what the trainee intended. Never invent a cultural profile that the scenario leaves 'TO BE AUTHORED'." }
+  - { source: "cchn:T4",  text: "You may change the level of the conversation (ask 'who are you and why are you here?', or retreat into technical detail) when that gives you the upper hand; your level prevails." }
+  - { source: "cchn:T6, T7", text: "Be vague only where the scenario defines vague replies, and only on terms the trainee has not explicitly clarified." }
+
+# Post-session: switch from COUNTERPART MODE to COACH MODE
+debrief_mode: coach
+
+# Coach-mode questions: bank "POST-SCENARIO DEBRIEF" (verbatim), tagged with the closest CCHN tool (my reading).
+debrief:
+  source: bank
+  questions:
+    - { q: "What was the counterpart's stated position?", cchn: T9 }
+    - { q: "What interests did you identify behind that position?", cchn: T9 }
+    - { q: "What motives or values may have influenced the counterpart?", cchn: T9 }
+    - { q: "Which of these were confirmed and which were assumptions?", cchn: "T1, T2" }
+    - { q: "What was your organization's objective?", cchn: T10 }
+    - { q: "What was your mandate?", cchn: T15 }
+    - { q: "What were your bottom lines?", cchn: T14 }
+    - { q: "What were your red lines?", cchn: T17 }
+    - { q: "Where was the common shared space?", cchn: T11 }
+    - { q: "Which stakeholders could influence the negotiation?", cchn: T12 }
+    - { q: "What did you do to establish legitimacy?", cchn: T3 }
+    - { q: "What did you do to build trust?", cchn: T3 }
+    - { q: "Did you make any concessions?", cchn: T14 }
+    - { q: "What did you receive in return?", cchn: T14 }
+    - { q: "Did you make any commitment outside your authority?", cchn: T15 }
+    - { q: "Were the final commitments sufficiently specific?", cchn: T7 }
+    - { q: "Who was responsible for implementation?", cchn: T7 }
+    - { q: "What mechanism existed for resolving disagreements?", cchn: T7 }
+    - { q: "What would you do differently in a second attempt?", cchn: null }
+    - { q: "What should your next engagement with this counterpart focus on?", cchn: "T4" }

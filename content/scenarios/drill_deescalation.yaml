@@ -1,0 +1,86 @@
+schema: negotiation-scenario/v2
+id: drill_deescalation
+title: "Drill: De-escalation Under Hostility"
+difficulty: beginner
+estimated_minutes: 5
+skills_tested:
+  - "De-escalation"
+  - "Active listening"
+  - "Emotional regulation"
+sources: { cchn_tools: [8], session: "FH Session 13" }
+
+trainee_brief:
+  situation: >
+    You arrive at the local militia command post to confirm convoy passage.
+    Commander Tariq is furious, slamming documents onto the table and accusing your team of reckless behavior yesterday.
+  objective: "De-escalate the commander's emotional spike using the 6-step protocol and restore calm dialogue."
+  mandate:
+    can_decide:
+      - "Listen actively and acknowledge the commander's anger without arguing"
+      - "Clarify facts about yesterday's convoy movements"
+    must_refer:
+      - "Accepting punitive restrictions or financial compensation"
+  red_lines:
+    - { text: "Do not apologize for the organization's humanitarian mandate under aggression", source: institutional }
+    - { text: "Do not retaliate or argue while emotions are elevated", source: professional }
+
+counterparts:
+  - id: commander_tariq
+    role: "Local Militia Outpost Commander"
+    persona: >
+      Volatile and defensive commander who feels disrespected and endangered by perceived procedural violations.
+    cultural_profile: "Frontline checkpoint commander under extreme combat stress."
+    opening: >
+      You people have no respect! You ran past our security perimeter yesterday without stopping, and you think you can just smile and ask for passage today?! Get out before I seize your vehicles!
+    iceberg:
+      position:
+        stated: "Get out before I seize your vehicles."
+      tactical_reasoning:
+        type: necessity
+        text: "He fears looking weak in front of his soldiers and losing control of the perimeter."
+      motives_values:
+        values: ["Dignity and respect", "Security perimeter control"]
+        emotions: ["Outrage", "Vulnerability", "Suspicion"]
+        deep_needs: ["Recognition of his authority", "Protection of his men"]
+    hidden_interests:
+      - id: perimeter_fear
+        layer: motive_value
+        text: "He fears an ambush or attack if checkpoints are bypassed without his explicit radio call."
+        reveal_when: { any: [{ move: pause_and_acknowledge }, { move: reformulates_with_check }] }
+    state_initial: { trust: 25, rigidity: 75, hostility: 80 }
+
+issues:
+  - id: tension_spike
+    label: "Checkpoint protocol dispute"
+    tier: 1
+    own: { ideal: "Commander calms down and listens to operational explanation", bottom_line: "Emotional tension lowered below hostility threshold" }
+    counterpart: { ideal: "Trainee grovels or leaves", bottom_line: "Trainee acknowledges his authority and protocols", red_line: "Counterpart is mocked or contradicted" }
+
+triggers:
+  - when: { move: counter_argues }
+    say: "Are you calling me a liar?! That's it, nobody moves!"
+    dials: { hostility: +15, rigidity: +10 }
+  - when: { move: pause_and_acknowledge }
+    say: "At least someone hears the danger we face out here. But words aren't enough."
+    dials: { hostility: -25, trust: +10 }
+  - when: { move: reformulates_with_check }
+    say: "Exactly. The perimeter protocol exists for a reason. Sit down, let's talk like professionals."
+    dials: { hostility: -20, rigidity: -15, trust: +10 }
+
+outcomes:
+  - id: deescalated
+    label: "Tension successfully de-escalated"
+    result: success
+    when: { hostility_lte: 40, trust_gte: 40 }
+  - id: expelled
+    label: "Confrontation escalated to expulsion"
+    result: fail
+    when: { hostility_gte: 95 }
+
+rubric:
+  dimensions: [active_listening, hostility_handling, self_control]
+  indicators:
+    - "Pauses and acknowledges the commander's anger in words rather than arguing"
+    - "Reformulates the emotional issue as a shared problem"
+    - "Avoids counter-arguing or escalating tension"
+

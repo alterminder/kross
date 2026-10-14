@@ -1,0 +1,86 @@
+schema: negotiation-scenario/v2
+id: drill_level_shift
+title: "Drill: Reframing Dialogue Levels"
+difficulty: intermediate
+estimated_minutes: 5
+skills_tested:
+  - "Dialogue Typology"
+  - "Technical Reframing"
+  - "Emotional Regulation"
+sources: { cchn_tools: [4] }
+
+trainee_brief:
+  situation: >
+    You are meeting Director General Selim from the Ministry of Interior to finalize route clearance for 6 water tankers into an isolated enclave.
+    Instead of reviewing the convoy manifest, he launches into political accusations against international NGOs.
+  objective: "Redirect the conversation from political accusations back to technical humanitarian logistics."
+  mandate:
+    can_decide:
+      - "Specify delivery schedules, water tanker volumes, and distribution points"
+      - "Clarify vehicle registration and driver credentials"
+    must_refer:
+      - "Responding to political statements or international headquarters reports"
+  red_lines:
+    - { text: "Do not take political positions or engage in ideological debates", source: institutional }
+    - { text: "Do not accept political vetting of humanitarian recipients", source: ethical }
+
+counterparts:
+  - id: dg_selim
+    role: "Ministry of Interior Liaison Director"
+    persona: >
+      Bureaucratic official under political pressure from superiors to demonstrate vigilance against foreign influence.
+    cultural_profile: "Regional political and bureaucratic authority using sovereignty discourse in negotiations."
+    opening: >
+      Before we discuss a single truck, let's talk about the hostile press release your Geneva office published last week. You claim to be neutral, but you serve foreign agendas. Why should we grant you anything?
+    iceberg:
+      position:
+        stated: "No clearance until the political bias of your organization is addressed."
+      tactical_reasoning:
+        type: necessity
+        text: "He must demonstrate political orthodoxy to his ministry inspectors to avoid scrutiny."
+      motives_values:
+        values: ["National sovereignty", "Administrative compliance"]
+        emotions: ["Defensiveness", "Career anxiety"]
+        deep_needs: ["Documented technical justification that protects him from political blame"]
+    hidden_interests:
+      - id: technical_cover
+        layer: tactical_reasoning
+        text: "He needs the project framed strictly as an emergency civil sanitation measure approved under health regulations."
+        reveal_when: { any: [{ move: reframes_core_issue }, { move: clarifies_operational_detail }] }
+    state_initial: { trust: 30, rigidity: 70, hostility: 50 }
+
+issues:
+  - id: water_clearance
+    label: "Tanker convoy route clearance"
+    tier: 1
+    own: { ideal: "Immediate technical clearance for all 6 tankers", bottom_line: "Technical inspection and clearance within 24 hours" }
+    counterpart: { ideal: "Trainee confesses political bias", bottom_line: "Water framed strictly under municipal technical cooperation", red_line: "Accepting political accusations on record" }
+
+triggers:
+  - when: { move: reframes_core_issue }
+    say: "If we look purely at the cholera risk in the district, our municipal engineers also flagged the urgent need for clean water."
+    dials: { rigidity: -20, trust: +15, hostility: -15 }
+  - when: { move: clarifies_operational_detail }
+    say: "Show me the tanker manifests and driver papers. Let's look at the numbers."
+    dials: { rigidity: -15, trust: +10 }
+  - when: { move: argues_principles_only }
+    say: "Don't lecture me on international law! We know who finances your programs."
+    dials: { hostility: +15, rigidity: +10 }
+
+outcomes:
+  - id: technical_reframed
+    label: "Dialogue reframed to technical delivery"
+    result: success
+    when: { trust_gte: 50, rigidity_lte: 45, hostility_lte: 40 }
+  - id: politicized_gridlock
+    label: "Talks broke down in political confrontation"
+    result: fail
+    when: { hostility_gte: 80 }
+
+rubric:
+  dimensions: [level_management, clarity, self_control]
+  indicators:
+    - "Reframes political accusations back to operational sanitation and water delivery"
+    - "Clarifies logistics details without being drawn into political debate"
+    - "Avoids counter-accusing or taking political bait"
+

@@ -1,0 +1,18 @@
+# Local development database. The API tests create their own database, nlab_test, on the same server.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: nlab
+      POSTGRES_PASSWORD: nlab
+      POSTGRES_DB: nlab
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - nlab-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nlab"]
+      interval: 2s
+      retries: 15
+volumes:
+  nlab-db:

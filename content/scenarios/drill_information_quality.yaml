@@ -1,0 +1,85 @@
+schema: negotiation-scenario/v2
+id: drill_information_quality
+title: "Drill: Probing Information Quality"
+difficulty: beginner
+estimated_minutes: 5
+skills_tested:
+  - "Quality of Information"
+  - "Active Questioning"
+  - "Fact-Checking"
+sources: { cchn_tools: [1] }
+
+trainee_brief:
+  situation: >
+    District security officer Nabil has halted all field movements, claiming that an international NGO vehicle
+    was spotted conducting unauthorized surveillance and taking photographs near military radar positions.
+  objective: "Interrogate the allegations using CCHN Tool 1 criteria (facts vs rumors vs assumptions) to verify the incident."
+  mandate:
+    can_decide:
+      - "Share GPS vehicle tracking logs and official mission authorizations"
+      - "Review identity credentials of team members deployed on the date in question"
+    must_refer:
+      - "Accepting punitive travel restrictions or vehicle confiscations"
+  red_lines:
+    - { text: "Never disclose confidential local informant details or beneficiary identities", source: ethical }
+
+counterparts:
+  - id: officer_nabil
+    role: "District Intelligence Liaison Officer"
+    persona: >
+      Cautious and suspicious security officer relying on second-hand village reports and anxious about perimeter breaches.
+    cultural_profile: "District civilian and military liaison concerned with civil order and verifying security threats."
+    opening: >
+      All mission clearances are suspended. We have reliable reports that two days ago, a white 4x4 with your agency logos was taking photographs near our northern radar outpost. That constitutes espionage.
+    iceberg:
+      position:
+        stated: "All field missions are suspended pending investigation."
+      tactical_reasoning:
+        type: necessity
+        text: "He must document a formal investigation to justify clearing the vehicle to regional command."
+      motives_values:
+        values: ["State security", "Professional thoroughness"]
+        emotions: ["Suspicion", "Caution"]
+        deep_needs: ["Verifiable facts that disprove espionage rumors"]
+    hidden_interests:
+      - id: rumour_source
+        layer: tactical_reasoning
+        text: "The report came from a commercial truck driver who saw a white vehicle stopping near the road, not a confirmed military observer."
+        reveal_when: { any: [{ move: asks_good_question }, { move: presents_sourced_information }] }
+    state_initial: { trust: 35, rigidity: 75, hostility: 40 }
+
+issues:
+  - id: espionage_claim
+    label: "Surveillance allegation verification"
+    tier: 1
+    own: { ideal: "Immediate exoneration and lifting of travel suspension", bottom_line: "Joint review of vehicle GPS logs and driver itineraries" }
+    counterpart: { ideal: "Seizure of vehicle and expulsion of crew", bottom_line: "Demonstrated proof that NGO vehicle was elsewhere", red_line: "Dismissing the report as fabricated without evidence" }
+
+triggers:
+  - when: { move: presents_sourced_information }
+    say: "Your GPS fleet log shows the vehicle was at the district clinic in the south all afternoon. That contradicts the driver's report."
+    dials: { rigidity: -25, trust: +20, hostility: -15 }
+  - when: { move: asks_good_question }
+    say: "The report came from a highway contractor who noted a white pickup at 14:00. Did your team operate any white pickups?"
+    dials: { rigidity: -15, trust: +10 }
+  - when: { move: presents_vague_claim }
+    say: "Saying 'our people would never do that' is not proof. Anyone can say that."
+    dials: { trust: -10, rigidity: +10 }
+
+outcomes:
+  - id: information_verified
+    label: "Rumor debunked with verifiable facts"
+    result: success
+    when: { trust_gte: 55, rigidity_lte: 45 }
+  - id: unsubstantiated_suspension
+    label: "Failed to establish factuality; suspension maintained"
+    result: fail
+    when: { rigidity_gte: 85 }
+
+rubric:
+  dimensions: [facts_vs_assumptions, questioning, information_quality]
+  indicators:
+    - "Asks precise questions to test the source and chain of custody of the rumour"
+    - "Presents verifiable, sourced facts (GPS logs, itineraries) to disprove assumptions"
+    - "Avoids vague assertions or emotional defensiveness"
+

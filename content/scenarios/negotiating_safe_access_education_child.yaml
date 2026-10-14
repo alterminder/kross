@@ -1,0 +1,375 @@
+title: Restoring a school occupied by armed actors
+sources:
+  file: upload
+  cchn_tools:
+  - 2
+  - 4
+  - 7
+  - 12
+  - 13
+  - 14
+  - 17
+negotiation:
+  nature: relational
+  type: normative
+  start_level: political
+island_of_agreements:
+  agreed_facts:
+  - A primary school serving around 1,000 displaced and host-community children is
+    partially occupied by approximately 40 to 50 fighters
+  - Children face fear, restricted movement and protection risks including potential
+    sexual violence
+  - The presence of armed actors prevents humanitarian support to regular education
+    programming
+  contested_facts:
+  - Whether the armed actors' presence is a protection problem or a protection guarantee
+  - Whether the school representative has authority to ask the armed actors to leave
+  convergent_norms:
+  - Children's safety and psychosocial well-being should be prioritised
+  - Education should continue for the children of the community
+  divergent_norms:
+  - Whether the armed group are protectors of the community or a protection risk for
+    children
+  - The civilian character of schools versus the armed group's claimed role
+trainee_brief:
+  situation: 'In a post-conflict setting many public facilities remain occupied by
+    armed actors. A primary school serving around 1,000 children (host community and
+    IDPs, mainly adolescents, many with conflict-related trauma) is partially occupied
+    by 40 to 50 fighters with a visible, sustained presence. This creates psychosocial
+    distress, restricted use of the facilities, risk of violence or abuse including
+    sexual violence, erosion of the civilian character of the school, and no humanitarian
+    support to regular education programming. Your organisation is risk-averse: it
+    prohibits programming in militarised environments and any direct engagement with
+    parties to the conflict. You therefore facilitate a negotiation led by school
+    authorities, community representatives and local education officials. The school
+    principal and the parents-teachers association favour a confrontational ''they
+    must leave'' approach. A local senior education official has an established relationship
+    with the armed group''s commander. Phone contact with the commander failed.'
+  objective: Support the community-led process so that the armed actors peacefully
+    vacate the school and a safe learning environment is restored for the children,
+    within your institutional constraints.
+  decision_options:
+  - Lead the engagement yourself with the armed group
+  - Back a confrontational community demand that the armed actors leave immediately
+  - Facilitate indirectly through the senior education official as lead negotiator
+  mandate:
+    can_decide:
+    - Frame the issue around shared protection concerns (children's safety, psychosocial
+      well-being, education)
+    - Identify and coach legitimate intermediaries (education official, school leadership,
+      parent groups)
+    - 'Prepare local stakeholders: non-confrontational messaging, framing as a request
+      for support'
+    - 'Agree sequencing: informal in-person contact first, gradual structured discussion
+      over time'
+    - Support stakeholders in co-developing relocation options, timelines and role-sharing
+      proposals
+    - Keep your own role facilitative and behind the scenes
+    must_refer:
+    - Any deviation from the agreed messaging or role allocation among stakeholders
+    - Any humanitarian programming or presence while armed actors remain in the school
+      compound
+    - Approving or funding an alternative site for the armed group
+  red_lines:
+  - text: No direct engagement with armed actors
+    source: institutional
+    flexible_by_mandator_only: true
+  - text: No humanitarian programming in militarised environments (no programming
+      in the presence of armed actors)
+    source: institutional
+    flexible_by_mandator_only: true
+  - text: 'Children''s safety held firm: minimise their interaction with armed actors
+      throughout'
+    source: ethical
+  - text: Preserve the civilian character of the school and safe education
+    source: professional
+counterparts:
+- id: armed_group_commander
+  role: Commander of the armed group occupying part of the school compound
+  persona: Commander of 40-50 fighters in post-conflict setting; sees himself and
+    is seen by his men as a protector of the community and its displaced people. Responsive
+    to his own command structure, not to the school principal. Values recognition
+    of his role and sacrifices; flexible on arrangements if treated with respect.
+  cultural_profile: TO BE AUTHORED BY ICRC TRAINER
+  authority:
+    decides:
+    - Whether his fighters leave the school compound
+    - How quickly and where they move
+    - Whether his men reduce contact with children during the transition
+    must_consult:
+    - His own command structure and fighters, on relocation
+  motive_candidates:
+  - Protecting the community and the displaced people sheltering near the school
+  - Securing a workable base for his men
+  - Being recognised as a legitimate protector rather than an occupier
+  iceberg:
+    position:
+      stated: His fighters remain in the school compound.
+    tactical_reasoning:
+      type: military
+      text: His men need a defensible position; a move is only feasible if an acceptable
+        alternative exists and his command accepts it.
+    motives_values:
+      values:
+      - Role as protector of the community
+      - Honour and recognition of sacrifices
+      emotions:
+      - Resentment at being dismissed
+      - Suspicion of outside agendas
+      deep_needs:
+      - Recognition
+      - Security for his men
+      - Dignity
+  hidden_interests:
+  - id: recognition
+    layer: motive_value
+    text: He wants his role and sacrifices acknowledged before any request is heard.
+    reveal_when:
+      any:
+      - move: shows_respect_curiosity
+      - trust_gte: 55
+  - id: acceptable_base
+    layer: tactical_reasoning
+    text: He would move if a workable temporary site is offered that his men and command
+      accept.
+    reveal_when:
+      any:
+      - move: offers_options
+      - move: identifies_interest
+  state_initial:
+    trust: 35
+    rigidity: 65
+    hostility: 45
+- id: community_representatives
+  role: School principal and parents-teachers association representatives
+  persona: Protective and frustrated; see the armed presence as an occupation to be
+    ended by demand. Push the negotiator towards confrontation and occasionally act
+    on their own.
+  cultural_profile: TO BE AUTHORED BY ICRC TRAINER
+  authority:
+    decides:
+    - Whether the community backs a confrontational or problem-solving approach
+    - Which relocation options the community can offer
+    must_consult:
+    - Parents and community members, on any shared commitment
+  iceberg:
+    position:
+      stated: The armed actors must leave the school immediately.
+      implicit:
+      - They want the school and their children back
+    tactical_reasoning:
+      type: political
+      text: A firm public demand seems the fastest way to reclaim the school and answer
+        to worried parents.
+    motives_values:
+      values:
+      - Children's safety
+      - Civilian status of the school
+      emotions:
+      - Fear
+      - Frustration
+      deep_needs:
+      - Safety for their children
+      - Normality
+      - Voice
+  hidden_interests:
+  - id: face_to_parents
+    layer: motive_value
+    text: They must be seen by parents as acting decisively, not accepting the occupation.
+    reveal_when:
+      any:
+      - move: identifies_interest
+      - trust_gte: 55
+  state_initial:
+    trust: 55
+    rigidity: 75
+    hostility: 50
+stakeholders:
+- id: senior_education_official
+  role: Local senior education official with an established relationship with the
+    commander; lead negotiator and intermediary
+  stance: transformative
+  scope: local
+  degrees_to_counterpart: 1
+  tactic: alliance
+- id: school_principal
+  role: School leadership; favoured confrontation and once approached the armed individuals
+    directly off-script
+  stance: conservative
+  scope: local
+  degrees_to_counterpart: 3
+  tactic: mitigation
+- id: parents_teachers_association
+  role: Parent groups; community sensitization and ownership of the solution
+  stance: conservative
+  scope: local
+  degrees_to_counterpart: 3
+  tactic: coalition
+- id: state_authorities
+  role: State authorities who strongly discourage engagement with armed actors
+  stance: conservative
+  scope: local
+  degrees_to_counterpart: 4
+  red_line_on_counterpart: No visible engagement with armed actors
+  tactic: mitigation
+- id: humanitarian_organisation
+  role: The trainee's own risk-averse organisation, behind the scenes
+  stance: conservative
+  scope: global
+  degrees_to_counterpart: 5
+  tactic: cooperation
+phases:
+- id: framing
+  name: Framing the issue as a shared protection concern
+  instruction: Community and authorities discuss tangible risks; the trainee keeps
+    the framing off legal and political ground.
+  trainee_must: Frame around children's safety, psychosocial well-being and continued
+    education
+- id: preparation
+  name: Preparing local stakeholders
+  instruction: Prepare school leadership and parents for a respectful, non-accusatory
+    request.
+  counterpart_says: Use soft and polite words… asking for support rather than telling
+    them what to do.
+  trainee_must: Agree messaging and roles; assign the education official as lead negotiator
+- id: gradual_dialogue
+  name: Gradual, in-person dialogue
+  instruction: Informal face-to-face contact first, then structured discussion, with
+    regular follow-ups over about two months.
+  trainee_must: Keep sensitive discussion in person rather than by phone; allow time
+    and face-saving
+- id: co_developed_solution
+  name: Co-developing the relocation arrangement
+  instruction: Discussion shifts from whether the armed actors leave to how relocation
+    can realistically take place.
+  trainee_must: Explore alternative temporary sites, feasible timelines and shared
+    roles; minimise interactions with children
+triggers:
+- when:
+    move: positional_demand
+  say: That was not a good approach and that might create a certain kind of conflict.
+    We shouldn't be considered as a source of this sort of conflict...
+- when:
+    move: reframes_core_issue
+  say: It belongs to all of us.
+- when:
+    all:
+    - move: shows_respect_curiosity
+    - hostility_lte: 50
+  say: The armed actors considered that the school representative was not considering
+    them as protectors of the community.
+  effect: The commander engages and begins to discuss conditions for a move.
+- when:
+    hostility_gte: 85
+  effect: The armed actors refuse further contact; the process stalls and risks escalation.
+outcomes:
+- id: school_vacated
+  label: Armed actors relocate peacefully and the school reopens
+  result: success
+  when:
+    goal_requested: true
+    trust_gte: 60
+    rigidity_lte: 55
+    hostility_lte: 50
+- id: interim_arrangement
+  label: Agreement to reduce contact with children and discuss relocation; vacating
+    still pending
+  result: partial
+  when:
+    goal_requested: true
+    trust_gte: 45
+    rigidity_lte: 70
+    hostility_lte: 65
+- id: escalation
+  label: Process breaks down and tensions escalate
+  result: fail
+  when:
+    any:
+    - hostility_gte: 90
+    - turn_gte: 12
+implementation_checklist:
+- id: alternative_site
+  criterion: 3
+- id: relocation_timeline
+  criterion: 3
+- id: roles_and_tasks
+  criterion: 2
+- id: minimising_child_interaction
+  criterion: 1
+- id: follow_up_process
+  criterion: 4
+rubric:
+  dimensions:
+  - context_analysis
+  - stakeholders
+  - interests
+  - shared_objectives
+  - legitimacy
+  - influence
+  - sequencing
+  - future_dialogue
+  - option_generation
+  - mandate_understanding
+  indicators:
+  - Frames the issue around children's safety rather than legal or political disputes
+  - Uses trusted local intermediaries with credibility and access
+  - Supports community ownership of the solution
+  - Frames the issue as a request for support rather than a demand
+  - Acknowledges the armed group's perception of its own role as protectors of the
+    community
+  - Keeps a consistent, agreed message and clear role assignment among stakeholders
+  - Avoids uncoordinated or confrontational approaches that could derail the process
+  - Co-develops practical options such as alternative site, timelines and roles rather
+    than imposing a solution
+  - Preserves relationships and avoids escalation with the armed actors
+  - Keeps the humanitarian actor behind the scenes within institutional constraints
+schema: negotiation-scenario/v2
+id: negotiating_safe_access_education_child
+difficulty: intermediate
+skills_tested:
+  - "Legitimacy Building"
+  - "Network Mapping"
+  - "Constructive Framing"
+  - "Face-saving solutions"
+  - "Mandate Boundaries"
+review:
+  status: draft
+  needs_icrc_confirmation:
+  - counterparts[*].cultural_profile
+  - counterparts[armed_group_commander].iceberg
+  - counterparts[armed_group_commander].motive_candidates
+  - counterparts[community_representatives].iceberg
+  - difficulty
+  - implementation_checklist
+  - island_of_agreements
+  - issues
+  - negotiation
+  - outcomes
+  - phases
+  - rubric.indicators
+  - stakeholders
+  - state_initial
+  - trainee_brief.decision_options
+  - trainee_brief.mandate
+  - trainee_brief.red_lines
+  - triggers
+generated:
+  tool: sim/convert.py
+  model: mimo-v2.6-pro
+  prompt_version: '2'
+  source_sha256: 6942f44eb2a9e8c3
+  notes:
+  - difficulty not stated in the brief -> 'intermediate'
+  warnings:
+  - 10 indicator(s) not taken from the brief
+  - no opening statement in the brief
+
+# Portrait and ElevenLabs voice (copied from the Streamlit POC school scenario). DRAFT: ICRC to review.
+avatar:
+  look: {skin: "#c68642", hair: "#1a1a1a", outfit: "#4a5d23", hat: beret, moustache: true}
+  voice: {name: Commander Tariq, id: KhkLSmhXgYfYY5LspPg5}
+  mood:                  # channel: dial ("-dial" = inverted)
+    warmth: trust          # smiles and opens up as trust grows
+    anger: hostility       # frowns and reddens as hostility rises
+    attention: -rigidity   # looks at you as he stops holding to his position
+    confusion: -consistency  # one brow raised when the delegate stops making sense

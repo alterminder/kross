@@ -1,0 +1,85 @@
+schema: negotiation-scenario/v2
+id: drill_normative_pathway
+title: "Drill: Building a Normative Pathway"
+difficulty: intermediate
+estimated_minutes: 5
+skills_tested:
+  - "Normative Pathway"
+  - "Cultural Grounding"
+  - "Convergent Norms"
+sources: { cchn_tools: [5] }
+
+trainee_brief:
+  situation: >
+    Sheikh Omar, a respected clan elder in the rural valley, has barred your medical vaccination teams from entering villages,
+    stating that foreign treaties and international conventions have no validity in his ancestral community.
+  objective: "Build a normative pathway linking child healthcare to local customary values and traditions."
+  mandate:
+    can_decide:
+      - "Incorporate local elders and community health workers into vaccination teams"
+      - "Explain clinical safety protocols and vaccine provenance"
+    must_refer:
+      - "Compromising medical quality standards or omitting cold chain protocols"
+  red_lines:
+    - { text: "No discrimination in child access based on clan affiliation", source: ethical }
+
+counterparts:
+  - id: sheikh_omar
+    role: "Council of Elders Spokesperson"
+    persona: >
+      Dignified and protective clan elder guarding community traditions against perceived secular encroachment.
+    cultural_profile: "Traditional elder bound by customary law, tribal prestige, and religious duties."
+    opening: >
+      You come with international papers and UN stamps. Those laws were written in foreign capitals. In this valley, our customs and our religious duties to protect our children are our only law. We do not trust your outside injections.
+    iceberg:
+      position:
+        stated: "Vaccination teams are barred from entering community territory."
+      tactical_reasoning:
+        type: alternative_norm
+        text: "He believes external organizations seek to undermine local leadership and communal autonomy."
+      motives_values:
+        values: ["Communal honor", "Protection of offspring", "Faith and heritage"]
+        emotions: ["Distrust", "Pride"]
+        deep_needs: ["Reassurance that healthcare respects Islamic values and clan leadership"]
+    hidden_interests:
+      - id: faith_validation
+        layer: motive_value
+        text: "If prominent religious scholars and clan elders inspect and endorse the vaccine as life-saving, he will welcome it."
+        reveal_when: { any: [{ move: translates_principle }, { move: unpacks_principle }] }
+    state_initial: { trust: 25, rigidity: 80, hostility: 30 }
+
+issues:
+  - id: vaccination_access
+    label: "Child immunization access"
+    tier: 1
+    own: { ideal: "Full vaccination of all under-5 children across all clan settlements", bottom_line: "Joint vaccination campaign supervised by local community representatives" }
+    counterpart: { ideal: "Total exclusion of outside medical teams", bottom_line: "Local religious endorsement and clan oversight of medical personnel", red_line: "Forced imposition of international treaties" }
+
+triggers:
+  - when: { move: translates_principle }
+    say: "Our scholars teach that preserving human life is among the highest duties in Islam. When you speak of child protection, we share that sacred duty."
+    dials: { rigidity: -30, trust: +25, hostility: -10 }
+  - when: { move: overclaims_norm }
+    say: "Your Geneva conventions have no jurisdiction here. Mention them again and this meeting is concluded."
+    dials: { rigidity: +20, hostility: +15, trust: -10 }
+  - when: { move: unpacks_principle }
+    say: "Explain to me how your doctors respect our customs during the medical examinations."
+    dials: { rigidity: -15, trust: +10 }
+
+outcomes:
+  - id: normative_consensus
+    label: "Normative consensus achieved with community elders"
+    result: success
+    when: { trust_gte: 50, rigidity_lte: 45 }
+  - id: cultural_impasse
+    label: "Rejected due to legalistic imposition"
+    result: fail
+    when: { rigidity_gte: 90 }
+
+rubric:
+  dimensions: [context_analysis, relationship_management, clarity]
+  indicators:
+    - "Connects humanitarian child health objectives to customary and religious traditions"
+    - "Unpacks principles respectfully rather than overclaiming international treaties"
+    - "Builds common ground with community elders"
+
