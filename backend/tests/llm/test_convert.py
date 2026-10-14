@@ -41,6 +41,12 @@ def test_a_verified_draft_and_a_rejected_paraphrase(rules, rubric):
     assert any("not copied verbatim" in error for error in bad.errors)
 
 
+def test_text_around_the_json_does_not_cost_a_retry(rules, rubric):
+    reply = "Here is the draft.\n```json\n" + example_output(GOLD) + "\n```\nEvery quote is verbatim. {done}"
+    result = asyncio.run(convert_brief(FakeProvider([reply]), CONFIG, CHUNK, rules, rubric, [], retries=0))
+    assert not result.errors and result.attempts == 1
+
+
 def test_the_model_gets_the_errors_back_and_a_second_try(rules, rubric):
     paraphrase = copy.deepcopy(GOLD)
     paraphrase["counterparts"][0]["opening"] = "We are very worried about your convoy."

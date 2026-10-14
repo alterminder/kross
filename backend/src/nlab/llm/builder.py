@@ -5,6 +5,7 @@ separate, optional call (nlab.api.pictures)."""
 from __future__ import annotations
 
 import json
+import re
 import time
 from collections.abc import Mapping, Sequence
 
@@ -66,11 +67,14 @@ async def _ask_builder(
     question: str | None,
     answer: str | None,
     improvise: bool,
+    asked: Sequence[str] = (),
 ) -> tuple[BuilderReply, CallRecord]:
     role = config.for_role("builder")
     user = _payload(brief, turns, question, answer)
     if improvise:
         user += "\nImprovise: invent the answer to the pending question yourself."
+    if asked:
+        user += "\nAlready asked, never ask again even reworded: " + json.dumps(list(asked), ensure_ascii=False)
     messages: list[Message] = [{"role": "system", "content": prompt("builder")}, {"role": "user", "content": user}]
     request = request_for("builder", role, messages, 0.3)
     started = time.monotonic()
@@ -84,6 +88,15 @@ async def _ask_builder(
         raise BuilderFailed(
             "The language model did not answer", [record_for(request, started, Usage(), "error", 1)]
         ) from exc
+
+
+def _repeats(question: str | None, asked: Sequence[str]) -> bool:
+    """The question is one already asked, ignoring case and punctuation."""
+
+    def key(text: str) -> str:
+        return " ".join(re.findall(r"\w+", text.lower()))
+
+    return bool(question and question.strip()) and key(question or "") in {key(text) for text in asked}
 
 
 def _cap(text: str, limit: int) -> str:
@@ -116,7 +129,18 @@ async def build_step(
         used = _cap(used, MAX_ANSWER_CHARS)
     else:
         used = answer
+    records = [record]
+    asked = [turn["question"] for turn in turns] + ([question] if question else [])
+    if not reply.done and _repeats(reply.question, asked):  # the same question again: one more try, then stop
+        try:
+            retry, again = await _ask_builder(provider, config, brief, turns, question, used, False, asked)
+        except BuilderFailed as exc:
+            raise BuilderFailed(str(exc), [record, *exc.records]) from exc
+        except (AdmissionDenied, InputTooLarge):
+            retry, again = BuilderReply(done=True), None
+        records += [again] if again else []
+        reply = BuilderReply(done=True) if _repeats(retry.question, asked) else retry
     answered = len(turns) + (1 if question else 0)
     next_question = _cap((reply.question or "").strip(), MAX_QUESTION_CHARS) or None
     done = reply.done or answered >= MAX_QUESTIONS or next_question is None
-    return Step(answer=used, question=None if done else next_question, done=done, records=[record])
+    return Step(answer=used, question=None if done else next_question, done=done, records=records)

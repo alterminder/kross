@@ -319,6 +319,12 @@ def verify(
     return errors, warnings
 
 
+def first_object(raw: str) -> Any:
+    """The first JSON object in a reply. Fences, prose before it and text after it are ignored: models with thinking
+    on often add a note after the JSON, which used to cost a whole retry."""
+    return json.JSONDecoder().raw_decode(raw, raw.index("{"))[0]
+
+
 async def convert_brief(
     provider: Provider,
     config: LLMConfig,
@@ -354,7 +360,7 @@ async def convert_brief(
             raise ConversionFailed("The language model did not answer", records) from exc
         raw = completion.text
         try:
-            body = json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", raw.strip()))
+            body = first_object(raw)
             draft = finalize(body, chunk, fx, source_hash, role.model, vocabulary)
             errors, warnings = verify(
                 draft, chunk, fx, rules, rubric, vocabulary, allow_multiple_counterparts=allow_multiple_counterparts

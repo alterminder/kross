@@ -111,6 +111,29 @@ async def test_a_reply_without_a_usable_question_finishes_the_interview(app, new
     assert body["done"] is True and body["question"] is None
 
 
+async def test_a_repeated_question_is_asked_for_once_more_then_replaced(app, new_client):
+    scripted = use_model(app)
+    alice = new_client()
+    await sign_in(alice, "alice", "alice@example.org")
+    asked = "What must your team achieve, and what is your mandate?"
+    scripted.answers["builder"].append(json.dumps({"answer": None, "question": asked.upper(), "done": False}))
+    scripted.answers["builder"].append(json.dumps({"answer": None, "question": QUESTION, "done": False}))
+    body = (await step(alice, question=asked, answer="Get the fighters out of the school.")).json()
+    assert body["question"] == QUESTION and body["done"] is False
+    assert await ledger_rows(app) == [("builder", "ok"), ("builder", "ok")]
+
+
+async def test_a_question_repeated_twice_ends_the_interview(app, new_client):
+    scripted = use_model(app)
+    alice = new_client()
+    await sign_in(alice, "alice", "alice@example.org")
+    asked = "What must your team achieve, and what is your mandate?"
+    for _ in range(2):
+        scripted.answers["builder"].append(json.dumps({"answer": None, "question": asked + "!", "done": False}))
+    body = (await step(alice, question=asked, answer="Get the fighters out.")).json()
+    assert body["done"] is True and body["question"] is None
+
+
 async def test_overlong_replies_are_trimmed_to_the_next_requests_limits(app, new_client):
     scripted = use_model(app)
     alice = new_client()
