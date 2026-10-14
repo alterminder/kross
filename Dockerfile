@@ -2,7 +2,7 @@
 # Build tools stay out of the runtime stage: no uv, no pip, no compilers.
 
 # Stage 1: frontend build. Node runs here only.
-FROM node:22-slim AS frontend
+FROM node:26-slim AS frontend
 WORKDIR /frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
