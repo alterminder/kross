@@ -1,16 +1,33 @@
+# One grouped PR per ecosystem. Runtime and toolchain majors (TypeScript, the
+# Python and Node base images, Postgres) are upgraded deliberately, not by bot.
 version: 2
 updates:
   - package-ecosystem: uv
     directory: /backend
     schedule: { interval: weekly }
+    groups:
+      backend: { patterns: ["*"] }
+
   - package-ecosystem: npm
     directory: /frontend
     schedule: { interval: weekly }
     groups:
       frontend: { patterns: ["*"] }
+    ignore:
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+
   - package-ecosystem: github-actions
     directory: /
     schedule: { interval: monthly }
+    groups:
+      actions: { patterns: ["*"] }
+
   - package-ecosystem: docker
-    directory: /
+    directories: ["/", "/deploy/db"]
     schedule: { interval: monthly }
+    groups:
+      images: { patterns: ["*"] }
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
