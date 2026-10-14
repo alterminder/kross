@@ -111,6 +111,7 @@ Never invent injections: include one only if the brief states a chatbot / traine
 Never write a cultural profile: cultural_profile must be exactly "TO BE AUTHORED BY ICRC TRAINER".
 SKILLS: if the brief has a "Skills Tested" section, set "skills" to []. Otherwise set "skills" to 3-5 entries chosen ONLY from "# Allowed skills" in the request, spelled exactly as there.
 Do not output id, difficulty, skills_tested, review or generated (code sets them). You may output sources: {"cchn_tools": [..]}.
+scenario.title: a short card title of at most 7 words that names the situation (e.g. "Hostile checkpoint commander").
 
 MODEL RULES
 - trainee_brief.situation: what the trainee knows, condensed but complete; not the counterpart's hidden motives. objective: the brief's

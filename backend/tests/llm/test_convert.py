@@ -13,6 +13,7 @@ from nlab.llm.convert import (
     convert_upload,
     example_output,
     facts,
+    short_title,
     split_bank,
 )
 from tests.conftest import CONTENT, read_yaml
@@ -45,6 +46,18 @@ def test_text_around_the_json_does_not_cost_a_retry(rules, rubric):
     reply = "Here is the draft.\n```json\n" + example_output(GOLD) + "\n```\nEvery quote is verbatim. {done}"
     result = asyncio.run(convert_brief(FakeProvider([reply]), CONFIG, CHUNK, rules, rubric, [], retries=0))
     assert not result.errors and result.attempts == 1
+
+
+def test_generated_titles_are_at_most_seven_words(rules, rubric):
+    long = "Negotiating safe access to education and child protection through community-led negotiation"
+    assert short_title(long) == "Negotiating safe access to education"  # backs off instead of "... and child"
+    assert short_title("Restoring a school occupied by armed actors in the north") == (
+        "Restoring a school occupied by armed actors"
+    )
+    assert short_title("Hostile checkpoint commander") == "Hostile checkpoint commander"
+    titled = {**GOLD, "title": long}
+    result = asyncio.run(convert_brief(FakeProvider([example_output(titled)]), CONFIG, CHUNK, rules, rubric, []))
+    assert result.scenario is not None and result.scenario["title"] == "Negotiating safe access to education"
 
 
 def test_the_model_gets_the_errors_back_and_a_second_try(rules, rubric):

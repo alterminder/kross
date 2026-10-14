@@ -23,7 +23,7 @@ from nlab.llm.provider import Provider
 from nlab.llm.structured import record_for
 from nlab.llm.types import AdmissionDenied, CallRecord, InputTooLarge, Message, Usage, request_for
 
-PROMPT_VERSION = "5"
+PROMPT_VERSION = "6"
 SKILLS_ERROR = "choose 3 to 5 skills, exactly as written in the list"
 SINGLE_COUNTERPART_ERROR = (
     "Generate exactly one counterpart; omit multiparty and interactive stakeholders. "
@@ -32,6 +32,8 @@ SINGLE_COUNTERPART_ERROR = (
 TBA = "TO BE AUTHORED BY ICRC TRAINER"
 LEVELS = ["beginner", "intermediate", "advanced", "expert"]
 STOP = {"a", "an", "the", "to", "of", "for", "and", "or", "in", "on", "at"}
+JOINS = STOP | {"by", "with", "through", "from", "into", "via", "over", "under", "after", "before"}
+TITLE_WORDS = 7  # a card title, like the curated "Hostile checkpoint commander"
 HEAD = re.compile(r"^#*\s*SCENARIO\s+(\d+)\s*[—–-]+\s*(.+?)\s*$", re.M)
 
 Chunk = dict[str, Any]  # {"n": bank number or None, "title", "text", "id", "file"?}
@@ -54,6 +56,25 @@ class ConversionFailed(RuntimeError):
 
 
 # ---------- brief -> chunks + facts the code can read without a model -------------------------------------------------
+
+
+def short_title(title: str, limit: int = TITLE_WORDS) -> str:
+    """At most `limit` words. A cut that would split a phrase ("... education and child") backs off to the last
+    joining word instead ("... education"); trailing joining words and punctuation are dropped."""
+    words = title.split()
+    if len(words) <= limit:
+        return title.strip()
+
+    def joins(word: str) -> bool:
+        return word.lower().strip(",;:.-—") in JOINS
+
+    cut = words[:limit]
+    if not joins(words[limit]):  # the cut falls inside a phrase
+        breaks = [i for i in range(3, limit) if joins(cut[i])]
+        cut = cut[: breaks[-1]] if breaks else cut
+    while len(cut) > 1 and joins(cut[-1]):
+        cut.pop()
+    return " ".join(cut).rstrip(",;:.-—")
 
 
 def make_id(n: int | None, title: str) -> str:
@@ -224,6 +245,7 @@ def finalize(
         "notes": notes,
     }
     sc.setdefault("title", c["title"].capitalize())
+    sc["title"] = short_title(str(sc["title"]))
     return sc
 
 
