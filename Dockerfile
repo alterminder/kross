@@ -10,7 +10,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: python environment build with uv.
-FROM python:3.12-alpine3.24 AS builder
+FROM python:3.14-alpine3.24 AS builder
 COPY --from=ghcr.io/astral-sh/uv:0.11 /uv /usr/local/bin/uv
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
@@ -24,7 +24,7 @@ RUN uv sync --frozen --no-dev
 # Stage 3: runtime. Refreshed base packages, venv only, non-root UID 10001.
 # Alpine leaves out unused Debian packages with outstanding advisories and
 # keeps one musl libc across builder and runtime.
-FROM python:3.12-alpine3.24
+FROM python:3.14-alpine3.24
 RUN apk update && apk upgrade --no-cache \
     && if python -m pip --version >/dev/null 2>&1; then python -m pip uninstall -y pip setuptools wheel; fi
 ENV UV_COMPILE_BYTECODE=1 \
