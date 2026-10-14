@@ -9,7 +9,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v6
       - uses: actions/setup-node@v4
         with:
@@ -47,7 +47,7 @@ jobs:
       NLAB_DEV_DATABASE_SERVER: postgresql+asyncpg://nlab:nlab@localhost:5432
       CI: "true"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v6
       - uses: actions/setup-node@v4
         with:
