@@ -76,7 +76,7 @@ sequenceDiagram
     L-->>P: reply streamed (server-sent events)
     A->>L: grant check (if an outcome was offered earlier)
     A->>E: grant(...) re-checks the dials
-    A->>D: save turn, events, state; release the claim
+    A->>D: save turn, events and state, release the claim
     A-)L: evaluator scores the turn (background)
 ```
 
