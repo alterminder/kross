@@ -146,6 +146,12 @@ class Debrief(BaseModel):
         """Some providers return one paragraph instead of a list: keep it as one item."""
         return [value] if isinstance(value, str) else value
 
+    @field_validator("one_focus", mode="before")
+    @classmethod
+    def _first_focus(cls, value: object) -> object:
+        """Some providers return the single focus as a list: keep its first item."""
+        return (value[0] if value else None) if isinstance(value, list) else value
+
 
 class ScopeCheck(BaseModel):
     """Whether a question to the debrief coach is about the session and negotiation practice. Required: an answer

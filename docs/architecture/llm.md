@@ -61,6 +61,6 @@ spend ceiling and the superadmin usage report.
 
 ## Bounds
 
-Fixed in code, not configurable: 2048 output tokens by default (coach answers 2000, converter 24000), an input bound
-of 131072 tokens, no SDK retries, a 60 s call timeout (converter 300 s), a 300 s total deadline and a 20 s bound on
-the counterpart's first word (a silent stream is retried once).
+Fixed in code, not configurable: 8192 output tokens by default, since reasoning tokens count against it (coach
+answers 2000, converter 24000), an input bound of 131072 tokens, no SDK retries, a 60 s call timeout (converter
+300 s), a 300 s total deadline and a 20 s bound on the counterpart's first word (a silent stream is retried once).

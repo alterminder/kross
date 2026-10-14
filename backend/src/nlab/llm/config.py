@@ -35,7 +35,9 @@ class RoleConfig(BaseModel):
     timeout_seconds: float = Field(60, gt=0, allow_inf_nan=False)
     max_retries: int = Field(0, ge=0)  # retries inside the SDK stay off so every paid attempt passes the budget
     # guard; raising this is allowed but the guard then reserves for 1 + max_retries attempts per call
-    max_output_tokens: int = Field(2048, gt=0)  # the explicit output bound for this role; requests may set a lower one
+    # The explicit output bound for this role; requests may set a lower one. Reasoning tokens count against it, so
+    # 2048 cut off thinking models (deepseek-flash) mid-answer on long sessions.
+    max_output_tokens: int = Field(8192, gt=0)
     max_input_tokens: int = Field(131_072, gt=0)  # bounded-input limit: the guard refuses larger requests
     total_deadline_seconds: float = Field(300, gt=0, allow_inf_nan=False)  # wall-clock bound, streams included
     first_word_seconds: float = Field(20, gt=0, allow_inf_nan=False)  # counterpart: a silent stream is retried once

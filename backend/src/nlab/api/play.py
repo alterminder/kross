@@ -484,6 +484,7 @@ async def _turn(
             yield sse("error", {"detail": str(exc)})
             return
         except MalformedAnswer as exc:
+            logger.warning("Classifier answer unusable: %s", exc)  # schema and finish reason only, no reply text
             record_call(db, exc.record, **ids)
             yield sse("error", {"detail": "The model's answer was unusable. Send your message again."})
             return

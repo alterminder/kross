@@ -78,6 +78,7 @@ async def score_turn(
             await db.commit()
             return
         except MalformedAnswer as exc:
+            logger.warning("Scoring turn %s of session %s unusable: %s", number, session_id, exc)
             record_call(db, exc.record, **ids)
             turn.scoring_started_at = None  # let the session end try again
             await db.commit()
@@ -185,6 +186,7 @@ async def _finish(
             outcome = "failed"  # the end stays 200 and the status says the debrief was skipped
             await release_turn(db, session_id, token)
         except MalformedAnswer as exc:
+            logger.warning("Debrief of session %s unusable: %s", session_id, exc)
             record_call(db, exc.record, **ids)
             await release_turn(db, session_id, token)
         except CallFailed as exc:  # a paid partial failure: its usage and attempts reach the ledger

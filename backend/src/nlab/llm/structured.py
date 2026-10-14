@@ -99,7 +99,10 @@ async def structured[T: BaseModel](
         except (ValueError, ValidationError) as exc:
             if attempt == 2:
                 record = record_for(request, started, usage, "malformed", attempt)
-                raise MalformedAnswer(f"Model returned invalid {schema.__name__} JSON twice", record) from exc
+                raise MalformedAnswer(
+                    f"Model returned invalid {schema.__name__} JSON twice (finish_reason={completion.finish_reason})",
+                    record,
+                ) from exc
             messages = [
                 *messages,
                 {"role": "assistant", "content": content},

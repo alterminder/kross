@@ -4,7 +4,7 @@ import json
 import pytest
 from pydantic import SecretStr
 
-from nlab.llm.answers import ClassifierAnswer, Debrief, Evaluation, Violation
+from nlab.llm.answers import ClassifierAnswer, Debrief, Evaluation, Focus, Violation
 from nlab.llm.config import RoleConfig
 from nlab.llm.structured import example_of, structured
 from nlab.llm.types import MalformedAnswer, request_for
@@ -31,7 +31,7 @@ def test_the_shape_is_sent_and_a_wrong_shape_is_retried():
 
 
 def test_a_wrong_shape_twice_fails_loudly():
-    with pytest.raises(MalformedAnswer, match="invalid ClassifierAnswer JSON twice") as failure:
+    with pytest.raises(MalformedAnswer, match=r"invalid ClassifierAnswer JSON twice \(finish_reason=stop\)") as failure:
         run(FakeProvider([WRONG_SHAPE, WRONG_SHAPE]))
     assert failure.value.record.outcome == "malformed" and failure.value.record.attempts == 2
 
@@ -54,3 +54,12 @@ def test_a_debrief_accepts_a_paragraph():
         {"summary": "ok", "strengths": "Asked good questions.", "improvements": ["Be concrete."]}
     )
     assert debrief.strengths == ["Asked good questions."] and debrief.improvements == ["Be concrete."]
+
+
+def test_a_focus_given_as_a_list_keeps_its_first_item():
+    base = {"summary": "s", "strengths": [], "improvements": []}
+    focus = {"title": "Ask first", "advice": "Ask before you offer."}
+    expected = Focus(**focus)
+    assert Debrief.model_validate({**base, "one_focus": [focus, {"title": "x", "advice": "y"}]}).one_focus == expected
+    assert Debrief.model_validate({**base, "one_focus": []}).one_focus is None
+    assert Debrief.model_validate({**base, "one_focus": focus}).one_focus == expected

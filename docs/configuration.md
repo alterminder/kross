@@ -114,7 +114,7 @@ sessions record debriefs as unavailable.
 
 Inheritance: `GRANT` and `SCOPE` follow the **classifier's** effective settings when a classifier is configured,
 then the global ones; every other role starts from the global settings. Not environment-configurable (code-fixed):
-per-call output bounds (2048 tokens default; coach answers 2000, converter 24000), input bound 131072, retries 0,
+per-call output bounds (8192 tokens default, room for reasoning models' thinking; coach answers 2000, converter 24000), input bound 131072, retries 0,
 60 s call timeout (converter 300 s), 300 s total deadline, 20 s first-word bound.
 
 ## Images

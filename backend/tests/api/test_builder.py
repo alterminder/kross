@@ -272,7 +272,7 @@ async def test_the_painter_is_skipped_when_its_reservation_would_exceed_the_limi
 
 async def test_unknown_paint_usage_keeps_the_full_reservation(app, new_client):
     model = use_model(app)
-    limit(app, limit_user_tokens_per_day=150_000)
+    limit(app, limit_user_tokens_per_day=160_000)  # a second illustrator call fits; a second painting does not
     sent = []
 
     def no_usage(request):
