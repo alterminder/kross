@@ -228,10 +228,10 @@ a {
     top: 0;
     z-index: 100;
     flex-wrap: wrap;
-    transition: min-height 0.2s ease;
 }
 
-/* compact top bar while the page is scrolled down (Layout.tsx) */
+/* compact top bar while the page is scrolled down (Layout.tsx). No size transitions: Layout measures the bar
+   right after the switch to reserve the height it gave up. */
 .topbar.compact {
     min-height: 48px;
 }
@@ -252,7 +252,6 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .topbar,
     .topbar .brand-mark {
         transition: none;
     }
@@ -281,7 +280,7 @@ a {
     background: rgba(255, 255, 255, 0.06);
     color: #ffffff;
     box-shadow: 0 0 14px rgba(255, 255, 255, 0.12);
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, width 0.2s ease, height 0.2s ease, border-radius 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .brand:hover .brand-mark {

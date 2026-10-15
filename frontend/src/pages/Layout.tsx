@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router";
 import { SPENT, api, appUrl, nav, type S } from "../api/client";
 import { useLoad } from "../hooks";
@@ -48,15 +48,26 @@ export function Layout() {
   const switcher = useRef<HTMLDetailsElement>(null);
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [compact, setCompact] = useState(false);
+  const header = useRef<HTMLElement>(null);
+  const expanded = useRef(0);
+  const [reserve, setReserve] = useState(0);
 
   useEffect(() => {
     function onScroll() {
+      const bar = header.current;
+      if (bar && !bar.classList.contains("compact")) expanded.current = bar.offsetHeight; // fresh before every shrink
       const y = window.scrollY;
       setCompact((was) => (was ? y > 4 : y > 40)); // hysteresis: the shrinking header cannot make it flicker
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // The compact bar keeps the height it gave up as space below itself, so the page never moves under the pointer.
+  // ponytail: a window resize while compact can leave the reserve a few px off until the bar next expands.
+  useLayoutEffect(() => {
+    setReserve(compact && header.current ? Math.max(0, expanded.current - header.current.offsetHeight) : 0);
+  }, [compact]);
 
   function closeProfile() {
     if (profile.current) profile.current.open = false;
@@ -102,7 +113,7 @@ export function Layout() {
 
   return (
     <>
-      <header className={compact ? "topbar compact" : "topbar"}>
+      <header ref={header} className={compact ? "topbar compact" : "topbar"} style={{ marginBottom: reserve }}>
         <Link to="/" className="brand" aria-label="KROSS: back to the main page">
           <span className="brand-mark" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">

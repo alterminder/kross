@@ -185,3 +185,23 @@ test("a guest with the banner and channel tabs keeps the composer in view at pho
     }
   }
 });
+
+test("the shrinking header never moves the page, one row or wrapped", async ({ page }) => {
+  await page.goto("api/auth/dev/login?as=admin");
+  const cards = await (await page.request.get("api/scenarios")).json();
+  const id = cards.find((card: { title: string }) => card.title === "Access to an IDP camp").id;
+  const header = page.locator(".topbar");
+  const mainTop = () => page.locator("main").evaluate((main) => (main as HTMLElement).offsetTop);
+  for (const width of [1280, 700, 390]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto(`scenarios/${id}/edit`);
+    await expect(page.locator("#root_title")).toBeVisible();
+    const top = await mainTop();
+    await page.evaluate(() => window.scrollTo(0, 300));
+    await expect(header).toHaveClass(/compact/);
+    expect(await mainTop()).toBe(top);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(header).not.toHaveClass(/compact/);
+    expect(await mainTop()).toBe(top);
+  }
+});
