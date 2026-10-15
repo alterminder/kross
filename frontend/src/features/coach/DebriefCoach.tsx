@@ -34,13 +34,11 @@ export function DebriefCoach({ sessionId }: DebriefCoachProps) {
     setQuestion("");
     setBusy(true);
 
-    // Prepare history for LLM
     const historyPayload = messages.map((m) => ({
       role: m.role === "coach" ? "assistant" : "user",
       content: m.content,
     }));
 
-    // Add user question and initial empty coach reply to thread
     const newMessages: CoachChatMessage[] = [
       ...messages,
       { role: "user", content: q },

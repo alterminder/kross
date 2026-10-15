@@ -461,7 +461,7 @@ def nudge(scenario: Scenario, rules: Rules, state: State) -> Step:
         if matches(trigger.when, current, moves, proposals):
             if hint := trigger.say or trigger.effect:
                 current.cues.append(Cue(kind="hint", text=hint))
-            if trigger.shift_level and not sh:  # a stakeholder does not steer the negotiation's level
+            if trigger.shift_level and not sh:
                 current.level = trigger.shift_level
                 change.add("rule", "level", reason=trigger.shift_level)
     if not sh:  # hidden interests belong to a counterpart; a nudge while one is selected reveals nothing

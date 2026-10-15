@@ -35,7 +35,6 @@ export function CchnDebriefSection({
   const [activeTab, setActiveTab] = useState<ActiveTab>("agreement");
   const [selectedDocId, setSelectedDocId] = useState<string | null>(null);
 
-  // Reflection form state
   const reflectionData = cchnDebrief?.reflection;
   const initialAnswers: Record<string, string> = {};
   if (reflectionData?.questions) {

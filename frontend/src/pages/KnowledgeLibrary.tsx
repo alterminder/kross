@@ -18,7 +18,6 @@ export function KnowledgeLibrary() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [activeDocId, setActiveDocId] = useState<string | null>(id ?? null);
 
-  // Extract unique frameworks and top tags
   const frameworks = useMemo(() => {
     if (!docs.data) return [];
     const set = new Set<string>();

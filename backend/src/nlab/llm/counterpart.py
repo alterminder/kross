@@ -214,7 +214,6 @@ def counterpart_request(
     set's `avatar_rules`; the scenario's private brief (see `_private_brief`) rides along until the session ends."""
     role_config = config.for_role("counterpart")
 
-    # Check if target is a stakeholder in Network Play
     for sh in content.get("stakeholders") or []:
         if sh.get("id") == interlocutor_id:
             sh_role = sh.get("role", "Stakeholder")
@@ -243,7 +242,6 @@ def counterpart_request(
                 sh_messages.append({"role": "user", "content": prompt("delegate_waits")})
             return request_for("counterpart", role_config, sh_messages, 0.7, max_tokens=REPLY_MAX_TOKENS)
 
-    # Otherwise, resolve target counterpart
     counterpart = content["counterparts"][0]
     if interlocutor_id:
         for cp in content.get("counterparts") or []:

@@ -149,7 +149,7 @@ async def _finish(
         scores = [TurnScores(turn=turn.number, **turn.scores) for turn in turns if turn.scores is not None]
         content = (await version_of(db, session)).content
         state = State.model_validate(session.engine_state)
-        await db.commit()  # the read transaction ends here: no transaction is open during the model call
+        await db.commit()
         lines = transcript(turns)
         checks: list[ScoreCheck] = []
         if scores:  # a second opinion on the whole transcript; a failure only means the scores carry no check
@@ -167,7 +167,7 @@ async def _finish(
                 pass
             except MalformedAnswer as exc:
                 record_call(db, exc.record, **ids)
-            except CallFailed as exc:  # a paid partial failure: its usage and attempts reach the ledger
+            except CallFailed as exc:
                 logger.warning(
                     "Second scoring pass of session %s failed (%s)", session_id, type(exc.__cause__ or exc).__name__
                 )
@@ -189,7 +189,7 @@ async def _finish(
             logger.warning("Debrief of session %s unusable: %s", session_id, exc)
             record_call(db, exc.record, **ids)
             await release_turn(db, session_id, token)
-        except CallFailed as exc:  # a paid partial failure: its usage and attempts reach the ledger
+        except CallFailed as exc:
             logger.warning("Debrief of session %s failed (%s)", session_id, type(exc.__cause__ or exc).__name__)
             record_call(db, exc.record, **ids)
             await release_turn(db, session_id, token)

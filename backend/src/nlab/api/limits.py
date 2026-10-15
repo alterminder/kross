@@ -21,10 +21,9 @@ def limits_of(settings: Settings) -> Limits:
         guest_tokens_per_day=settings.guest_limit_tokens_per_day,
         guest_total_tokens_per_day=settings.guest_limit_total_tokens_per_day,
         guest_signups_per_day=settings.guest_limit_signups_per_day,
-        # getattr until the coordinator lands these Settings fields (sent as text, settings.py is coordinator-owned)
-        guest_signups_per_ip_per_day=getattr(settings, "guest_limit_signups_per_ip_per_day", 0),
-        max_concurrent_model_calls=getattr(settings, "max_concurrent_model_calls", 16),
-        max_concurrent_paid_per_user=getattr(settings, "max_concurrent_paid_per_user", 4),
+        guest_signups_per_ip_per_day=settings.guest_limit_signups_per_ip_per_day,
+        max_concurrent_model_calls=settings.max_concurrent_model_calls,
+        max_concurrent_paid_per_user=settings.max_concurrent_paid_per_user,
     )
 
 
@@ -52,7 +51,7 @@ def validate_production(settings: Settings, llm: LLMConfig | None, painter: str 
     if llm is not None:
         models = {llm.default.model, *(role.model for role in llm.roles.values())}
     if painter:
-        models.add(painter)  # image spend counts too
+        models.add(painter)
     for model in sorted(models):
         price = settings.model_prices.get(model)
         if price is None:

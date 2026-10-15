@@ -1,5 +1,4 @@
-/** Goal progress: one line per test in an outcome rule, ✓ met, ✗ unmet, · not judgable from the console.
- * Ported from the POC's goalChecks/GoalPanel. */
+/** Goal progress: one line per test in an outcome rule, ✓ met, ✗ unmet, · not judgable from the console. */
 import type { TrainerView } from "./progress";
 
 type Json = string | number | boolean | null | Json[] | { [key: string]: Json };

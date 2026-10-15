@@ -46,7 +46,6 @@ export function KnowledgeModal({ docId, onClose }: KnowledgeModalProps) {
     };
   }, [docId]);
 
-  // Handle ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();

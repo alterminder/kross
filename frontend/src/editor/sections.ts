@@ -8,7 +8,7 @@ export type SectionId = "basics" | "brief" | "cchn_prep" | "counterpart" | "rule
 
 export type Section = { id: SectionId; label: string; paths: string[] };
 
-/** The POC's tabs, renamed and extended: which schema paths each section shows. `[]` marks an array item's fields. */
+/** Which schema paths each section shows. `[]` marks an array item's fields. */
 export const SECTIONS: Section[] = [
   {
     id: "basics",

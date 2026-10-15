@@ -50,9 +50,9 @@ class OidcProvider:
     async def identity(self, request: Request) -> VerifiedIdentity:
         try:
             token = await self._client.authorize_access_token(request)
-        except Exception as exc:  # not BaseException: a cancelled request must still propagate
+        except Exception as exc:
             logger.warning("Sign-in through %s failed (%s)", self.name, type(exc).__name__)
-            raise SignInFailed(type(exc).__name__) from None  # the cause chain can carry provider text
+            raise SignInFailed(type(exc).__name__) from None
         claims = token.get("userinfo") or {}
         if not claims.get("sub"):
             raise SignInFailed("The provider returned no subject")

@@ -32,8 +32,7 @@ def _changes(env: Mapping[str, str], prefix: str) -> dict[str, Any]:
         changes["model"] = value
     if value := env.get(f"{prefix}_API_KEY"):
         changes["api_key"] = SecretStr(value)
-        # as in the hackathon: a per-role base URL applies only with a per-role key, so the main key never
-        # leaves for a third-party host
+        # a per-role base URL applies only with a per-role key, so the main key never leaves for a third-party host
         if url := env.get(f"{prefix}_BASE_URL"):
             changes["base_url"] = url
     if value := env.get(f"{prefix}_REASONING_EFFORT"):

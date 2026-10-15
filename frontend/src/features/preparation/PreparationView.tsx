@@ -63,7 +63,6 @@ export function PreparationView({ session, onSave, onSkip, onClose, isDrawer = f
   const [activeModule, setActiveModule] = useState(modules[0]);
   const [saving, setSaving] = useState(false);
 
-  // Existing or default state
   const prep = (session.preparation as Record<string, any>) || {};
 
   // Module 1: Island of Agreements
@@ -107,7 +106,6 @@ export function PreparationView({ session, onSave, onSkip, onClose, isDrawer = f
   // Module 9: Meeting Checklist
   const [checklistNotes, setChecklistNotes] = useState<string>(prep.meeting_checklist?.notes || "");
 
-  // Timer
   const [timeLeft, setTimeLeft] = useState<number | null>(() => {
     if (session.preparation_minutes && session.preparation_minutes > 0) {
       return session.preparation_minutes * 60;

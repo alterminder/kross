@@ -33,14 +33,12 @@ function parseBrief(brief: Record<string, unknown>, title: string): ParsedBrief 
   const situation = typeof brief.situation === "string" ? brief.situation.trim() : "";
   const objective = typeof brief.objective === "string" ? brief.objective.trim() : `Negotiate access under acceptable modalities for ${title}.`;
 
-  // Parse counterpart role
   let counterpartRole = typeof brief.counterpart_role === "string" ? brief.counterpart_role : "";
   if (!counterpartRole) {
     const match = situation.match(/You are meeting\s+([^.]+)/i) || situation.match(/negotiate with\s+([^.]+)/i);
     counterpartRole = match ? match[1].trim() : "the designated counterpart";
   }
 
-  // Parse estimated minutes
   const estimatedMinutes = typeof brief.estimated_minutes === "number" ? brief.estimated_minutes : 15;
 
   // Extract starting facts: prefer structured facts if present, otherwise extract from situation or fall back
@@ -60,7 +58,6 @@ function parseBrief(brief: Record<string, unknown>, title: string): ParsedBrief 
     }
   }
 
-  // Fallback facts if not specifically parsed
   if (facts.length === 0 && situation) {
     const sentences = situation.split(/(?<=[.?!])\s+/).filter((s) => s.length > 20);
     facts.push(...sentences.slice(0, 4));
@@ -69,7 +66,6 @@ function parseBrief(brief: Record<string, unknown>, title: string): ParsedBrief 
   // Clean situation for display (strip legacy "What you know..." appendix if present)
   const cleanSituation = situation.replace(/\s*What you know\s*\(?[^:]*\)?:\s*[\s\S]*$/i, "").trim();
 
-  // Parse red lines
   const redLines: string[] = [];
   if (Array.isArray(brief.red_lines)) {
     for (const item of brief.red_lines) {
@@ -80,7 +76,6 @@ function parseBrief(brief: Record<string, unknown>, title: string): ParsedBrief 
     }
   }
 
-  // Parse mandate
   const canDecide: string[] = [];
   const mustRefer: string[] = [];
   if (brief.mandate && typeof brief.mandate === "object") {

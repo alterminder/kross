@@ -7,7 +7,6 @@ interface ObserverSheetProps {
 }
 
 export function ObserverSheet({ view, sessionId }: ObserverSheetProps) {
-  // Dialogue stats
   const transcript = view.state.history || [];
 
   const { traineeWords, counterpartWords, traineeTurns, counterpartTurns } = useMemo(() => {

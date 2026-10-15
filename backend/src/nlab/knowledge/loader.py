@@ -66,11 +66,8 @@ class KnowledgeBase:
         scores: list[tuple[float, KnowledgeDoc]] = []
         for doc in self.docs.values():
             score = 0.0
-            # Dial matches (+3 per match)
             score += sum(3.0 for d in doc.mapped_dials if d in dial_set)
-            # Move matches (+4 per match)
             score += sum(4.0 for m in doc.mapped_moves if m in move_set)
-            # Keyword matches in title (+2) or tags (+2) or summary/body (+1)
             if words:
                 title_words = set(re.findall(r"\w+", doc.title.lower()))
                 tag_words = {t.lower() for t in doc.tags}
@@ -84,7 +81,6 @@ class KnowledgeBase:
 
             scores.append((score, doc))
 
-        # Sort descending by score; fallback to ID order
         scores.sort(key=lambda item: (-item[0], item[1].id))
         return [doc for score, doc in scores[:limit]]
 

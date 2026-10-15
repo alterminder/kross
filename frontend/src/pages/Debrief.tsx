@@ -16,7 +16,7 @@ export function Debrief() {
     if (data?.status === "ready" || data?.status === "failed") spent(); // the background work settled: refresh the header's allowance
   }, [data?.status, id]);
   useEffect(() => {
-    if (status !== undefined && TERMINAL.has(status)) return; // 401/403/404/410: retrying will not fix these
+    if (status !== undefined && TERMINAL.has(status)) return;
     const waiting = data === undefined ? status !== undefined : data.status === "pending";
     if (!waiting) return; // ready, failed or unavailable: done; a first request still in flight: wait for it
     const timer = setTimeout(reload, 3000); // the debrief is written in the background; poll while pending, retry a transient failure

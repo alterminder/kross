@@ -1,5 +1,5 @@
 /** One turn under review: its messages, the rules that fired, the evaluator's scores and notes, trainer
- * interventions and comments. Ported from the POC; comments POST to /comments. */
+ * interventions and comments. Comments POST to /comments. */
 import { useState } from "react";
 import { api } from "../api/client";
 import { Problem } from "../ui";

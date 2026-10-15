@@ -16,7 +16,7 @@ from nlab.engine.conditions import Condition, parse_condition, thresholds_in
 
 
 def _optional_condition(raw: Any) -> Condition | None:
-    # An empty or missing rule means "no rule", as in the hackathon engine.
+    # An empty or missing rule means "no rule".
     return parse_condition(raw) if raw else None
 
 

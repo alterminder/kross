@@ -1,5 +1,5 @@
 /** Dials over time: one line per dial, dashed marks for twists (orange), overrides (grey) and flags (red).
- * A click selects the turn under review. Ported from the POC. */
+ * A click selects the turn under review. */
 import { CartesianGrid, Legend, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { TrainerView } from "./progress";
 

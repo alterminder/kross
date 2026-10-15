@@ -82,7 +82,6 @@ export function Play() {
       await api(`sessions/${id}/interlocutor`, { method: "POST", body: { interlocutor: targetId } });
       await reload();
     } catch {
-      // Local selection maintained
     }
   };
 

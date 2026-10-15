@@ -704,7 +704,6 @@ async def _nudge(
                 return
             except NoAnswer as exc:
                 record_call(db, exc.record, **ids)
-                # the fallback is the primary counterpart's own voice; any other speaker gets the neutral placeholder
                 primary = scenario.counterparts[0] if scenario.counterparts else scenario.counterpart
                 own_voice = (
                     primary.fallback
@@ -1205,7 +1204,7 @@ async def _coach_turn(
         ids = {"user_id": user_id, "org_id": org_id, "session_id": session_id}
         try:
             scope = await coach_scope(provider, config, session_title, history, question)
-        except (AdmissionDenied, InputTooLarge) as exc:  # refused before the provider call: nothing is billed
+        except (AdmissionDenied, InputTooLarge) as exc:
             yield sse("error", {"detail": str(exc)})
             return
         except MalformedAnswer as exc:
@@ -1213,7 +1212,7 @@ async def _coach_turn(
             await db.commit()
             yield sse("error", {"detail": "The coach could not check your question. Please ask again."})
             return
-        except CallFailed as exc:  # a paid partial failure: its usage and attempts reach the ledger
+        except CallFailed as exc:
             logger.warning("Coach scope check failed (%s)", type(exc.__cause__ or exc).__name__)
             record_call(db, exc.record, **ids)
             await db.commit()
@@ -1266,7 +1265,7 @@ async def _coach_turn(
             await db.commit()
 
         yield sse("done", {"citations": citations})
-    except (AdmissionDenied, InputTooLarge) as exc:  # refused before the provider call: nothing is billed
+    except (AdmissionDenied, InputTooLarge) as exc:
         yield sse("error", {"detail": str(exc)})
     except Exception as exc:
         logger.warning("Coach stream failed (%s)", type(exc).__name__)

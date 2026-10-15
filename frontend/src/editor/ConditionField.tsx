@@ -262,7 +262,7 @@ export function ConditionField({ schema, name, formData, onChange, fieldPathId, 
 
 const HINT = 'Condition as JSON, for example {"trust_gte": 60} or {"any": [...]}';
 
-/** The advanced JSON box (Plan I's): every change parses into the form data; text that does not parse is kept as typed and blocks Check, Save and the YAML switch. */
+/** The advanced JSON box: every change parses into the form data; text that does not parse is kept as typed and blocks Check, Save and the YAML switch. */
 function JsonBox({ value, onCommit }: { value: unknown; onCommit: (next: Record<string, unknown> | undefined) => void }) {
   const [text, setText] = useState(value === undefined ? "" : JSON.stringify(value, null, 2));
   const [error, setError] = useState<string>();

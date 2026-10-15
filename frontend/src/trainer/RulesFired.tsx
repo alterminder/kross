@@ -1,5 +1,5 @@
 /** What the rules did on one turn: moves with their quote and dial changes, rule flags, cues sent to the
- * counterpart, reveals, injections and trainer overrides. Ported from the POC; events are the engine's Event rows. */
+ * counterpart, reveals, injections and trainer overrides. Events are the engine's Event rows. */
 import type { EngineEvent, TrainerView } from "./progress";
 
 const signed = (value: number) => (value > 0 ? `+${value}` : String(value));

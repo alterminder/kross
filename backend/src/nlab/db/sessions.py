@@ -17,9 +17,9 @@ from nlab.db.scenarios import Entry
 from nlab.engine import State
 from nlab.llm import Line
 
-CLAIM_TIMEOUT = timedelta(seconds=180)  # a turn claim older than this is treated as abandoned; kept at the plan's
-# 180 s (N3 decision): claim tokens make a takeover safe, so the exact value only decides how fast an abandoned
-# turn's slot is reused
+# a turn claim older than this is treated as abandoned; claim tokens make a takeover safe, so the exact value
+# only decides how fast an abandoned turn's slot is reused
+CLAIM_TIMEOUT = timedelta(seconds=180)
 SCORING_TIMEOUT = timedelta(minutes=5)  # a scoring claim older than this may be taken over
 
 
