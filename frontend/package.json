@@ -7,6 +7,7 @@
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "validators": "UPDATE_VALIDATORS=1 vitest run src/editor/validators.test.ts",
     "gen": "openapi-typescript openapi.json -o src/api/schema.d.ts",
     "e2e": "npm run build && playwright test"
   },

@@ -1,6 +1,5 @@
 import Form from "@rjsf/core";
 import type { RJSFSchema } from "@rjsf/utils";
-import validator from "@rjsf/validator-ajv8";
 import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
 import { useParams } from "react-router";
 import { parse, stringify } from "yaml";
@@ -14,6 +13,7 @@ import { SkillsField } from "../editor/SkillsField";
 import { ButtonTemplates } from "../editor/buttons";
 import { conditionUiSchema } from "../editor/conditions";
 import { conditionDrafts } from "../editor/drafts";
+import { formSchemaOf, validatorFor } from "../editor/formSchema";
 import { labelUiSchema, mergeUi } from "../editor/labels";
 import { SectionTemplate, type EditorContext } from "../editor/SectionTemplate";
 import { EditorArrayItemTemplate, EditorArrayTitleTemplate, EditorFieldTemplate, EditorInputTemplate, EditorTitleFieldTemplate, EditorWidgets } from "../editor/templates";
@@ -28,25 +28,6 @@ function parseScenario(text: string): Content {
   const parsed: unknown = parse(text);
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("the top level must be a mapping");
   return parsed as Content;
-}
-
-/** The served schema's notes are written for developers (files, YAML, ids, engine internals): the labels map's hints replace them on screen.
- *  Property-name dictionaries (`properties`, `$defs`, …) may legitimately contain a key called "description": only schema-node metadata is dropped. */
-function stripNotes(node: unknown): unknown {
-  if (Array.isArray(node)) return node.map(stripNotes);
-  if (node && typeof node === "object") {
-    const DICTS = new Set(["properties", "$defs", "definitions", "patternProperties"]);
-    const out: Record<string, unknown> = {};
-    for (const [key, value] of Object.entries(node)) {
-      if (DICTS.has(key)) {
-        const dict: Record<string, unknown> = {};
-        for (const [name, sub] of Object.entries((value ?? {}) as Record<string, unknown>)) dict[name] = stripNotes(sub);
-        out[key] = dict;
-      } else if (key !== "description") out[key] = stripNotes(value);
-    }
-    return out;
-  }
-  return node;
 }
 
 /** Preview text with shapes validated: YAML content is caller data and may put an object where text belongs. */
@@ -98,15 +79,8 @@ export function ScenarioEditor() {
     }
   }, [existing.data]);
 
-  const formSchema = useMemo(() => {
-    if (!schema.data) return null;
-    const copy = stripNotes(schema.data) as RJSFSchema;
-    delete copy.$schema; // rjsf's validator speaks draft-07; the server validates every save
-    // The builder owns conditions: stub the recursive def so rjsf never re-expands it (that was 80% of the nested edit cost).
-    // The condition sites are still found through their $refs; the server validates saves with the real schema.
-    copy.$defs = { ...copy.$defs, condition: { type: "object" } };
-    return copy;
-  }, [schema.data]);
+  const formSchema = useMemo(() => (schema.data ? formSchemaOf(schema.data) : null), [schema.data]);
+  const validator = useMemo(() => (formSchema ? validatorFor(formSchema) : null), [formSchema]);
 
   const uiSchema = useMemo(
     () =>
@@ -236,7 +210,7 @@ export function ScenarioEditor() {
   }, [focusPath, active]);
 
   if (existing.error || schema.error) return <Problem text={existing.error ?? schema.error} />;
-  if (!formSchema || !existing.data) return <p className="loading">Loading…</p>;
+  if (!formSchema || !validator || !existing.data) return <p className="loading">Loading…</p>;
   if (!existing.data.can_edit) return <p>Only the scenario's editors can change it.</p>;
   if (!content) return <p className="loading">Loading…</p>; // the effect above is about to fill it
 

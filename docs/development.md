@@ -70,6 +70,18 @@ cd backend && uv run python -m nlab.api.openapi > ../frontend/openapi.json && cd
 
 CI fails when `frontend/openapi.json` or `frontend/src/api/schema.d.ts` is out of date.
 
+## After changing the scenario schema
+
+The editor checks scenario data with validators compiled ahead of time from
+`backend/src/nlab/engine/schema/negotiation-scenario.v2.schema.json`, because the app's Content Security Policy
+forbids compiling them in the browser:
+
+```sh
+cd frontend && npm run validators
+```
+
+CI fails when `frontend/src/editor/validators.gen.ts` is out of date.
+
 ## Scenario covers
 
 The card images in `frontend/public/covers/` were generated once with `scripts/generate_covers.py` (needs

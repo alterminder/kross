@@ -99,3 +99,19 @@ test("the authoring journey: open a curated scenario, edit a reveal threshold, c
     await expect(to).toHaveCSS("outline-style", "solid");
   }
 });
+
+test("the editor works under the app's CSP: no schema is compiled at runtime", async ({ page }) => {
+  const blocked: string[] = [];
+  page.on("console", (message) => {
+    if (/compiling schema|unsafe-eval/i.test(message.text())) blocked.push(message.text());
+  });
+  await page.goto("api/auth/dev/login?as=admin");
+  await page.locator("a.cover-card", { hasText: TITLE }).first().click(); // the journey above may have added a copy
+  await page.getByRole("link", { name: "Edit" }).click();
+  const sections = page.getByRole("tablist", { name: "Sections" });
+  for (const name of ["Counterpart", "Rules & twists", "Scoring & debrief"]) {
+    await sections.getByRole("tab", { name }).click();
+    await expect(sections.getByRole("tab", { name })).toHaveAttribute("aria-selected", "true");
+  }
+  expect(blocked).toEqual([]);
+});
