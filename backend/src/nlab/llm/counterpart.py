@@ -51,6 +51,11 @@ PHASE_INSTRUCTIONS: dict[str, str] = {
 }
 
 
+# A ceiling, not the reply length (the prompt asks for 1-4 short sentences): reasoning tokens count against it, and
+# 350 left thinking models with nothing to say.
+REPLY_MAX_TOKENS = 2048
+
+
 def determine_phase(turn: int, estimated_minutes: int = 15) -> str:
     """Calculates active negotiation phase: opening -> exploration -> closing.
     For typical 15-20 min / 12-16 turn sessions:
@@ -236,7 +241,7 @@ def counterpart_request(
             )
             if sh_messages[-1]["role"] == "assistant":
                 sh_messages.append({"role": "user", "content": prompt("delegate_waits")})
-            return request_for("counterpart", role_config, sh_messages, 0.7, max_tokens=350)
+            return request_for("counterpart", role_config, sh_messages, 0.7, max_tokens=REPLY_MAX_TOKENS)
 
     # Otherwise, resolve target counterpart
     counterpart = content["counterparts"][0]
@@ -297,7 +302,7 @@ def counterpart_request(
     if messages[-1]["role"] == "assistant":
         messages.append({"role": "user", "content": prompt("delegate_waits")})
     temperature = 0.4 if state.outcome else 0.7
-    max_tokens = 350
+    max_tokens = REPLY_MAX_TOKENS
     if (
         state.outcome and role_config.closing_reasoning_effort
     ):  # the closing line happens once and must really close: think a little

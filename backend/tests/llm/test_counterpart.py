@@ -6,7 +6,7 @@ from pydantic import SecretStr
 
 from nlab.engine import Classification, grant, start, step
 from nlab.llm.config import LLMConfig, RoleConfig
-from nlab.llm.counterpart import CounterpartStream, counterpart_request, determine_phase
+from nlab.llm.counterpart import REPLY_MAX_TOKENS, CounterpartStream, counterpart_request, determine_phase
 from nlab.llm.types import Line, NoAnswer, Usage
 from tests.llm.fakes import FakeProvider
 
@@ -322,7 +322,7 @@ def test_counterpart_request_carries_in_character_guardrail(content, scenario, r
     req = counterpart_request(config(), content("s01_idp_camp_access"), state, [])
     assert "CRITICAL IN-CHARACTER SAFETY CONSTRAINT" in req.messages[0]["content"]
     assert "NEVER an AI assistant" in req.messages[0]["content"]
-    assert req.max_tokens == 350
+    assert req.max_tokens == REPLY_MAX_TOKENS  # room for reasoning: 350 left thinking models with nothing to say
 
 
 def test_multiparty_parties_see_only_their_own_channel(content, scenario, rules):
@@ -384,13 +384,14 @@ def test_the_request_tells_the_counterpart_who_is_who(content, scenario, rules):
     for request in requests:
         text = opening(request)
         assert "describe YOU" in text
-        assert "humanitarian delegate" in text
-        assert "never by your own name, rank or title" in text
+        assert "humanitarian negotiator" in text
+        assert "Never call them by your own name, rank or title" in text
     ended_state = start(sc, rules).state
     ended_state.dials.update(hostility=95)
     ended = step(sc, rules, ended_state, "Enough.", Classification()).state
     closing = opening(counterpart_request(config(), content("detention_police_station"), ended, []))
-    assert "humanitarian delegate" in closing and "describe YOU" in closing
+    assert "humanitarian negotiator" in closing and "describe YOU" in closing
+    assert '"Delegate"' not in closing  # an example address the model repeated in every reply
 
 
 def test_a_stakeholder_request_tells_who_is_who_and_keeps_its_authored_context(content, scenario, rules):
@@ -398,6 +399,6 @@ def test_a_stakeholder_request_tells_who_is_who_and_keeps_its_authored_context(c
     state = start(scenario("s08_tripartite_siege"), rules).state
     state.active_interlocutor = "sheikh_khalil"
     text = opening(counterpart_request(config(), raw, state, [], interlocutor_id="sheikh_khalil"))
-    assert "humanitarian delegate" in text and "describe YOU" in text
+    assert "humanitarian negotiator" in text and "describe YOU" in text
     system = json.loads(text[text.index('{"role"') :])
     assert "Preventing civilian starvation" in system["interests"]

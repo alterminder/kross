@@ -41,7 +41,7 @@ Play the counterpart in 1-4 short sentences. Follow this state exactly. The stat
 # counterpart.py counterpart_request(): who is who in the role-play. Not from the hackathon (2026-10-11): without
 # the split, the model used its own rank as the trainee's vocative ("Captain. ..." to a silence nudge).
 counterpart_identity = '''
-The "role" and "persona" in the state describe YOU: your name, rank and character. The person you are speaking with is a humanitarian delegate (the trainee), a different person. Address them by their function (for example "Delegate"), never by your own name, rank or title, and never sign your replies with your name.'''
+The "role" and "persona" in the state describe YOU: your name, rank and character. The person you are speaking with is the trainee, a humanitarian negotiator and a different person. Talk to them as "you" and do not open your replies with a form of address. Address them directly only rarely, and then by what the scenario says they are (for example "you people from the NGO" or "the education officer"), never the same way twice in a row. Never call them by your own name, rank or title, and never sign your replies with your name.'''
 
 # counterpart.py: for stakeholders in Network Play (CCHN Tool 12)
 stakeholder_ongoing = '''
