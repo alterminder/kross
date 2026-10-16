@@ -497,6 +497,20 @@ export function Play() {
                 </li>
               );
             })}
+            {busy && live.length > 0 && !live.some((line) => line.role === "character") && (
+              // the gap before the first reply chunk: a thinking model can stay silent for seconds
+              <li className="character thinking" role="status">
+                <span className="who">{getSpeakerLabel({ role: "character", text: "", speaker: activeInterlocutor }, session)}</span>
+                <span>
+                  Thinking
+                  <span className="dots" aria-hidden="true">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                  </span>
+                </span>
+              </li>
+            )}
             <div ref={bottom} />
           </ol>
           <Problem text={problem ?? error} />

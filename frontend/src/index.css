@@ -1210,7 +1210,8 @@ input[type="checkbox"].classifier-move-check {
     opacity: .55;
 }
 
-.message.thinking p {
+.message.thinking p,
+.transcript .thinking > span:last-child {
     color: var(--text-secondary);
     font-style: italic;
 }

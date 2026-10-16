@@ -111,6 +111,31 @@ describe("Play", () => {
     expect(screen.getByLabelText("Your message")).toHaveValue("");
   });
 
+  it("says the counterpart is thinking until the first reply chunk arrives", async () => {
+    let firstChunk!: () => void;
+    const encoder = new TextEncoder();
+    stubApi({
+      "GET sessions/s1": () => json(SESSION),
+      "POST sessions/s1/turns": () =>
+        new Response(
+          new ReadableStream({
+            start(controller) {
+              firstChunk = () => controller.enqueue(encoder.encode('event: reply\ndata: {"text": "Go on."}\n\n'));
+            },
+          }),
+        ),
+    });
+    renderAt("/play/s1", <Play />, "/play/:id");
+    expect(await screen.findByLabelText("Your message")).toBeInTheDocument();
+    expect(screen.queryByText("Thinking")).not.toBeInTheDocument();
+    await userEvent.type(screen.getByLabelText("Your message"), "Good morning.");
+    await userEvent.click(screen.getByRole("button", { name: "Send" }));
+    expect(await screen.findByText("Thinking")).toBeInTheDocument();
+    firstChunk();
+    expect(await screen.findByText("Go on.")).toBeInTheDocument();
+    expect(screen.queryByText("Thinking")).not.toBeInTheDocument();
+  });
+
   it("restores the message when the stream ends mid-turn with nothing saved", async () => {
     stubApi({
       "GET sessions/s1": SESSION, // the interrupted turn never committed
